@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[24],{95:function(o){o.exports=JSON.parse('{"allTagsPath":"/eyabc.github.io/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/eyabc.github.io/blog/tags/hello"}')}}]);
