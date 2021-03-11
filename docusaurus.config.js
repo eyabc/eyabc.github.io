@@ -19,6 +19,9 @@ module.exports = {
   organizationName: 'eyabc', // Usually your GitHub org/user name.
   projectName: 'eyabc.github.io', // Usually your repo name.
   themeConfig: {
+    prism: {
+      theme: require('prism-react-renderer/themes/dracula'),
+    },
     algolia: {
       apiKey: '0b48328d1174437ed84c59a28446a1ac',
       indexName: 'blog',
@@ -111,6 +114,7 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+        themes: ['@docusaurus/theme-live-codeblock'],
       },
     ],
   ],
