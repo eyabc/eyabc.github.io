@@ -10,6 +10,7 @@
 const { makeTargetSelf } = require('../utils.js');
 const JAVASCRIPT = require('./javascript.js');
 const JAVA = require('./java.js');
+const STUDY = require('./study.js');
 
 module.exports = {
   title: '나를 존중하는 시간',
@@ -19,8 +20,9 @@ module.exports = {
   },
   items: [
     ...makeTargetSelf([
-    // JAVASCRIPT,
+    JAVASCRIPT,
     JAVA,
+    STUDY,
     {to: 'blog', label: 'Blog', position: 'left'},
     // Please keep GitHub link to the right for consistency.
     {

@@ -7,20 +7,9 @@
  * @format
  */
 const effectiveJava = require('./sidebars/effective_java.js');
+const javascript = require('./sidebars/javascript.js');
 
 module.exports = {
   effectiveJava,
-  javascript: [
-    {
-      type: 'category',
-      label: 'test',
-      items: ['java', 'java/java']
-    },
-    {
-      type: 'category',
-      label: 'test',
-      items: ['doc1', 'doc2', 'doc3']
-    },
-
-  ],
+  javascript
 };

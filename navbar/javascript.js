@@ -8,7 +8,7 @@
  */
 // eslint-disable-next-line header/header
 module.exports = {
-  to: 'docs/javascript/',
+  to: 'docs/javascript/index',
   activeBasePath: 'javascript',
   label: 'JavaScript',
   position: 'left',
@@ -17,9 +17,5 @@ module.exports = {
       label: 'Facebook',
       href: 'test',
     },
-  ].map(item => {
-    // eslint-disable-next-line no-param-reassign
-    item.target = '_self'
-    return item;
-  }),
+  ]
 };

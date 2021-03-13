@@ -8,16 +8,30 @@
  */
 
 // eslint-disable-next-line header/header
+const ROOT = 'java/effective-java';
+const CH1 = ROOT + '/ch1';
+const CH2 = ROOT + '/ch2/';
+const CH3 = ROOT + '/ch3/';
+const CH4 = ROOT + '/ch4/';
+const CH5 = ROOT + '/ch5/';
+const CH6 = ROOT + '/ch6/';
+
 module.exports = [
-  'java/effective-java',
+  ROOT,
+  CH1,
   {
     type: 'category',
-    label: 'Ch1',
-    items: ['java/effective-java/ch1', 'java/effective-java/ch2']
-  },
-  {
-    type: 'category',
-    label: 'Ch2',
-    items: ['java/effective-java/ch2', 'doc2', 'doc3']
+    label: 'Ch5 제네릭 Generic',
+    items: [
+      `${CH5}index`,
+      `${CH5}ITEM26`,
+      `${CH5}ITEM27`,
+      `${CH5}ITEM28`,
+      `${CH5}ITEM29`,
+      `${CH5}ITEM30`,
+      `${CH5}ITEM31`,
+      `${CH5}ITEM32`,
+      `${CH5}ITEM33`,
+    ]
   },
 ]
