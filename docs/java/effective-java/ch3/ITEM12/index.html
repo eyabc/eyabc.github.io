@@ -7,16 +7,16 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Respect myself Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Respect myself Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Respect myself" href="/opensearch.xml"><title data-react-helmet="true">ITEM12 | Respect myself</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="ITEM12 | Respect myself"><meta data-react-helmet="true" name="description" content="ITEM12 toString 을 항상 재정의하라"><meta data-react-helmet="true" property="og:description" content="ITEM12 toString 을 항상 재정의하라"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/java/effective-java/ch3/ITEM12"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/java/effective-java/ch3/ITEM12"><link rel="stylesheet" href="/styles.415acfaf.css">
-<link rel="preload" href="/styles.679fee89.js" as="script">
-<link rel="preload" href="/runtime~main.96e26063.js" as="script">
-<link rel="preload" href="/main.81557219.js" as="script">
-<link rel="preload" href="/1.52e332a7.js" as="script">
-<link rel="preload" href="/96.7c8375d1.js" as="script">
-<link rel="preload" href="/99.d5610937.js" as="script">
-<link rel="preload" href="/935f2afb.df6a6ddd.js" as="script">
-<link rel="preload" href="/95.2574299e.js" as="script">
-<link rel="preload" href="/17896441.b0ba362c.js" as="script">
-<link rel="preload" href="/5511bda6.f08e8cb7.js" as="script">
+<link rel="preload" href="/styles.49822607.js" as="script">
+<link rel="preload" href="/runtime~main.c3f565a8.js" as="script">
+<link rel="preload" href="/main.6a93ccb1.js" as="script">
+<link rel="preload" href="/1.12081b32.js" as="script">
+<link rel="preload" href="/99.b5d8873c.js" as="script">
+<link rel="preload" href="/102.48112da0.js" as="script">
+<link rel="preload" href="/935f2afb.ce1b50d2.js" as="script">
+<link rel="preload" href="/98.e78b54c4.js" as="script">
+<link rel="preload" href="/17896441.6e480b29.js" as="script">
+<link rel="preload" href="/5511bda6.b665ba8c.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -25,15 +25,15 @@
 → 성능저하, 불필요한 작업<br>→ 향후 포맷을 바꾸면 시스템이 망가진다.</li></ul><p>접근자를 제공하지 않으면, 변경될 수 있다고 문서화를 해도<br>
 그 포맷이 사실상 준-표준 API 나 다름없다.</p><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="tostring-을-재정의-하지-않아도-되는-타입"></a>toString 을 재정의 하지 않아도 되는 타입<a class="hash-link" href="#tostring-을-재정의-하지-않아도-되는-타입" title="Direct link to heading">#</a></h2><ul><li>정적 유틸리티 클래스[4]</li><li>대부분의 열거타입[34]은 자바가 이미 완벽한 toString 을 제공</li></ul><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="tostring-을-재정의-해야하는-타입"></a>toString 을 재정의 해야하는 타입<a class="hash-link" href="#tostring-을-재정의-해야하는-타입" title="Direct link to heading">#</a></h2><p>하위 클래스들이 공유해야 할 문자열 표현이 있는 추상클래스  ??</p><ul><li>대다수의 컬렉션 구현체는 추상 컬렉션 클래스들의 toString 메서드를 상속해서 쓴다.</li></ul><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="tostring-자동생성"></a>toString 자동생성<a class="hash-link" href="#tostring-자동생성" title="Direct link to heading">#</a></h2><ul><li><code>AutoValue</code> 프레임워크로는 클래스의 의미까지 파악하기 어렵다.</li><li>자동생성에 적합하지 않는 타입<ul><li>PhoneNumber 은 표준체계가 있다.</li></ul></li><li>자동생성에 적합하지 않더라도
 객체의 값에 관해 아무것도 알려주지 않는 Object 의 toString 보다는 자동생성하는 것이 낫다.</li></ul></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"></div><div class="pagination-nav__item pagination-nav__item--next"></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#tostring-일반-규약" class="table-of-contents__link">toString 일반 규약</a><ul><li><a href="#object-의-tostring-메서드가-기본적으로-반환하는-문자열" class="table-of-contents__link">Object 의 toString 메서드가 기본적으로 반환하는 문자열</a></li></ul></li><li><a href="#잘-구현된-tostring-메서드-클래스의-장점" class="table-of-contents__link">잘 구현된 toString 메서드 클래스의 장점</a><ul><li><a href="#tostring-이-자동-호출-문맥" class="table-of-contents__link">toString 이 자동 호출 문맥</a></li></ul></li><li><a href="#tostring-에-적합한-내용" class="table-of-contents__link">toString 에 적합한 내용</a></li><li><a href="#tostring-반환값-포맷-문서화" class="table-of-contents__link">toString 반환값 포맷 문서화</a><ul><li><a href="#장점과-특징" class="table-of-contents__link">장점과 특징</a></li><li><a href="#단점" class="table-of-contents__link">단점</a></li></ul></li><li><a href="#tostring-을-재정의-하지-않아도-되는-타입" class="table-of-contents__link">toString 을 재정의 하지 않아도 되는 타입</a></li><li><a href="#tostring-을-재정의-해야하는-타입" class="table-of-contents__link">toString 을 재정의 해야하는 타입</a></li><li><a href="#tostring-자동생성" class="table-of-contents__link">toString 자동생성</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2021 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.679fee89.js"></script>
-<script src="/runtime~main.96e26063.js"></script>
-<script src="/main.81557219.js"></script>
-<script src="/1.52e332a7.js"></script>
-<script src="/96.7c8375d1.js"></script>
-<script src="/99.d5610937.js"></script>
-<script src="/935f2afb.df6a6ddd.js"></script>
-<script src="/95.2574299e.js"></script>
-<script src="/17896441.b0ba362c.js"></script>
-<script src="/5511bda6.f08e8cb7.js"></script>
+<script src="/styles.49822607.js"></script>
+<script src="/runtime~main.c3f565a8.js"></script>
+<script src="/main.6a93ccb1.js"></script>
+<script src="/1.12081b32.js"></script>
+<script src="/99.b5d8873c.js"></script>
+<script src="/102.48112da0.js"></script>
+<script src="/935f2afb.ce1b50d2.js"></script>
+<script src="/98.e78b54c4.js"></script>
+<script src="/17896441.6e480b29.js"></script>
+<script src="/5511bda6.b665ba8c.js"></script>
 </body>
 </html>
