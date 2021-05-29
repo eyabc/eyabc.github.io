@@ -7,16 +7,16 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Respect myself Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Respect myself Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Respect myself" href="/opensearch.xml"><title data-react-helmet="true">ReactNative_시작전_고려사항 | Respect myself</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="ReactNative_시작전_고려사항 | Respect myself"><meta data-react-helmet="true" name="description" content="React Native 시작전 고려사항"><meta data-react-helmet="true" property="og:description" content="React Native 시작전 고려사항"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/javascript/ReactNative/ReactNative_시작전_고려사항"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/javascript/ReactNative/ReactNative_시작전_고려사항"><link rel="stylesheet" href="/styles.8d2472a3.css">
-<link rel="preload" href="/styles.bddee710.js" as="script">
-<link rel="preload" href="/runtime~main.47cbc3fe.js" as="script">
-<link rel="preload" href="/main.a34186e4.js" as="script">
-<link rel="preload" href="/1.94e65992.js" as="script">
-<link rel="preload" href="/2.2ce31d56.js" as="script">
-<link rel="preload" href="/1be78505.0c710f40.js" as="script">
-<link rel="preload" href="/176.5de71070.js" as="script">
-<link rel="preload" href="/935f2afb.4eb5f2c7.js" as="script">
-<link rel="preload" href="/173.d2ec86c2.js" as="script">
-<link rel="preload" href="/17896441.bbaffd1b.js" as="script">
+<link rel="preload" href="/styles.b08d12b5.js" as="script">
+<link rel="preload" href="/runtime~main.2110e9bf.js" as="script">
+<link rel="preload" href="/main.6ad75662.js" as="script">
+<link rel="preload" href="/1.6e1013ae.js" as="script">
+<link rel="preload" href="/2.e3f25241.js" as="script">
+<link rel="preload" href="/1be78505.7c48f972.js" as="script">
+<link rel="preload" href="/177.c19721a0.js" as="script">
+<link rel="preload" href="/935f2afb.c0c571f2.js" as="script">
+<link rel="preload" href="/173.3d9cf982.js" as="script">
+<link rel="preload" href="/17896441.97c17fa6.js" as="script">
 <link rel="preload" href="/18059ce7.d150f10f.js" as="script">
 </head>
 <body>
@@ -43,16 +43,16 @@ expo 자체는 tyepscript로 제작 되었지만, 서브 모듈은 그렇지가 
 expo는 단점이 많지만 직접 프로젝트를 구축한다면 프로젝트를 진행하기도 전에 지칠 수 있으므로,
 학습 용도로 expo를 사용하는 것은 매우 좋은 선택입니다.
 그러나 조금 더 깊이 있는 앱을 만드신다면 직접 구축!</p><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="reference"></a>Reference<a class="hash-link" href="#reference" title="Direct link to heading">#</a></h2><ul><li><a href="https://velog.io/@honeysuckle/React-Native%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89%ED%95%98%EA%B8%B0%EC%A0%84-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD-%EB%8B%A8%EC%A0%90-%EC%95%84%EB%8B%98" target="_blank" rel="noopener noreferrer">https://velog.io/@honeysuckle/React-Native%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89%ED%95%98%EA%B8%B0%EC%A0%84-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD-%EB%8B%A8%EC%A0%90-%EC%95%84%EB%8B%98</a></li></ul></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"></div><div class="pagination-nav__item pagination-nav__item--next"></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#1-react로-웹-개발을-해보았다면-바로-시작할-수-있는가" class="table-of-contents__link">1. React로 웹 개발을 해보았다면 바로 시작할 수 있는가?</a><ul><li><a href="#1-1-기기별-호환성" class="table-of-contents__link">1-1 기기별 호환성</a></li><li><a href="#1-2-스타일" class="table-of-contents__link">1-2 스타일</a></li><li><a href="#1-3-리액트와-조금-다른-점들-react-navigation" class="table-of-contents__link">1-3 리액트와 조금 다른 점들 react-navigation</a></li></ul></li><li><a href="#2-ios와-android-동시-개발" class="table-of-contents__link">2. IOS와 Android 동시 개발</a></li><li><a href="#3-네이티브-개발-언어-대비-성능" class="table-of-contents__link">3. 네이티브 개발 언어 대비 성능</a></li><li><a href="#4-react-native-init--expo-init" class="table-of-contents__link">4. React native init &amp; expo init</a></li><li><a href="#5-flutter-vs-react-native" class="table-of-contents__link">5. Flutter vs React Native</a></li><li><a href="#6-정적-타입-언어-도입" class="table-of-contents__link">6. 정적 타입 언어 도입</a></li><li><a href="#결론" class="table-of-contents__link">결론</a></li><li><a href="#reference" class="table-of-contents__link">Reference</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2021 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.bddee710.js"></script>
-<script src="/runtime~main.47cbc3fe.js"></script>
-<script src="/main.a34186e4.js"></script>
-<script src="/1.94e65992.js"></script>
-<script src="/2.2ce31d56.js"></script>
-<script src="/1be78505.0c710f40.js"></script>
-<script src="/176.5de71070.js"></script>
-<script src="/935f2afb.4eb5f2c7.js"></script>
-<script src="/173.d2ec86c2.js"></script>
-<script src="/17896441.bbaffd1b.js"></script>
+<script src="/styles.b08d12b5.js"></script>
+<script src="/runtime~main.2110e9bf.js"></script>
+<script src="/main.6ad75662.js"></script>
+<script src="/1.6e1013ae.js"></script>
+<script src="/2.e3f25241.js"></script>
+<script src="/1be78505.7c48f972.js"></script>
+<script src="/177.c19721a0.js"></script>
+<script src="/935f2afb.c0c571f2.js"></script>
+<script src="/173.3d9cf982.js"></script>
+<script src="/17896441.97c17fa6.js"></script>
 <script src="/18059ce7.d150f10f.js"></script>
 </body>
 </html>
