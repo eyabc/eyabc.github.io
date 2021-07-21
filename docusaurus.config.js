@@ -18,7 +18,15 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'eyabc', // Usually your GitHub org/user name.
   projectName: 'eyabc.github.io', // Usually your repo name.
+  themes: ['@docusaurus/theme-live-codeblock'],
   themeConfig: {
+    liveCodeBlock: {
+    //   /**
+    //    * The position of the live playground, above or under the editor
+    //    * Possible values: "top" | "bottom"
+    //    */
+      playgroundPosition: 'bottom',
+    },
     prism: {
       theme: require('prism-react-renderer/themes/dracula'),
     },

@@ -8,5 +8,5 @@ module.exports = {
       label: 'DKU JavaScript',
       to: 'docs/study/dku-javascript',
     },
-  ]
-}
+  ],
+};

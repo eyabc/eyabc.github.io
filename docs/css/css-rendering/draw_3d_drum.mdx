@@ -1,0 +1,260 @@
+---
+title: 6-4 드럼통 그리기
+---
+
+import HtmlParser from '/src/theme/components/HtmlParser';
+
+
+드럼통의 [구조](https://woo-dev.tistory.com/167)는 다음과 같다.
+![image](https://user-images.githubusercontent.com/31977543/124756086-101e9f80-df67-11eb-898d-4d32cb02e037.png)
+
+- https://keithclark.co.uk/labs/css-fps/drum2.png
+
+    ![image](https://user-images.githubusercontent.com/31977543/124756945-08abc600-df68-11eb-835f-ef9b2d254fd6.png)
+
+CSS Sprite
+- 한장의 이미지를 백그라운드 이미지와 백그라운드 포지션을 이용해 잘라서 쓰는것
+- ![image](https://user-images.githubusercontent.com/31977543/124757211-4dcff800-df68-11eb-9cde-421d8c358dce.png)
+
+3D 에서는 한 면을 Face 라고 부른다.
+
+그림 사이에서의 위치라는 개념이 있다.
+3D 에서 이미지 소스를 텍스쳐라고 부른다.
+여러개의 텍스쳐를 대신하는 한장의 그림을 아틀라스라고 한다.
+
+```css
+@keyframes spin {
+    to { transform: rotateY(360deg) rotateZ(360deg) rotateX(720deg) }
+}
+html, body { height: 100% }
+body { perspective: 600px; background: #404040 }
+.ani {
+    animation: spin 4s linear infinite;
+}
+.drum { background: url('https://keithclark.co.uk/labs/css-fps/drum2.png')}
+```
+
+![image](https://user-images.githubusercontent.com/31977543/124758720-d4390980-df69-11eb-87ac-9cea626fa03a.png)
+
+만들어야 할 모든 face 의 분모를 만들어 보자.
+
+Dom 을 wrapping 한 El 이라는 클래스를 만들었다.
+
+```javascript
+const El = class {
+    constructor() {
+        this.el = document.createElement('div');
+    }
+
+    set class(v) { this.el.className = v; }
+}
+
+const Face = class extends El {
+    constructor(w, h, x, y, z, rx, ry, rz, tx, ty) {
+        super();
+        this.el.style.cssText = `
+            position: absolute;
+            width: ${w}px; height: ${h}px;
+            margin: -${h/2}px 0 0 -${w/2}px;Y(${ry}rad) rotateZ(${rz}rad);
+            background-position: -${tx}px ${ty}px;
+        `;
+    }
+}
+```
+:::note [margin](https://developer.mozilla.org/ko/docs/Web/CSS/margin)
+margin-top, margin-right, margin-bottom, margin-left 의 단축 속성
+:::
+중간점을 바라볼 수 있게 변형을 한다.
+![image](https://user-images.githubusercontent.com/31977543/124760985-46125280-df6c-11eb-8bac-ace3878ff114.png)
+
+다음은 face 를 모은 mesh 가 필요하다.
+
+![image](https://user-images.githubusercontent.com/31977543/124761789-20397d80-df6d-11eb-8b96-fe9ea035ff42.png)
+
+```javascript
+const Mesh = class extends El {
+    constructor(l, t) {
+        super();
+        this.el.style.cssText = `
+            position: absolute;
+            left: ${l}; top: ${t};
+            transform-style: preserve-3d
+        `;
+    }
+    add(face) {
+        this.el.appendChild(face.el);
+        return face;
+    }
+}
+```
+
+```javascript
+const mesh = new Mesh('50%', '50%');
+// 반지름, 원통의 높이, 원통 등분 수
+const r = 100, height = 196, sides = 20;
+
+// 중심점을 향한 각도, (Math.PI : 180 deg)
+const sideAngle = (Math.PI / sides) * 2;
+
+// 빗변의 길이.
+const sideLen = r * Math.tan(Math.PI / sides);
+
+for (let c = 0; c < sides; c++) {
+    const x = Math.sin(sideAngle * c) * r / 2;
+    const z = Math.cos(sideAngle * c) * r / 2;
+    const ry = Math.atan2(x, z);
+    const face = new Face(sideLen + 1, height, x, 0, z, 0, ry, 0, sideLen * c, 0);
+    face.class = 'drum';
+    mesh.add(face);
+}
+
+const top = new Face(100, 100, 0 , -98, 0, Math.PI/2, 0, 0, 0, 100);
+const bottom = new Face(100, 100, 0 , 98, 0, Math.PI/2, 0, 0, 0, 100);
+top.class = 'drum';
+bottom.class = 'drum';
+mesh.add(top);
+mesh.add(bottom);
+```
+
+<details><summary>전체 코드</summary>
+<p>
+
+```html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS Drum(3D)</title>
+  <style>
+      @keyframes spin {
+          to {
+              transform: rotateY(360deg) rotateZ(360deg) rotateX(720deg);
+          }
+      }
+      html,
+      body {
+          height: 100%;
+      }
+      body {
+          perspective: 600px;
+          background: #404040;
+      }
+      .ani {
+          animation: spin 4s linear infinite;
+      }
+      .drum {
+          background: url("http://keithclark.co.uk/labs/css-fps/drum2.png");
+      }
+  </style>
+</head>
+<body>
+<script>
+  // 코드스피츠76 - CSS Rendering https://www.youtube.com/watch?v=Tf5KvpYNNv8
+  const El = class {
+    constructor() {
+      this.el = document.createElement("div");
+    }
+    set class(v) {
+      this.el.className = v;
+    }
+  };
+
+  /**
+   * 하나의 면
+   * - margin : x,y를 좌상단이 아닌 중앙점으로 하기위한 방법(계산의 편의성) - CSS에서 중앙정렬하는 기법이기도함
+   * - rotateX : deg가 아닌 radian으로 (수학적 공식 사용을 위해)
+   */
+  const Face = class extends El {
+    constructor(w, h, x, y, z, rx, ry, rz, tx, ty) {
+      super();
+      this.el.style.cssText = `
+              position: absolute;
+              width:${w}px;
+              height:${h}px;
+              margin: -${h * 0.5}px 0 0 -${w * 0.5}px;
+              transform: translate3d(${x}px, ${y}px, ${z}px)
+              rotateX(${rx}rad) rotateY(${ry}rad) rotateZ(${rz}rad);
+              background-position: -${tx}px ${ty}px;
+              backface-visibility: hidden;
+            `;
+    }
+  };
+
+  /**
+   * face의 그룹
+   */
+  const Mesh = class extends El {
+    constructor(l, t) {
+      super();
+      this.el.style.cssText = `
+              position: absolute;
+              left: ${l};
+              top: ${t};
+              transform-style: preserve-3d;
+            `;
+    }
+    add(face) {
+      this.el.appendChild(face.el);
+      return face;
+    }
+  };
+
+  const mesh = new Mesh("50%", "50%");
+  const r = 100;
+  const height = 196;
+  const sides = 20;
+  const sideAngle = (Math.PI / sides) * 2; // 360deg상의 계산을 위해 x 2
+  const sideLen = r * Math.tan(Math.PI / sides);
+
+  // 3D에서 평면적인 그림을 그릴때 x, z로 계산
+  for (let c = 0; c < sides; c++) {
+    const x = (Math.sin(sideAngle * c) * r) / 2;
+    const z = (Math.cos(sideAngle * c) * r) / 2;
+    const ry = Math.atan2(x, z);
+    const face = new Face(
+      sideLen + 1,
+      height,
+      x,
+      0,
+      z,
+      0,
+      ry,
+      0,
+      sideLen * c,
+      0
+    );
+    face.class = "drum";
+    mesh.add(face);
+  }
+
+  const topFace = new Face(100, 100, 0, -98, 0, Math.PI / 2, 0, 0, 0, 100);
+  const bottomFace = new Face(
+    100,
+    100,
+    0,
+    98,
+    0,
+    -Math.PI / 2,
+    0,
+    0,
+    0,
+    100
+  );
+  topFace.class = "drum";
+  bottomFace.class = "drum";
+  mesh.add(topFace);
+  mesh.add(bottomFace);
+  mesh.class = "ani";
+  document.body.appendChild(mesh.el);
+</script>
+</body>
+</html>
+```
+</p>
+</details>
+
+Reference
+---
+- https://gist.github.com/pistis/2926f06a4caf18f00f16b0e35d46b762
+- https://ktpark1651.tistory.com/208?category=681949

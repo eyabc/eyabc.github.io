@@ -1,0 +1,264 @@
+---
+title: 4 Position Model And Offset
+---
+
+import HtmlParser from '/src/theme/components/HtmlParser';
+
+## position model
+:::note position model
+static | relative | absolute | fixed
+
+- https://drafts.csswg.org/cssom-view/#extensions-to-the-htmlelement-interface
+:::
+
+## caret position & offset
+
+:::note offset
+CSS 의 추상적인 지시어의 Geometry 를 계산하고 Fixed Number 로 전환된 숫자
+- 변경이 불가능한 읽기 전용
+:::
+
+- 여기서 offset 은 *고유명사*
+    - 원래 CS 에서 offset 은 무엇에서부터 얼마큼 떨어진 이라는 뜻이다.
+
+- 추상적인 명령(우리의 희망사항)의 수용 → 브라우저 Case
+    - 브라우저 구형 ie6 float → padding: 3 이 생기는 계산 존재
+    - 브라우저 렌더링 시스템에 따라 다르다.
+    - 실제 계산된 수치 → offset 를 조사해야 한다.
+
+
+:::note 브라우저의 효율적인 offset 계산
+### Frame
+- geometry 계산을 한번에 몰아서 하려고 한다.
+- 한번에 묶어서 계산하는 단위 혹은 타이밍을 **프레임**이라고 한다.
+
+#### Flush
+- 쌓아있던 큐를 소진하는 것
+
+:::
+
+- 어떤 element 의 offset 를 조사할 때 일어나는 일
+    - 큐를 바로 지우고 무조건 재계산을 해야 한다.
+    - 한 프레임이 아닌데도 offset 을 요청하면 재계산을 마구마구 때린다
+    - layout 의 offset 를 기준으로 다시 layout 을 그릴려고 하면
+      한 프레임에 재계산을 여러번 하게 된다.
+    - offset 을 요청하면 최적화 로직이 깨져버리리기 때문에 안쓰는 것이 좋다.
+
+- offset 을 조사해도 되는 경우
+    - geometry 계산이 다 끝났을 시점
+    - layout 계산이 없을 때
+
+## offset parent
+:::note offset parent
+실제 **픽셀값 계산** → offset 계산
+
+컴퓨터의 픽셀값 계산
+- **상대적인 위치**로 모든 수치가 기술됨
+
+offset 를 계산하는 가장 기본적인 로직은
+- **기준점**을 찾는 것이 가장 우선된다.
+
+**기준점 → offset parent**
+:::
+
+
+left: 100, top:50 ~ 은 기준점으로 부터라는 의미
+
+offset parent 는 dom parent 가 아니다.
+
+offset parent 는 어떻게 구하는 것일까?
+
+### offset parent 의 계산
+:::note 1. null 인 경우
+- root, html, body
+- position: fixed (브라우저의 bound box 를 기준으로 그린다)
+- out of dom tree
+    - remove child element
+    - create element 는 offset parent 가 존재하지 않지만
+    - append 후에는 생겨난다.
+
+:::
+
+> [relative absolute](https://www.zerocho.com/category/CSS/post/5864f3b59f1dc000182d3ea1)
+> - relative 가 static 인 상태를 기준으로 주어진 픽셀만큼 움직였다면,
+> - absolute 는 position: static 속성을 가지고 있지 않은 부모를 기준으로 움직입니다. 만약 부모 중에 포지션이 relative, absolute, fixed인 태그가 없다면 가장 위의 태그(body)가 기준이 됩니다.
+
+:::note 2. recursive search
+어떤 element 를 재귀적으로 찾아 들어간다.
+- parent.position: fixed = null
+    - element 의 부모의 position 이 fixed 일 때 null 이다
+- parent.position:!static = ok
+    - static 이 아닌 부모를 찾을 때 까지 위로 올라간다.
+    - absolute | relative 이면 중단하고,
+    - absolute 의 offset parent 가 될 수 있는 대상은 absolute 이거나 relative 이다
+    - absolute 는 내가 위치를 직접 다 지정해야 한다.
+        - 어떤 공간(컨테이너)을 기준으로 position 을 만들고 싶으면
+        - 기준을 relative 으로 하고,
+        - 자식 요소에 absolute 을 해주면 된다.
+        - relative 의 역할이 static 의 위치를 조정하는데 쓴다기 보다는
+            일반적으로 static 안 에 abolute 를 넣기 위한 컨테이너로 사용한다.
+    - relative 의 경우는, static 의 위치로 정해진다.
+
+
+- body = ok
+- td, ht, table = ok
+    - 스펙과 다르게 많은 브라우저에서 테이블의 태그들이 offset parent 로 작동하지 않는다.
+    - 안에 div 의 position: relative 속성을 넣어줘야 한다.
+- parent.parent continue...
+
+:::
+
+
+## offset value
+**offset parent 를 알았으면
+브라우저가 실제로 계산하는 offset 값을 읽기전용으로 참조할 수 있다.**
+
+![image](https://user-images.githubusercontent.com/31977543/120061865-21d47380-c09a-11eb-8200-41c38f94286a.png)
+
+:::note 보이는 곳의 영역
+- offsetLeft / offsetTop
+    - offset parent 의 왼쪽(상단)으로 부터 얼마나 떨어져 있느냐
+- offsetWidth / offsetHeight
+    - 실제로 확보된 geometry 크기
+:::
+
+:::note 진짜 contents 의 영역
+- offsetScrollTop / offsetScrollLeft
+    - 스크롤 영역이 생겼을 때, 스크롤의 위치
+- offsetScrollWidth / offsetScrollHeight
+    - 스크롤 영역이 생겼을 때, 스크롤의 전체크기
+
+:::
+
+## absolute
+```html {7}
+<div style="width:200px; height: 200px; background: yellow; margin: 100px">
+    <div style="width: 100px; height: 100px;
+                position: absolute; background: red">
+    </div>
+    <div style="width: 100px; height: 100px;
+                position: absolute; background: blue;
+                left: 0">
+    </div>
+</div>
+```
+
+<HtmlParser content=
+'<div style="width:200px; height: 200px; background: yellow; margin: 100px">
+    <div style="width: 100px; height: 100px;
+            position: absolute; background: red">
+    </div>
+    <div style="width: 100px; height: 100px;
+            position: absolute; background: blue;
+            left: 0">
+    </div>
+</div>'
+/>
+
+
+- blue box
+    - *position: absolute*
+    - `offset parent` is `<body>`
+
+:::note *position: absolute* 의 left, top  없을 때의 offset
+- offset parent 의 (0, 0) 이 아니다.
+- 부모 element 가 static 이라고 할지라도 DOM 상에 있는 부모의 값을 갖게 된다.
+- 즉, *position: absolute* 의 기본값은 static 과 똑같은 위치에 그려지게 된다.
+:::
+
+- red box 는 static 을 준 것 처럼 그려지게 된다.
+
+:::note static 일 때 left, top
+- static 은 normal flow 로 그린다.
+- left, top 을 무시한다.
+:::
+
+:::note relative 일 때 left, top
+- normal flow 로 그려졌을 때의 차이 값
+:::
+
+## float / position 중 어떤 것이 먼저 적용될까?
+- float 는 새로운 bfc 영역을 만들어 내는 normal flow 에서만 작동한다.
+- 따라서 position: absolute 를 주는 순간 float 는 무의미 해진다.
+
+
+## relative bridge
+
+<HtmlParser content=
+'<div class="relative_bridge">
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in" style="position: relative">
+      <div class="abs"></div>
+    </div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in" style="position: relative">
+      <div class="abs"></div>
+    </div>
+    <div class="in"></div>
+    <style>
+    .in {
+        display: inline-block;
+        width: 100px; height: 100px;
+        border: 1px solid #000
+    }
+    .abs {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        background: #00f;
+    }
+    </style>
+</div>
+'
+/>
+
+```html
+<style>
+.in {
+    display: inline-block;
+    width: 100px; height: 100px;
+    border: 1px solid #000
+}
+.abs {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: #00f;
+}
+</style>
+
+<html>
+<body>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in" style="position: relative">
+      <div class="abs"></div>
+    </div>
+
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in"></div>
+    <div class="in" style="position: relative">
+      <div class="abs"></div>
+    </div>
+    <div class="in"></div>
+</body>
+</html>
+```
+
+
+Reference
+---
+- https://ktpark1651.tistory.com/204
+

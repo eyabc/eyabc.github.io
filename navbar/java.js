@@ -17,5 +17,17 @@ module.exports = {
       label: 'Effective Java',
       to: 'docs/java/effective-java',
     },
+    {
+      type: 'doc',
+      docId: 'java-spring',
+      label: 'Spring',
+      to: 'docs/java/spring/index',
+    },
+    {
+      type: 'doc',
+      docId: 'java-etc',
+      label: 'etc',
+      to: 'docs/java/etc/index',
+    },
   ]
 }

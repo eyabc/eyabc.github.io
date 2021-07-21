@@ -26,6 +26,12 @@ title: 단국대 자바스크립트 스터디
 기한 시작 하기 전에 미리 사유를 말씀해 주시면 제가 판단하여 패널티를 면제 해드립니다. 
  혹은 과제 범위를 축소하겠습니다. 또한 9월부터 학기 중에는 과제 범위가 많다고 생각되시면 말씀해주세요
 
+- 20210721 변경 규칙 :
+    - 진도는 임의로 진행하고 있고 앞서 참여하지 못해 부족한 부분은 개인적으로 채우면 됩니다
+    - 조건: 스터디 참여 시작일 부터, 스터디 자발적 참여 종료일 까지 한번도 빠짐없이 공부하는 것입니다
+    - 화요일에 제출하지 못해도 패널티가 없으나, 반드시 제출해야 함.
+    - 3주 이상 연속적으로 과제를 미룰 경우 참여 불가능 
+
 ### 패널티
 스터디 과제를 진행하는 동안 기한을 어길경우 최대 4회까지는 유효하지만, 5번째에는 스터디에서 제외합니다.
 
@@ -499,3 +505,189 @@ https://ko.javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
 유림
 - https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step30.md
  
+## step31
+   
+기한 2021/3/13 토 ~ 2021/3/16 화
+
+주제 https://www.youtube.com/watch?v=RT38Za1pkdI
+
+은영
+- https://eyabc.github.io/docs/javascript/OOP_design_patterns
+- https://eyabc.github.io/docs/javascript/OOP_type_check
+- https://eyabc.github.io/docs/javascript/OOP_mvvm_role_design
+
+형욱
+- https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-86-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-2%ED%9A%8C%EC%B0%A8-part1-step-31  
+- https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-86-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-2%ED%9A%8C%EC%B0%A8-part2-step-31
+
+유림
+- https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step31.md
+
+정웅
+- https://www.notion.so/2-60332ba878d242fe9b4456a2a153cab3
+
+## step32
+tep32
+
+기한 2021/3/20 토 ~ 2021/4/2 화
+
+주제 https://www.youtube.com/watch?v=D450fPGffTg
+
+- 정웅
+    - https://www.notion.so/3-ff353b49aba043e2a584ce2809e6698c 
+- 유림
+    - https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step32.md
+- 형욱
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-86-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-3%ED%9A%8C%EC%B0%A8-part1-step-32
+- 은영
+    - https://eyabc.github.io/docs/javascript/OOP_strategy
+    - https://eyabc.github.io/docs/javascript/OOP_observer
+    - https://eyabc.github.io/docs/javascript/OOP_composite
+    - https://eyabc.github.io/docs/javascript/OOP_observer2
+
+## step 33
+기한 2021/3/27 토 ~ 2021/4/2 화
+
+주제 https://www.youtube.com/watch?v=r4vOF7WpxgM
+
+
+- 형욱
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-86-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-4%ED%9A%8C%EC%B0%A8-part1-step-33 
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-86-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-4%ED%9A%8C%EC%B0%A8-part2-step-33
+
+- 은영
+    - https://eyabc.github.io/docs/javascript/OOP_code_ISP
+    - https://eyabc.github.io/docs/javascript/OOP_access
+    - https://eyabc.github.io/docs/javascript/OOP_visitor
+    - https://eyabc.github.io/docs/javascript/OOP_abstract_layer
+    - https://eyabc.github.io/docs/javascript/OOP_4
+
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step33.md)
+
+
+## step34
+기한 2021/4/3 토 ~ 2021/4/6 화
+   
+주제 https://www.youtube.com/watch?v=5UUISCK6CL4
+
+- [은영](https://eyabc.github.io/docs/javascript/OOP_5)
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step34.md)
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-86-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-5%ED%9A%8C%EC%B0%A8-part1-step-34)
+
+## step35
+
+기한 2021/4/16 토 ~ 2021/4/20 화
+
+주제 : naver/fe-news 2021 4월호의 관심있는 주제 아티클 읽어보기
+
+https://github.com/naver/fe-news/blob/master/issues/2021-04.md
+
+- [형욱](https://velog.io/@khw970421/JavaScript-What-is-the-meaning-of-this-step-35 )
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step35.md)
+
+
+## step 36 
+기한 2021/05/08 (토) ~ 2021/05/11 (화)
+
+https://www.youtube.com/watch?v=_o1zsrBkZyg
+
+- 은영
+    - https://eyabc.github.io/docs/css/css-rendering/graphics_system
+    - https://eyabc.github.io/docs/css/css-rendering/rendering_system
+    - https://eyabc.github.io/docs/css/css-rendering/css_specifications
+    - https://eyabc.github.io/docs/css/css-rendering/normal_flow
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering)
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step36.md)
+
+## step 37
+
+기한 2021/05/15 (토) ~ 2021/05/18 (화)
+
+https://www.youtube.com/watch?v=ybNH1a14vQY
+
+- 은영
+    - https://eyabc.github.io/docs/css/css-rendering/float/
+    - https://eyabc.github.io/docs/css/css-rendering/line_box
+    - https://eyabc.github.io/docs/css/css-rendering/overflow
+    - https://eyabc.github.io/docs/css/css-rendering/overflow_float
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-part2)
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step37.md)
+
+## step38
+기한 2021/05/22 (토) ~ 2021/05/25 (화)
+
+https://www.youtube.com/watch?v=NFvSbFJmoWo
+
+- 은영
+    - https://eyabc.github.io/docs/css/css-rendering/morden_box
+    - https://eyabc.github.io/docs/css/css-rendering/box_sizing
+    - https://eyabc.github.io/docs/css/css-rendering/box_shadow
+    - https://eyabc.github.io/docs/css/css-rendering/outline
+
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step38.md)
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-2%ED%9A%8C%EC%B0%A8-step-38)
+
+## step39
+기한 2021/05/29 (토) ~ 2021/06/01 (화) 28분 ~ (position)
+
+https://www.youtube.com/watch?v=NFvSbFJmoWo
+
+- [은영](https://eyabc.github.io/docs/css/css-rendering/position_model_offset)
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step39.md)
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-2%ED%9A%8C%EC%B0%A8-part2-step-38)
+
+## step40
+https://www.youtube.com/watch?v=WzimLP3Kukc ~ CSSOM Rules
+
+기한 2021/06/05(토) ~ 2021/06/08(화) 
+
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-3%ED%9A%8C%EC%B0%A8-part1-step-40)
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step40.md)
+- [은영](https://eyabc.github.io/docs/css/css-rendering/cssom_rules)
+
+## step41 
+기한 2021/06/12(토) ~ 2021/06/15(화) (30분) (style_rule)
+- [유림](https://github.com/pul8219/TIL/blob/master/Documents/FrontEnd-Study/step40.md#Compatibility-Library)
+- 형욱
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-3%ED%9A%8C%EC%B0%A8-part2-step-41       
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-3%ED%9A%8C%EC%B0%A8-part3-step-42-rule-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%83%9D%EC%84%B1     
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-3%ED%9A%8C%EC%B0%A8-part3-step-42-sheet-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%83%9D%EC%84%B1
+- 은영
+    - https://eyabc.github.io/docs/css/css-rendering/vendor_prefix
+    - https://eyabc.github.io/docs/css/css-rendering/style_rule
+    
+## step42
+기한 2021/06/19(토) ~ 2021/06/22(화) (30분) keyframe rule, typed cssom
+
+- 은영
+    - https://eyabc.github.io/docs/css/css-rendering/keyframe_rule
+    - https://eyabc.github.io/docs/css/css-rendering/typed_cssom
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-3%ED%9A%8C%EC%B0%A8-part3-step-42-Typed-CSSOM)
+
+## step43
+- 기한 2021/06/26(토) ~ 2021/06/29(화)
+- https://www.youtube.com/watch?v=0o7zskNaDD0 
+- https://www.youtube.com/watch?v=Tf5KvpYNNv8 1/3
+
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-4%ED%9A%8C%EC%B0%A8-part1-step-43)
+- 은영
+    - https://eyabc.github.io/docs/css/css-rendering/Transform3D_SCSS_Compass
+    - https://eyabc.github.io/docs/css/css-rendering/post_process
+    - https://eyabc.github.io/docs/css/css-rendering/Transform3D
+- [유림](https://pul8219.github.io/frontend-study/fe-study-step43/)
+
+## step44
+- 기한 2021/07/03(토) ~ 2021/07/06(화)
+- https://www.youtube.com/watch?v=0o7zskNaDD0 2/3
+- [유림](https://pul8219.github.io/frontend-study/fe-study-step44/#%EB%93%9C%EB%9F%BC%ED%86%B5-%EA%B7%B8%EB%A6%AC%EA%B8%B0) 
+- [은영](https://eyabc.github.io/docs/css/css-rendering/draw_3d_drum)
+- 형욱
+    - https://velog.io/@khw970421/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-%EC%A0%91%EA%B7%BC%EC%9E%90-%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-getter-setter
+    - https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-4%ED%9A%8C%EC%B0%A8-part2-step-44
+
+## step45
+- 기한 2021/07/10(토) ~ 2021/07/13(화)
+- https://www.youtube.com/watch?v=0o7zskNaDD0 3/3
+- 스킵
+
+## step46

@@ -8,14 +8,8 @@
  */
 // eslint-disable-next-line header/header
 module.exports = {
-  to: 'docs/javascript/index',
+  to: 'docs/javascript/javascript/index',
   activeBasePath: 'javascript',
   label: 'JavaScript',
   position: 'left',
-  items: [
-    {
-      label: 'Facebook',
-      href: 'test',
-    },
-  ]
 };

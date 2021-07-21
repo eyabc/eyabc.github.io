@@ -6,10 +6,21 @@
  *
  * @format
  */
-const effectiveJava = require('./sidebars/effective_java.js');
-const javascript = require('./sidebars/javascript.js');
 
 module.exports = {
-  effectiveJava,
-  javascript
+  javaEtc: require('./sidebars/javaEtc.js'),
+  effectiveJava: require('./sidebars/effectiveJava.js'),
+  javaSpring: require('./sidebars/javaSpring.js'),
+
+  javascript: require('./sidebars/javascript.js'),
+  etc: require('./sidebars/etc.js'),
+  css: require('./sidebars/css.js'),
+  html: require('./sidebars/html.js'),
+  network: require('./sidebars/network.js'),
+
+  doing: require('./sidebars/doing.js'),
+  devEtc: require('./sidebars/devEtc.js'),
+  sql: require('./sidebars/sql.js'),
+  os: require('./sidebars/os.js'),
+  designPattern: require('./sidebars/designPattern.js'),
 };
