@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Respect myself Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Respect myself Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Respect myself" href="/opensearch.xml"><title data-react-helmet="true">ITEM8 | Respect myself</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="ITEM8 | Respect myself"><meta data-react-helmet="true" name="description" content="ITEM8 finalizer 와 cleaner 사용을 피하라"><meta data-react-helmet="true" property="og:description" content="ITEM8 finalizer 와 cleaner 사용을 피하라"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/java/effective-java/ch2/ITEM8"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/java/effective-java/ch2/ITEM8"><link rel="stylesheet" href="/styles.11144eaf.css">
-<link rel="preload" href="/styles.5f7c7a3e.js" as="script">
-<link rel="preload" href="/runtime~main.7fff534b.js" as="script">
-<link rel="preload" href="/main.d52a90f2.js" as="script">
-<link rel="preload" href="/1.21c2a89e.js" as="script">
-<link rel="preload" href="/3.b161cd3b.js" as="script">
-<link rel="preload" href="/1be78505.2ac20e83.js" as="script">
-<link rel="preload" href="/206.a3fed5a8.js" as="script">
-<link rel="preload" href="/935f2afb.79a8fc0d.js" as="script">
-<link rel="preload" href="/203.f5ee06e0.js" as="script">
-<link rel="preload" href="/17896441.4c72465d.js" as="script">
-<link rel="preload" href="/ae90d431.a82e5620.js" as="script">
+<link rel="preload" href="/styles.3d8e745d.js" as="script">
+<link rel="preload" href="/runtime~main.22135247.js" as="script">
+<link rel="preload" href="/main.e0cbc8d3.js" as="script">
+<link rel="preload" href="/1.f54d0c27.js" as="script">
+<link rel="preload" href="/3.f65798b3.js" as="script">
+<link rel="preload" href="/1be78505.3e679974.js" as="script">
+<link rel="preload" href="/207.b4117576.js" as="script">
+<link rel="preload" href="/935f2afb.1fa8ebc7.js" as="script">
+<link rel="preload" href="/204.ed3db422.js" as="script">
+<link rel="preload" href="/17896441.e2202dfb.js" as="script">
+<link rel="preload" href="/ae90d431.880c5aa0.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -31,16 +31,16 @@
 <code>System.out.println(&quot;방 청소&quot;);</code> 가 같이 실행 될 것이다. </p><div class="mdxCodeBlock_1zKU"><div class="codeBlockContent_actS"><div tabindex="0" class="prism-code language-java codeBlock_tuNs thin-scrollbar"><div class="codeBlockLines_3uvA" style="color:#F8F8F2;background-color:#282A36"><div class="token-line" style="color:#F8F8F2"><span class="token plain">public class Adult {</span></div><div class="token-line" style="color:#F8F8F2"><span class="token plain">    public static void main(String[] args) {</span></div><div class="token-line" style="color:#F8F8F2"><span class="token plain">        try (Room myRoom = new Room(7)) {</span></div><div class="token-line" style="color:#F8F8F2"><span class="token plain">            System.out.println(&quot;hi~&quot;);</span></div><div class="token-line" style="color:#F8F8F2"><span class="token plain">        }</span></div><div class="token-line" style="color:#F8F8F2"><span class="token plain">    }</span></div><div class="token-line" style="color:#F8F8F2"><span class="token plain">}</span></div></div></div><button type="button" aria-label="Copy code to clipboard" class="copyButton_2GIj">Copy</button></div></div><p>만약 <code>try-with-resources</code> 블록 이 없다면,
 <code>System.out.println(&quot;방 청소&quot;);</code> 가 출력되지 않을 수 있다.
 clean 의 예측할 수 없는 특징 때문이다.</p></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"></div><div class="pagination-nav__item pagination-nav__item--next"></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#문제점들" class="table-of-contents__link">문제점들</a><ul><li><a href="#즉시-실행된다는-보장이-없다" class="table-of-contents__link">즉시 실행된다는 보장이 없다.</a></li><li><a href="#수행-여부를-보장하지-않는다" class="table-of-contents__link">수행 여부를 보장하지 않는다.</a></li><li><a href="#finalizer-동작-중-발생한-예외는-무시된다" class="table-of-contents__link">finalizer 동작 중 발생한 예외는 무시된다.</a></li><li><a href="#심각한-성능-문제" class="table-of-contents__link">심각한 성능 문제</a></li><li><a href="#finalizer-공격에-노출되어-심각한-보안-문제" class="table-of-contents__link">finalizer 공격에 노출되어 심각한 보안 문제</a></li></ul></li><li><a href="#finalizer--cleaner-의-대안" class="table-of-contents__link">finalizer / cleaner 의 대안</a><ul><li><a href="#autoclosable-의-구현" class="table-of-contents__link">AutoClosable 의 구현</a></li><li><a href="#클라이언트에서-인스턴스를-다-쓰고나면-close-메서드-호출" class="table-of-contents__link">클라이언트에서 인스턴스를 다 쓰고나면 close 메서드 호출</a></li><li><a href="#인스턴스-자신이-닫혔는지-추적하기" class="table-of-contents__link">인스턴스 자신이 닫혔는지 추적하기</a></li></ul></li><li><a href="#finalizer--cleaner-의-쓰임새" class="table-of-contents__link">finalizer / cleaner 의 쓰임새</a><ul><li><a href="#클라이언트가-하지-않은-자원회수를-늦게라도-해주는게-낫다" class="table-of-contents__link">클라이언트가 하지 않은 자원회수를 늦게라도 해주는게 낫다.</a></li><li><a href="#네이티브-피어와-연결된-객체" class="table-of-contents__link">네이티브 피어와 연결된 객체</a></li><li><a href="#cleaner" class="table-of-contents__link">cleaner</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2021 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.5f7c7a3e.js"></script>
-<script src="/runtime~main.7fff534b.js"></script>
-<script src="/main.d52a90f2.js"></script>
-<script src="/1.21c2a89e.js"></script>
-<script src="/3.b161cd3b.js"></script>
-<script src="/1be78505.2ac20e83.js"></script>
-<script src="/206.a3fed5a8.js"></script>
-<script src="/935f2afb.79a8fc0d.js"></script>
-<script src="/203.f5ee06e0.js"></script>
-<script src="/17896441.4c72465d.js"></script>
-<script src="/ae90d431.a82e5620.js"></script>
+<script src="/styles.3d8e745d.js"></script>
+<script src="/runtime~main.22135247.js"></script>
+<script src="/main.e0cbc8d3.js"></script>
+<script src="/1.f54d0c27.js"></script>
+<script src="/3.f65798b3.js"></script>
+<script src="/1be78505.3e679974.js"></script>
+<script src="/207.b4117576.js"></script>
+<script src="/935f2afb.1fa8ebc7.js"></script>
+<script src="/204.ed3db422.js"></script>
+<script src="/17896441.e2202dfb.js"></script>
+<script src="/ae90d431.880c5aa0.js"></script>
 </body>
 </html>
