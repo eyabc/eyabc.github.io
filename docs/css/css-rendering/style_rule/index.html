@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Respect myself Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Respect myself Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Respect myself" href="/opensearch.xml"><title data-react-helmet="true">5-3 Style Rule | Respect myself</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="5-3 Style Rule | Respect myself"><meta data-react-helmet="true" name="description" content="CLASSES"><meta data-react-helmet="true" property="og:description" content="CLASSES"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/css/css-rendering/style_rule"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/css/css-rendering/style_rule"><link rel="stylesheet" href="/styles.9cd0270d.css">
-<link rel="preload" href="/styles.9cc56708.js" as="script">
-<link rel="preload" href="/runtime~main.cd43dff7.js" as="script">
-<link rel="preload" href="/main.3297803c.js" as="script">
-<link rel="preload" href="/1.8e32075d.js" as="script">
-<link rel="preload" href="/3.bdddc231.js" as="script">
-<link rel="preload" href="/1be78505.693eb21c.js" as="script">
-<link rel="preload" href="/302.be0583df.js" as="script">
-<link rel="preload" href="/935f2afb.dd6f19d3.js" as="script">
-<link rel="preload" href="/299.4a7eab96.js" as="script">
-<link rel="preload" href="/17896441.a86e8a97.js" as="script">
-<link rel="preload" href="/cc7417cd.d1e5cfbc.js" as="script">
+<link rel="preload" href="/styles.453997aa.js" as="script">
+<link rel="preload" href="/runtime~main.7622b668.js" as="script">
+<link rel="preload" href="/main.dab1da8f.js" as="script">
+<link rel="preload" href="/1.b192db71.js" as="script">
+<link rel="preload" href="/3.f08e1702.js" as="script">
+<link rel="preload" href="/1be78505.1847ca16.js" as="script">
+<link rel="preload" href="/303.e7fc8286.js" as="script">
+<link rel="preload" href="/935f2afb.16fb38de.js" as="script">
+<link rel="preload" href="/300.a6d12e9a.js" as="script">
+<link rel="preload" href="/17896441.5e36eaba.js" as="script">
+<link rel="preload" href="/cc7417cd.1f710239.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -34,16 +34,16 @@ rule.style 를 래핑하고 좀더 쉽게 조작할 수 있는 클래스가 된�
 javascript 속성이름이 아닌 css 속성이름을 그대로 쓸수 있다는 장점<br>
 물론 이 방식은 style sheet 가 하나하나 키를 매핑해주는 기능이 무력화 된다.
 (귀찮아서 했다)</p></div></div></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/css/css-rendering/vendor_prefix"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« 5-2 Vendor Prefix</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/css/css-rendering/keyframe_rule"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">5-4 Keyframes/Keyframe Rule »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#classes" class="table-of-contents__link">CLASSES</a></li><li><a href="#style-의-추상화" class="table-of-contents__link">Style 의 추상화</a><ul><li><a href="#style-클래스를-만들기-전에-필요한-utility" class="table-of-contents__link">style 클래스를 만들기 전에 필요한 utility</a></li><li><a href="#표준이름을-주면-지원하는-진짜이름을-반환하는-함수" class="table-of-contents__link">표준이름을 주면, 지원하는 진짜이름을 반환하는 함수</a></li></ul></li><li><a href="#rule-의-추상화" class="table-of-contents__link">Rule 의 추상화</a></li><li><a href="#sheet-의-추상화" class="table-of-contents__link">Sheet 의 추상화</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2021 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.9cc56708.js"></script>
-<script src="/runtime~main.cd43dff7.js"></script>
-<script src="/main.3297803c.js"></script>
-<script src="/1.8e32075d.js"></script>
-<script src="/3.bdddc231.js"></script>
-<script src="/1be78505.693eb21c.js"></script>
-<script src="/302.be0583df.js"></script>
-<script src="/935f2afb.dd6f19d3.js"></script>
-<script src="/299.4a7eab96.js"></script>
-<script src="/17896441.a86e8a97.js"></script>
-<script src="/cc7417cd.d1e5cfbc.js"></script>
+<script src="/styles.453997aa.js"></script>
+<script src="/runtime~main.7622b668.js"></script>
+<script src="/main.dab1da8f.js"></script>
+<script src="/1.b192db71.js"></script>
+<script src="/3.f08e1702.js"></script>
+<script src="/1be78505.1847ca16.js"></script>
+<script src="/303.e7fc8286.js"></script>
+<script src="/935f2afb.16fb38de.js"></script>
+<script src="/300.a6d12e9a.js"></script>
+<script src="/17896441.5e36eaba.js"></script>
+<script src="/cc7417cd.1f710239.js"></script>
 </body>
 </html>
