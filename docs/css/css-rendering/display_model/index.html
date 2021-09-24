@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Respect myself Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Respect myself Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Respect myself" href="/opensearch.xml"><title data-react-helmet="true">8-1 Display Model | Respect myself</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="8-1 Display Model | Respect myself"><meta data-react-helmet="true" name="description" content="CSS is a language"><meta data-react-helmet="true" property="og:description" content="CSS is a language"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/css/css-rendering/display_model"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/css/css-rendering/display_model"><link rel="stylesheet" href="/styles.32ceba4f.css">
-<link rel="preload" href="/styles.13dec780.js" as="script">
-<link rel="preload" href="/runtime~main.3013e884.js" as="script">
-<link rel="preload" href="/main.dd41fcef.js" as="script">
-<link rel="preload" href="/1.6c5464dd.js" as="script">
-<link rel="preload" href="/3.4761081d.js" as="script">
-<link rel="preload" href="/1be78505.1a34b4e2.js" as="script">
-<link rel="preload" href="/307.3e6ea036.js" as="script">
-<link rel="preload" href="/935f2afb.61f3efa8.js" as="script">
-<link rel="preload" href="/304.99a18a11.js" as="script">
-<link rel="preload" href="/17896441.0370d776.js" as="script">
-<link rel="preload" href="/58d2e1d6.0cdd8eef.js" as="script">
+<link rel="preload" href="/styles.d3beaa54.js" as="script">
+<link rel="preload" href="/runtime~main.ae2aa579.js" as="script">
+<link rel="preload" href="/main.d9c26e12.js" as="script">
+<link rel="preload" href="/1.01e3478b.js" as="script">
+<link rel="preload" href="/3.adaf2b17.js" as="script">
+<link rel="preload" href="/1be78505.8fdd884f.js" as="script">
+<link rel="preload" href="/356.14cc2879.js" as="script">
+<link rel="preload" href="/935f2afb.d1641112.js" as="script">
+<link rel="preload" href="/353.190087e5.js" as="script">
+<link rel="preload" href="/17896441.3e5fb67c.js" as="script">
+<link rel="preload" href="/58d2e1d6.1da65460.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -29,16 +29,16 @@ table-footer-group | table-row | table-cell |
 table-column-group | table-column | table-caption |
 ruby-base | ruby-text | ruby-base-container |
 ruby-text-container</p><p>특정 layout 시스템 안(inside)에 들어왔을 때 내부의 요소가 사용해야 하는 속성들이다.</p><p>display 는, display-inside 외에는 더이상 확장하지 않고 있다.</p><ul><li>flex, grid 에 관련되어 있는 것은 이 스펙에 없고, flex-, grid 계열의 새로운 속성을 지정하였다.</li></ul><p><a href="https://yeoninim.tistory.com/18" target="_blank" rel="noopener noreferrer">table-cell</a> 이외에는 다 대체가능하다. table 의 부모와 함께 쓰여야 한다.</p></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/css/css-rendering/dataset"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« 7-2 HTML5 dataset</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/css/css-rendering/flexbox"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">8-2 Flexbox »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#display" class="table-of-contents__link">Display</a><ul><li><a href="#display-group" class="table-of-contents__link">Display Group</a></li></ul></li><li><a href="#display-outside" class="table-of-contents__link">display-outside</a><ul><li><a href="#blockblock-flow" class="table-of-contents__link">block(block flow)</a></li><li><a href="#inlineinline-flow" class="table-of-contents__link">inline(inline flow)</a></li><li><a href="#run-inrun-in-flow" class="table-of-contents__link">run-in(run-in flow)</a></li></ul></li><li><a href="#display-listitem" class="table-of-contents__link">display-listitem</a></li><li><a href="#display-box" class="table-of-contents__link">display-box</a><ul><li><a href="#none" class="table-of-contents__link">none</a></li><li><a href="#contents" class="table-of-contents__link">contents</a></li></ul></li><li><a href="#display-inside" class="table-of-contents__link">display-inside</a></li><li><a href="#display-legacy" class="table-of-contents__link">display-legacy</a></li><li><a href="#display-internal-legacy" class="table-of-contents__link">display-internal (legacy)</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2021 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.13dec780.js"></script>
-<script src="/runtime~main.3013e884.js"></script>
-<script src="/main.dd41fcef.js"></script>
-<script src="/1.6c5464dd.js"></script>
-<script src="/3.4761081d.js"></script>
-<script src="/1be78505.1a34b4e2.js"></script>
-<script src="/307.3e6ea036.js"></script>
-<script src="/935f2afb.61f3efa8.js"></script>
-<script src="/304.99a18a11.js"></script>
-<script src="/17896441.0370d776.js"></script>
-<script src="/58d2e1d6.0cdd8eef.js"></script>
+<script src="/styles.d3beaa54.js"></script>
+<script src="/runtime~main.ae2aa579.js"></script>
+<script src="/main.d9c26e12.js"></script>
+<script src="/1.01e3478b.js"></script>
+<script src="/3.adaf2b17.js"></script>
+<script src="/1be78505.8fdd884f.js"></script>
+<script src="/356.14cc2879.js"></script>
+<script src="/935f2afb.d1641112.js"></script>
+<script src="/353.190087e5.js"></script>
+<script src="/17896441.3e5fb67c.js"></script>
+<script src="/58d2e1d6.1da65460.js"></script>
 </body>
 </html>
