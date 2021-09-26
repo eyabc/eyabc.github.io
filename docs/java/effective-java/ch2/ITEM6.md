@@ -1,4 +1,7 @@
-# ITEM6 불필요한 객체 생성을 피하라
+---
+title: 6. 불필요한 객체 생성을 피하라
+--- 
+
 객체 하나를 재사용하는 예시에는 불변 객체가 적합하다. 
 
 불변 객체는 재사용해도 안전함이 명백함.
@@ -37,9 +40,16 @@ public class Main {
 }
 ```
 
-- Boolean(String) 생성자 < Boolean.valueOf(String) 팩터리 메서드 [1]
+### 정적 팩터리 메서드사용
+Wrapper Class에서는 캐싱을 지원해주는 valueOf()라는 메소드가 존재한다.  [1](/docs/java/effective-java/ch2/ITEM1)
+- 1.8에서는 굳이 valueOf()를 추가할 필요가 없다.
+
 
 ## 생성비용이 비싼 객체 → 캐싱
+- 크기가 아주 큰 Array
+- Database Connection
+- I/O 작업을 필요로 하는 Object
+
 `String.matches` 
 - 정규 표현식으로 문자열 형태를 확인하는 가장 쉬운 방법
 ```java
@@ -81,12 +91,12 @@ public class RomanNumerals {
 ## 타협점
 - JVM 은 별다른 일을 하지 않는 작은 객체를 생성하고 회수하는 일이 크게 부담되지 않음
 - 프로그램의 명확성, 간결성, 기능을 위해서 객체를 추가로 생성하는 것이라면 일반적으로 좋은 일
-- [50] 새로운 객체를 만들어야 한다면 기존 객체를 재사용 하지마라
+- 새로운 객체를 만들어야 한다면 기존 객체를 재사용 하지마라 [50](/docs/java/effective-java/ch8/ITEM50) 
     - 재사용 했을 때의 피해 → 버그와 보안구멍
     - 불필요한 객체 생성 → 코드 형태와 성능에만 영향
     - 객체 특성에 맞게 사용
-    
 
 Reference
 --
 - [== 와 equals](https://coding-factory.tistory.com/536)
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/2%EC%9E%A5/6_%EB%B6%88%ED%95%84%EC%9A%94%ED%95%9C_%EA%B0%9D%EC%B2%B4_%EC%83%9D%EC%84%B1%EC%9D%84_%ED%94%BC%ED%95%98%EB%9D%BC_%EC%8B%A0%EC%84%A0%EC%98%81.md

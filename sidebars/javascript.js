@@ -164,7 +164,11 @@ module.exports = [
     type: 'category',
     label: '함수형 프로그래밍',
     items: [
-      `${FUNCTIONAL_PROGRAMMING}index`
+      `${FUNCTIONAL_PROGRAMMING}1_함수형_프로그래밍_개요`,
+      `${FUNCTIONAL_PROGRAMMING}2_함수형으로_전환하기`,
+      `${FUNCTIONAL_PROGRAMMING}3_컬렉션_중심_프로그래밍`,
+      `${FUNCTIONAL_PROGRAMMING}4_자바스크립트에서의_지연_평가`,
+      `${FUNCTIONAL_PROGRAMMING}5_실전코드조각`,
     ]
   },
   {

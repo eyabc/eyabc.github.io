@@ -28,7 +28,8 @@ module.exports = {
       playgroundPosition: 'bottom',
     },
     prism: {
-      theme: require('prism-react-renderer/themes/dracula'),
+      theme: require('prism-react-renderer/themes/github'),
+      additionalLanguages: ['java'],
     },
     algolia: {
       apiKey: '0b48328d1174437ed84c59a28446a1ac',
@@ -95,7 +96,7 @@ module.exports = {
               label: 'Terms',
               href: 'https://opensource.facebook.com/legal/terms/',
             },
-          ],
+          ]
         },
       ],
       logo: {

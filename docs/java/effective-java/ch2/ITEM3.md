@@ -1,10 +1,13 @@
-# ITEM3 private 생성자나 열거 타입으로 싱글턴임을 보증하라
+---
+title: 3. private 생성자나 열거 타입으로 싱글턴임을 보증하라
+---
 
 ## Singleton
+---
 인스턴스를 오직 하나만 생성할 수 있는 클래스
 
 ### 대상
-- 함수와 같은 무상태 객체 ??
+- 함수와 같은 무상태 객체
 - 설계상 유일해야 하는 시스템 컴포넌트
 
 ### 한계
@@ -13,10 +16,14 @@
 - 방법은 있다. 타입을 인터페이스로 정의한 다음, 그 인터페이스를 구현해 싱글턴으로 만든다. 
 
 ## Singleton 생성 방식
+---
 - 생성자는 private 으로 감춘다.
 - 유일한 인스턴스에 접근할 수 있는 수단으로 `public static` 멤버를 하나 만든다.
-- 리플렉션 공격 : 클라이언트에서 [65]AccessibleObject.setAccessible 을 사용해 private 을 호출할 수 있는 취약점
-    - 생성자에서 두 번째가 객체생성되려 할 때 예외를 던지는 코드를 추가해 준다.
+- 리플렉션 공격 : 클라이언트에서 AccessibleObject.setAccessible [65](/docs/java/effective-java/ch9/ITEM65) 을 사용해 private 을 호출할 수 있는 취약점
+    - 생성자에서 두 번째 객체가 생성되려 할 때 예외를 던지는 코드를 추가한다.
+
+> [리플렉션 API](https://sas-study.tistory.com/275)     
+> - 컴파일된 바이트 코드를 통해 해당 클래스의 메소드, 타입, 변수까지 접근가능한 자바 API
 
 ### 1. public static final 필드 방식의 싱글턴
 ```java
@@ -42,16 +49,21 @@ public class Elvis {
     - 스레드 별로 다른 인스턴스를 넘겨주게 할 수 있다.
         - DataSourceLookupKeyContextHolder 구현..
 
-2. 정적 팩터리를 제네링 싱글턴 팩터리로 만들 수 있다[30] ?? 
-3. 정적 팩터리의 메서드 참조를 공급자(supplier) 로 사용할 수 있다 ??
-> java 를 잘 몰라서... 
+2. 정적 팩터리를 제네릭 싱글턴 팩터리로 만들 수 있다 [30](/docs/java/effective-java/ch5/ITEM30) 
+3. 정적 팩터리의 메서드 참조를 공급자(supplier) 로 사용할 수 있다 [43](/docs/java/effective-java/ch7/ITEM43)  [44](/docs/java/effective-java/ch7/ITEM44)
 
 이러한 장점들이 굳이 필요하지 않으면 public 필드 방식이 좋다.
 
-#### 싱글턴 클래스의 직렬화[12]
+> [Supplier Interface](https://m.blog.naver.com/zzang9ha/222087025042)
+> - 매개변수를 받지 않고 단순히 무엇인가를 반환하는 함수형 인터페이스 -> Lazy Evaluation
+  
+
+#### 싱글턴 클래스의 직렬화 [12](/docs/java/effective-java/ch3/ITEM12)
+
 Serializable 의 구현/선언 의 한계   
 → 직렬화된 인스턴스를 역직렬화 할 때마다 새로운 인스턴스가 만들어짐
 
+문제해결 
 1. 모든 인스턴스 필드를 일시적(transient) 로 선언
 2. Elvis 클래스에 다음의 readResolve 메서드 제공 [89]
 
@@ -81,3 +93,8 @@ public enum Elvis {
 - 만드려는 싱글턴이 Enum 외의 클래스를 상속해야 한다면 사용할 수 없다.
 > 어떤 상황이 있을까, Spring 을 쓰는 상황에서도 싱글턴 패턴을 직접 만드는 일이 있을까? 
 - 열거 타입이 다른 인터페이스를 구현하도록 선언할 수는 있다.
+
+
+Reference
+---
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/2%EC%9E%A5/3_private%20%EC%83%9D%EC%84%B1%EC%9E%90%EB%82%98%20%EC%97%B4%EA%B1%B0%20%ED%83%80%EC%9E%85%EC%9C%BC%EB%A1%9C%20%EC%8B%B1%EA%B8%80%ED%84%B4%EC%9E%84%EC%9D%84%20%EB%B3%B4%EC%A6%9D%ED%95%98%EB%9D%BC_%EA%B9%80%EB%B3%B4%EB%B0%B0.md

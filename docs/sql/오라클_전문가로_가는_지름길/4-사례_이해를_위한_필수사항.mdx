@@ -1,0 +1,568 @@
+---
+title: 4. 사례 이해를 위한 필수사항
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## ROWNUM과 ROWID
+
+### ROWNUM
+WHERE(WHERE 절이 없으면 FROM)절의 의해 추출된 DATA SET 에 ROW 단위로 붙는 순번
+- 자료의 순서를 다른 목적으로 이용하고자 할 때 유용
+
+<Tabs
+defaultValue={'sql'}
+values={[
+  {label: 'sql', value: 'sql'},
+  {label: 'result', value: 'result'},
+]}>
+  <TabItem value={'sql'}>
+
+  ```sql {1}
+  SELECT ROWNUM,
+         EMP_ID, EMP_NAME
+  FROM TEMP
+  WHERE EMP_ID > 0
+  AND LEV = '수습';
+  ```
+
+  </TabItem>
+  <TabItem value={'result'}>
+
+```shell script
+ROWNUM |  EMP_ID | EMP_NAME
+1     	20000101	이태백
+2     	20000102	김설악
+3     	20000119	장금강
+4     	20000203	최오대
+5     	20000210	나한라
+6     	20000305	정북악
+7     	20000308	강월악
+8     	20000334	박지리
+9     	20000407	윤주왕
+10	    20006106	유도봉
+```
+  </TabItem>
+</Tabs>
+
+
+#### ROWNUM 을 조건으로 사용할 때
+- `ROWNUM '=', '>', '>='` 을 사용할 수 없다.
+- `ROWNUM <, <=`  를 이용
+- 예외적으로 1 과 비교할 때는 `=` 로 비교 가능
+- 특정 행만 조회, 특정 행 보다 큰 행을 조회하는 것은 **Inline View** 사용
+
+<Tabs
+  defaultValue={'ROWNUM =, >, >='}
+  values={[
+    {label: 'ROWNUM =, >, >= 사용', value: 'ROWNUM =, >, >='},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'ROWNUM =, >, >='}>
+
+```sql {5}
+SELECT ROWNUM, EMP_ID, EMP_NAME
+FROM TEMP
+WHERE EMP_ID > 0
+AND LEV = '수습'
+AND ROWNUM >= 5;
+```
+
+  </TabItem>
+  <TabItem value={'result'}>
+
+```shell script
+ROWNUM |  EMP_ID | EMP_NAME
+```
+
+  </TabItem>
+</Tabs>
+
+<Tabs
+  defaultValue={'ROWNUM <, <='}
+  values={[
+    {label: 'ROWNUM <, <=', value: 'ROWNUM <, <='},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'ROWNUM <, <='}>
+
+```sql {5}
+SELECT ROWNUM, EMP_ID, EMP_NAME
+FROM TEMP
+WHERE EMP_ID > 0
+AND LEV = '수습'
+AND ROWNUM < 5;
+```
+
+  </TabItem>
+  <TabItem value={'result'}>
+
+```shell script
+ROWNUM |  EMP_ID | EMP_NAME
+1       20000101	이태백
+2       20000102	김설악
+3       20000119	장금강
+4       20000203	최오대
+```
+
+  </TabItem>
+</Tabs>
+
+
+
+
+
+#### SELECT ROWNUM ... ORDER BY
+조건 절을 만족시킨 행들에 ROWNUM 이 붙은 후 ORDER BY 가 이루어 진다.
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  ```sql {6}
+  SELECT ROWNUM, EMP_ID, EMP_NAME
+  FROM TEMP
+  WHERE EMP_ID > 0
+  AND LEV = '수습'
+  AND ROWNUM < 5
+  ORDER BY EMP_NAME;
+  ```
+
+  </TabItem>
+  <TabItem value={'result'}>
+
+  ```shell script
+  ROWNUM |  EMP_ID | EMP_NAME
+  2     	20000102	김설악
+  4     	20000334	박지리
+  1     	20000101	이태백
+  3     	20000203	최오대
+  ```
+  </TabItem>
+</Tabs>
+
+#### SELECT 결과를 3개행 씩 묶어 하나의 번호를 부여하기
+
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+```sql {2}
+SELECT  ROWNUM,
+        CEIL(ROWNUM/3),
+        EMP_ID, EMP_NAME
+FROM TEMP
+WHERE  EMP_ID > 0;
+```
+
+</TabItem><TabItem value={'result'}>
+
+```shell script {2,3,4,8,9,10,14,15,16,20,21}
+ROWNUM | CEIL(ROWNUM/3) |  EMP_ID  | EMP_NAME
+1	      1	              19930331	정도령
+2	      1	              19930402	강감찬
+3	      1	              19950303	이순신
+4	      2	              19960101	홍길동
+5	      2	              19960212	배뱅이
+6	      2	              19960303	설까치
+7	      3	              19966102	지문덕
+8	      3	              19970101	김길동
+9	      3	              19970112	연흥부
+10	    4	      	      19970201	박문수
+11	    4	      	      20000101	이태백
+12	    4	      	      20000102	김설악
+13	    5	      	      20000119	장금강
+14	    5	      	      20000203	최오대
+15	    5	      	      20000210	나한라
+16	    6	      	      20000305	정북악
+17	    6	      	      20000308	강월악
+18	    6	      	      20000334	박지리
+19	    7	      	      20000407	윤주왕
+20	    7	      	      20006106	유도봉
+```
+
+</TabItem>
+</Tabs>
+
+### ROWID
+**DATABASE 내의 모든 ROW 가 가지는 유일한 식별자**
+
+#### ORACLE7, 8 의 ROWID 구조차이
+Oracle7
+- FILE 번호, BLOCK 번호, BLOCK 내 ROW 번호의 3가지 정보로 구성
+
+Oracle8
+- Oracle7 의 정보에 객체 고유번호까지를 포함하는 4가지 정보로 구성
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  ```sql {2}
+  SELECT ROWNUM,
+         ROWID,
+         EMP_ID, EMP_NAME
+  FROM TEMP
+  WHERE  EMP_ID > 0;
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script {}
+  ROWNUM |     ROWID      |  EMP_ID | EMP_NAME
+  1	   AAAE5IAABAAAK/pAAD	19930331	정도령
+  2	   AAAE5IAABAAAK/pAAG	19930402	강감찬
+  3	   AAAE5IAABAAAK/pAAE	19950303	이순신
+  4	   AAAE5IAABAAAK/pAAB	19960101	홍길동
+  5	   AAAE5IAABAAAK/pAAJ	19960212	배뱅이
+  6	   AAAE5IAABAAAK/pAAH	19960303	설까치
+  7	   AAAE5IAABAAAK/pAAF	19966102	지문덕
+  ...
+  ```
+
+</TabItem>
+</Tabs>
+
+ROWID 의 특징
+- ROWID 는 SELECT 할 수 있지만, UPDATE, INSERT 는 불가능.
+- ROWID 를 통한 **ROW ACCESS 가 다른 어떤 방식보다 빠르다.**
+  - 찾고자 하는 ROWID 를 알고 있다면, 조건에 ROWID 를 주어주고 검색하는 방법을 최우선적으로 사용하자.
+
+
+## DECODE
+**IF** 문을 SQL 문장 또는 PL/SQL 안으로 끌어들여 사용하기 위하여 만들어진 **오라클 함수**
+
+- FROM 절 빼고 어디서나 사용 가능
+  - SELECT 시 테이블을 동적으로 변경할 수 없음
+
+### 단순 등호 비교 DECODE(A, B, 'T')
+```sql
+IF  A = B   THEN
+    RETURN  'T';
+END IF;
+```
+`A != B` 이면 결과는 `NULL`
+- `DECODE(A, B, 'T', NULL)`
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  ```sql title="주당 강의 시간과 학점이 같으면 '일반' 을 표시하기" {2}
+  SELECT LEC_ID,
+         DECODE(LEC_TIME, LEC_POINT, '일반')
+  FROM   LECTURE;
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script title="주당 강의 시간과 학점이 같으면 '일반' 을 표시하기" {}
+  LEC_ID | DECODE(LEC_TIME, LEC_POINT, '일반')
+  L0001	일반
+  L0002
+  L0003
+  L0004	일반
+  L0005
+  ```
+
+</TabItem>
+</Tabs>
+
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  ```sql title="주당 강의 시간과 학점이 같은 강의의 숫자 출력" {1}
+  SELECT  COUNT(DECODE(LEC_TIME, LEC_POINT, 1))
+  FROM    LECTURE;
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script title="주당 강의 시간과 학점이 같은 강의의 숫자 출력" {}
+  COUNT(DECODE(LEC_TIME, LEC_POINT, 1))
+  2
+  ```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  ```sql title="주당 강의 시간과 학점이 같으면 '일반'을 리턴하고 정렬하기" {2,4}
+  SELECT  LEC_ID,
+          DECODE(LEC_TIME, LEC_POINT, '일반')
+  FROM    LECTURE
+  ORDER BY DECODE(LEC_TIME, LEC_POINT, '일반')
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script title="주당 강의 시간과 학점이 같으면 '일반'을 리턴하고 정렬하기"
+  LEC_ID | DECODE(LEC_TIME, LEC_POINT, '일반')
+  L0004	일반
+  L0001	일반
+  L0005
+  L0002
+  L0003
+  ```
+
+</TabItem>
+</Tabs>
+
+### 등호비교 + ELSE DECODE(A, B, 'T', 'F')
+```sql
+IF A = B THEN
+  RETURN 'T';
+ELSE
+  RETURN 'F';
+END IF;
+```
+
+### ELSEIF 로 분기되는 등호 비교 DECODE(A, B, 'T', C, 'F', 'X')
+ELSE 의 수는 계속 증가가능
+
+- `A=B` 이면 'T'
+- `A=C` 이면 'F'
+- 그렇지 않으면 'X'
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  월요일엔 해당일자에 01을 붙여 4자리 암호를 만들고, 화요일엔 11, 수요일엔 ...
+  암호를 SELECT 하는 SQL 만들기
+
+  ```sql title="요일마다 LOGIN 암호를 자동으로 바꿔주는 프로그램"
+  SELECT  TO_CHAR(SYSDATE, 'DD') ||
+          DECODE(TO_CHAR(SYSDATE, 'DAY'), '월요일', '01',
+                                          '화요일', '11',
+                                          '수요일', '21',
+                                          '목요일', '31',
+                                          '금요일', '41',
+                                          '토요일', '51',
+                                          '일요일', '61'
+          ) SEC_KEY
+  FROM DUAL;
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script title="요일마다 LOGIN 암호를 자동으로 바꿔주는 프로그램"
+  SEC_KEY
+  0341
+  ```
+
+</TabItem>
+</Tabs>
+
+
+### 부등호비교
+```sql
+IF A > B THEN
+  RETURN 'T'
+ELSE
+  RETURN 'F';
+END IF;
+```
+
+:::note SIGN
+- 주어진 값이 음수인지, 양수인지 0 인지를 판단함.
+:::
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  LEC_TIME 이 크면 '실험과목' LEC_POINT 가 크면 '기타과목', 둘이 같으면 '일반과목' 을 리턴하는 SQL
+
+  ```sql
+  SELECT  LEC_ID, LEC_POINT, LEC_TIME,
+          DECODE(SIGN(LEC_POINT - LEC_TIME),
+          0, '일반과목',
+          1, '실험과목',
+          -1, '기타과목'
+          ) AS TY
+  FROM    LECTURE;
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script {}
+  LEC_ID | LEC_POINT | LEC_TIME | TY
+  L0001	3	3	일반과목
+  L0002	2	3	기타과목
+  L0003	3	2	실험과목
+  L0004	2	2	일반과목
+  L0005	1	3	기타과목
+  ```
+
+</TabItem>
+</Tabs>
+
+:::note LEAST, GREATEST
+등호와 부등호가 함께 쓰이는 비교
+- 크거나 같다, 작거나 같다
+
+`LEAST`
+- 주어진 값들 중 최소값을 돌려줌
+
+`GREATEST`
+- 주어진 값들 중 최대 값을 돌려줌
+
+:::
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  LEC_TIME 이 LEC_POINT 보다 작거나 같으면 일반 과목을 리턴하고,
+
+  LEC_POINT 이 LEC_TIME 보다 크면 실험과목을 리턴한다.
+
+  ```sql {2}
+  SELECT  LEC_ID, LEC_POINT, LEC_TIME,
+          DECODE(LEAST(LEC_TIME, LEC_POINT), LEC_TIME, '일반과목', '실험과목') AS TY
+  FROM    LECTURE;
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script {}
+  LEC_ID | LEC_POINT | LEC_TIME | TY
+  L0001	3	3	일반과목
+  L0002	2	3	실험과목
+  L0003	3	2	일반과목
+  L0004	2	2	일반과목
+  L0005	1	3	실험과목
+  ```
+
+</TabItem>
+</Tabs>
+
+### OR 또는 IN 비교
+```sql
+IF A IN (B,C,D) THEN
+  RETURN 'T';
+ELSE
+  RETURN 'F';
+END IF;
+```
+
+```sql
+IF A = B OR A = C OR A = D THEN
+  RETURN 'T';
+ELSE
+  RETURN 'F';
+END IF;
+```
+
+`DECODE(A, B, 'T', C, 'T', D, 'T', 'F')` 와 같다.
+
+### AND 비교
+```sql
+IF A = B AND
+   A = C THEN
+  RETURN 'T';
+ELSE
+  RETURN 'F';
+END IF;
+```
+
+중첩 IF 으로 표현할 수 있다.
+
+```sql
+IF A = B THEN
+  IF C = D THEN
+    RETURN 'T';
+  ELSE
+    RETURN 'F';
+ELSE
+  RETURN 'F';
+END IF;
+```
+
+`DECODE(A, B, DECODE(C, D, 'T, 'F'), 'F')`
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+
+  한 행에 사번, 성명을 3명씩 보여주는 SQL
+  ```sql
+  ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script {}
+  ```
+
+</TabItem>
+</Tabs>
+
+
+
+<Tabs
+  defaultValue={'sql'}
+  values={[
+    {label: 'sql', value: 'sql'},
+    {label: 'result', value: 'result'},
+  ]}>
+  <TabItem value={'sql'}>
+    ```sql
+    ```
+
+  </TabItem><TabItem value={'result'}>
+
+  ```shell script {}
+  ```
+
+</TabItem>
+</Tabs>
+
+

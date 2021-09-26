@@ -688,6 +688,60 @@ https://www.youtube.com/watch?v=WzimLP3Kukc ~ CSSOM Rules
 ## step45
 - 기한 2021/07/10(토) ~ 2021/07/13(화)
 - https://www.youtube.com/watch?v=0o7zskNaDD0 3/3
-- 스킵
+- 선택 주제 
+- [유림](https://pul8219.github.io/frontend-study/fe-study-step45/)
 
 ## step46
+- step46
+- 기한 2021/07/17(토) ~ 2021/07/20(화)
+- https://www.youtube.com/watch?v=1leiALUP5mM dataset 이전 
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-5%ED%9A%8C%EC%B0%A8-part1-step-47)
+- [유림](https://pul8219.github.io/frontend-study/fe-study-step46/)
+- [은영](https://eyabc.github.io/docs/css/css-rendering/semantic_web)
+
+## step47
+- 기한 2021/07/24(토) ~ 2021/07/27(화)
+- dataset 이후
+
+- [유림](https://pul8219.github.io/frontend-study/fe-study-step46/)
+- [은영](https://eyabc.github.io/docs/css/css-rendering/dataset)
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-5%ED%9A%8C%EC%B0%A8-part2-step-47#%EC%9C%A0%EB%A6%BC%EB%8B%98-%EA%B3%A0%EB%AF%BC)
+
+
+## step48 
+- 기한 2021/07/31(토) ~ 2021/08/3(화)
+- https://www.youtube.com/watch?v=x1eQp-aW2CM
+
+- 은영
+ - https://eyabc.github.io/docs/css/css-rendering/display_model
+ - https://eyabc.github.io/docs/css/css-rendering/flexbox
+- [유림](https://pul8219.github.io/frontend-study/fe-study-step48/)
+- [형욱](https://velog.io/@khw970421/%EC%BD%94%EB%93%9C%EC%8A%A4%ED%94%BC%EC%B8%A0-css-rendering-6%ED%9A%8C%EC%B0%A8-step-48)
+
+## step49
+- 은영
+    - https://eyabc.github.io/docs/javascript/functional_programming/1_%ED%95%A8%EC%88%98%ED%98%95_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EA%B0%9C%EC%9A%94
+    - https://eyabc.github.io/docs/javascript/functional_programming/2_%ED%95%A8%EC%88%98%ED%98%95%EC%9C%BC%EB%A1%9C_%EC%A0%84%ED%99%98%ED%95%98%EA%B8%B0
+- [유림](https://pul8219.github.io/javascript/js-fp-step49/)
+
+## step50
+- 유림
+    - https://pul8219.github.io/javascript/js-fp-step49/#_reduce
+    - https://pul8219.github.io/javascript/js-fp-step50/
+- 은영
+    - https://eyabc.github.io/docs/javascript/functional_programming/2_%ED%95%A8%EC%88%98%ED%98%95%EC%9C%BC%EB%A1%9C_%EC%A0%84%ED%99%98%ED%95%98%EA%B8%B0#%EA%B3%A0%EC%B0%A8%ED%95%A8%EC%88%98
+  
+## step51
+- 은영
+    - https://eyabc.github.io/docs/javascript/functional_programming/3_%EC%BB%AC%EB%A0%89%EC%85%98_%EC%A4%91%EC%8B%AC_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D
+    - https://eyabc.github.io/docs/javascript/functional_programming/4_%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C%EC%9D%98_%EC%A7%80%EC%97%B0_%ED%8F%89%EA%B0%80
+- 유림 
+    - https://pul8219.github.io/javascript/js-fp-step51/
+    
+## step52
+- 은영
+   - https://eyabc.github.io/docs/javascript/functional_programming/4_%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C%EC%9D%98_%EC%A7%80%EC%97%B0_%ED%8F%89%EA%B0%80#%EB%B9%84%EB%8F%99%EA%B8%B0-io-nodejs
+   - https://eyabc.github.io/docs/javascript/functional_programming/5_%EC%8B%A4%EC%A0%84%EC%BD%94%EB%93%9C%EC%A1%B0%EA%B0%81
+
+
+## FIN.

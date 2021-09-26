@@ -1,5 +1,5 @@
 ---
-title: 7 Semantic Web & CSS Query
+title: 7-1 Semantic Web & CSS Query
 ---
 
 :::tip

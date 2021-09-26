@@ -1,0 +1,42 @@
+[data-1="on"], [data-2="on"], [data-3="on"] { color: green }
+[data-1="off"], [data-2="off"], [data-3="off"] { color: red }
+/* + 는 sibling 이다. 마지막의 td 에 스타일이 적용된다. */
+[data-1="on"] + [data-2="on"] + [data-3="on"] + td { background: green }
+[data-1="off"] + [data-2="off"] + [data-3="off"] + td { background: red }
+
+/*노란색 표시 로직 (scss 문법을 떠올려보기)*/
+// 출처 : https://pul8219.github.io/frontend-study/fe-study-step46/#scss%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EB%8B%A4%EC%B0%A8%EC%9B%90-%EC%BF%BC%EB%A6%AC-%EC%98%88%EC%A0%9C
+// 1) on/off/off, off/on/off와 같은 경우
+// i와 j를 돌면서 i==j인 경우는 on, 아닌 경우는 off를 ret 빈 문자열인 ret 변수에 더해가면서 결과적으로 ret 문자열에 모든 경우의 수가 담김.
+@for $i from 1 through 3 {
+  $ret: "";
+  @for $j from 1 through 3 {
+    @if $j == $i {
+      $ret: $ret + "[data-" + $j + '="on"]';
+    } @else {
+      $ret: $ret + "[data-" + $j + '="off"]';
+    }
+    $ret: $ret + "+";
+  }
+  $ret: $ret + "td";
+  #{$ret} {
+    background: yellow;
+  }
+}
+
+// 2) on/on/off 같은 경우
+@for $i from 1 through 3 {
+  $ret: "";
+  @for $j from 1 through 3 {
+    @if $j == $i {
+      $ret: $ret + "[data-" + $j + '="off"]';
+    } @else {
+      $ret: $ret + "[data-" + $j + '="on"]';
+    }
+    $ret: $ret + "+";
+  }
+  $ret: $ret + "td";
+  #{$ret} {
+    background: yellow;
+  }
+}

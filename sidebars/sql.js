@@ -11,6 +11,9 @@ module.exports = [
     items: [
       `${ORACLE_BOOK}1-자료의조회`,
       `${ORACLE_BOOK}2-함수`,
+      `${ORACLE_BOOK}3-사례_이해를_위한_기본사항`,
+      `${ORACLE_BOOK}4-사례_이해를_위한_필수사항`,
     ]
   }
 ];
+

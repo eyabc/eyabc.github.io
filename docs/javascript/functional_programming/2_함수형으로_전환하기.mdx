@@ -1,185 +1,11 @@
-# 함수형 프로그래밍
-- [인프런 함수형 프로그래밍 유인동](https://www.inflearn.com/course/%ED%95%A8%EC%88%98%ED%98%95-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)
+---
+title: 2. 함수형으로 전환하기
+---
 
-## 클로저 [:link:](./반환함수)
-
-## 성공적인 프로그래밍
-- 모든 프로그래밍 패러다임은 성공적인 프로그래밍을 위해 존재한다.
-- 성공적인 프로그래밍은 좋은 프로그램을 만드는 일이다.
-- 좋은 프로그램은 사용성, 성능, 확장성, 기획변경에 대한 대응력이 좋다.
-- 이것들을 효율적이고 생산적으로 이루는 일이 성공적인 프로그래밍이다.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 
-## 함수형 프로그래밍 정의, 순수함수
-함수형 프로그래밍은 성공적인 프로그래밍을 위해   
-부수효과를 미워하고 조합성을 강조하는    
-프로그래밍 패러다임이다.
-
-- 부수효과를 미워한다 -> 순수함수를 만든다.
-- 조합성을 강조한다 -> 모듈화 수준을 높인다.
-- 순수함수로 모듈화 수준을 높이게 되면 오류를 줄이고 안정성을 높일 수 있다.
-- 모듈화 수준이 높다 -> 생선성을 높인다.
-
-함수형 프로그래밍은 애플리케이션, 함수의 구성요소, 더 나아가서 언어 자체를 함수처럼 여기도록 만들고,
-이러한 함수 개념을 가장 우선순위에 놓는다.
-
-함수형 사고방식은 문제의 해결 방법을 동사(함수) 들로 구성(조합) 하는 것
-
-데이터(객체) 기준
-```javascript
-duck.moveLeft();
-duck.moveRight();
-```
-함수 기준
-```javascript
-moveLeft(dog);
-moveRight(duck);
-```
-
-
-### 순수함수
-원래 있던 부분은 놔두고 새로운 값을 생성해서 리턴하는 형식으로 함수를 만든다. 
-
-#### 순수함수의 조건
-- 들어오는 인자가 같으면 항상 동일한 결과를 리턴한다.
-    ```javascript
-    function add(a, b) {
-        return a + b;
-    }
-    console.log(add(10, 5));
-    console.log(add(10, 5));
-    ```
-- 평가 시점이 중요하지 않다.
-    서로 다른 공간이나 스레드에서 함수를 평가시켜도 항상 동일한 결과를 리턴하기 때문에 안전하고 다루기 쉽다.
-  - 아닐 조건   
-    c 가 상수일 때는 순수함수지만, 변수일 때는 순수함수가 아닐 수 있다.    
-    c 변경 전후(평가 시점) 에 따라서 같은 인자더라도 다른 결과를 리턴한다.
-      ```javascript
-        var c = 10;
-        function add2(a, b) {
-            return a + b + c;
-        }
-        console.log(add(10, 2));
-        console.log(add(10, 3));
-        
-        c = 20;
-        // 결과가 달라진다.
-        console.log(add(10, 2));
-        console.log(add(10, 3));
-    ```
-- 부수효과
-    - 외부의 상태를 변경
-        ```javascript
-        var c = 20;
-        function add3(a, b) {
-            c = b;
-            return a + b;
-        }
-        console.log(c); // 20 
-        console.log(add3(20, 30));
-        console.log(add3(20, 30));
-        console.log(c)  // 30
-        ``` 
-    - 들어온 인자의 상태를 직접 변경
-        ```javascript
-        var obj1 = { val: 10 };
-        function add4(obj, b) {
-            obj.val += b;
-        }
-        console.log(obj1.val); // 10
-        add4(obj1, 20);
-        console.log(obj1.val); // 30
-        ```
-    - 부수효과가 없는 함수
-        ```javascript
-        var obj1 = { var: 10 };
-        function add5(obj, b) {
-          return { val: obj.val + b }
-        }
-        console.log(obj1.val);    // 10
-        var obj2 = add5(obj1, 20);
-        console.log(obj1.val);    // 10
-        console.log(obj2.val) // 20 
-        ```  
-- 리턴값 외에는 외부와 소통하지 않는다.
-
-### 일급함수
-함수를 값으로 다룰 수 있다.
-- 런타임에서 언제나 정의할 수 있다.
-- 인자로 넘겨질 수 있다.
-    ```javascript
-    var f1 = function(a) { return a * a };
-    console.log(f1)
-    ```
-- 함수를 변수에 담는다 `var f2 = add;`
-- 원하는 시점에 평가할 수 있다.
-
-```javascript
-function f3(f) {
-    return f(); 
-}
-f3(function() { return 10; });
-f3(function() { return 20; });
-```
-
-### add_maker
-함수를 리턴하는 함수
-```javascript
-function add_maker(a) {
-    return function(b) {
-        return a + b;
-    }
-}
-var add10 = add_maker(10);
-console.log(add10(20));
-```
-add_maker(10)을 호출하면
-```javascript
-return function(b) {
-    return 10 + b; 
-}
-```
-라는 함수(클로저)를 리턴하게 된다. 
-add10 는 위에 생성된 익명함수가 되고 add10(20) 을 호출하면 20을 리턴하게 된다.
-
-
-위 예제는 아래 세가지를 담고 있다.
-1. 클로저
-2. 일급함수
-3. 순수함수
-    - a 는 클로저 내부에서 사용되지만 a 의 상태를 변경하고 있지 않다. 
-
-```javascript
-function f4(f1, f2, f3) {
-    return f3(f1 + f2);
-}
-f4(
-    function() { return 2; },
-    function() { return 3; },
-    function(a) { return a * a }
-);
-```
-순수한 함수들을 조합하고, 평가 시점에 의존되지 않도록 하는 프로그래밍.
-
-## 요즘 개발 이야기
-|   |   |
-|---|---|
-| 재미, 실시간성 | 라이브방송, 실시간 댓글, 협업, 메신저|
-| 독창성, 완성도 UI UX | 애니메이션, 무한 스크롤, 벽돌형태 리스트 |
-| 더 많아져야하는 동시성 | 비동기 I/O, CSP, Actor, STM |
-| 더 빨라야하는 반응성, 고가용성 | ELB, Auto Scaling, OTP Supervisor | 
-| 대용량, 정확성, 병렬성 | MapReduce, Clojure Reducers |
-| 복잡도, MSA, ... | 많아지고 세밀해지는 도구들 |
-* 고가용성 - 절대 죽지 않는 서비스
-
-- 좋아지는 하드웨어 성능
-- 좋아지는 컴파일러
-- 함수형 프로그래밍 기술
-- 좋아지는 분산/리액티브 환경
-- 동시성 + 병렬성 관련 기술 
-- 성공적인 적용 사례
-
-## 함수형으로 전환하기
 ```javascript
 var user = [
     { id: 1, name: 'ID', age: 36 },
@@ -193,12 +19,12 @@ var user = [
 ]
 ```
 
-### 명령형 프로그래밍 보다 선언적 프로그래밍
+## 명령형 프로그래밍 보다 선언적 프로그래밍
 - 코드가 간결
 - 오류와 실수 감소
 - 정확하게 코딩했다는 확신을 느끼기 쉽다.
 
-### 1. 명령형 코드
+### 명령형 코드
 1. 30 세 이상인 users 를 거른다.
 ```javascript
 const temp_users = [];
@@ -239,8 +65,8 @@ for (let i = 0; i < temp_users.length; i++) {
 console.log(ages);
 ```
 
-### 2. _filter, _map 으로 리팩토링
-1번과 3번의 중복을 제거해 보자.
+### _filter, _map 으로 리팩토링
+명령형 코드 1번과 3번의 중복을 제거해 보자.
 ```javascript
 function _filter(users, predi) {
     const new_list = [];
@@ -276,8 +102,8 @@ function _filter(list, predi) {
     return new_list;
 }
 ```
----
-2 와 4 의 중복을 제거해 보자.
+
+명령형 코드 2 와 4 의 중복을 제거해 보자.
 ```javascript
 function _map(list, mapper) {
     const new_list = [];
@@ -287,6 +113,7 @@ function _map(list, mapper) {
     return new_list;
 }
 ```
+
 ```javascript
 const over_30 = _filter(users, function(user) { return user.age >= 30 });
 const names = _map(over_30, function(user) {
@@ -343,26 +170,26 @@ function _map(list, mapper) {
 }
 ```
 
-### 다형성
-- 자바스크립트 array.prototype 의 map, each, filter 는 함수가 아닌 메서드 이다.
+## 다형성
+- map, each, filter 는 함수가 아닌 자바스크립트 array.prototype 의 메서드 이다.
     - 이것은 순수함수가 아니며, 객체의 상태에 따라 결과가 달라진다.
     - 메서드는 객체지향 프로그래밍이다.
-    - 메서드는 해당 클래스의 인스턴스에서만 사용할 수 있다. 
+    - 메서드는 해당 클래스의 인스턴스에서만 사용할 수 있다.
     - array 가 아니면 사용할 수 없다
     - 다형성을 지원하기가 어렵다.
-- array like 객체 
-    - javascript 에 array 가 아닌데 array 같이 여겨지는 객체들 
+- array like 객체
+    - javascript 에 array 가 아닌데 array 같이 여겨지는 객체들
     - jquery 객체
-    - document.querySelectorAll('body'); 
-    - document.querySelectorAll('*'); 
+    - document.querySelectorAll('body');
+    - document.querySelectorAll('*');
         - 배열이 아닌  NodeList.
 
 - 함수형 프로그래밍의 높은 다형성
     - 그리고 우리가 만든 map 함수를 사용한다면 array like 도 사용할 수 있다.
     - length / key:value 형태만 만족하면 된다.
- 
-### 외부 다형성 
-`array_like, arguments, document.querySelectorAll`    
+
+### 외부 다형성
+`array_like, arguments, document.querySelectorAll`
 은 map 이나 filter 가 담당
 
 
@@ -375,21 +202,21 @@ _map([1, 2, 3, 4], function(v) {
 })
 ```
 함수의 두번째 인자를 보통 callback 함수라고 부르는데, 사실 역할에 따라서 부르는 이름이 달라진다.
-- callback 함수:  어떤 일을 다 끝난 후에 리턴하는 함수 
+- callback 함수:  어떤 일을 다 끝난 후에 리턴하는 함수
 - predicate : 조건을 리턴하는 함수
 - iterator(?): 돌면서 반복적으로 실행되는 함수
 - mapper: 무언가의 사이를 매핑하는 함수
 
 보조 함수의 이름을 다르게 불러주자
 
-### 커링 curry, curryr
-함수와 인자를 다루는 기법.     
+## 커링 curry, curryr
+함수와 인자를 다루는 기법.
 함수의 인자를 하나씩 적용해 나가다가, 필요한 인자가 모두 채워지면 함수본체를 실행한다.
 
-JavaScript 는 커링을 지원하지 않지만, 일급함가 지원되고 평가시점을 마음대로 다룰 수 있기 때문에
+JavaScript 는 커링을 지원하지 않지만, 일급함수가 지원되고 평가시점을 마음대로 다룰 수 있기 때문에
 커링을 구현할 수 있다.
 
-#### curry
+### curry
 ```javascript
 function _curry(fn) {
     return function(a) {
@@ -430,7 +257,7 @@ function _curry(fn) {
 console.log(add2(1, 2))
 ```
 ```javascript
-function _curry(fn) { 
+function _curry(fn) {
     return function(a, b) {
         return arguments.length === 2 ? fn(a, b) : function(b) { return fn(a, b); };
     }
@@ -445,7 +272,7 @@ const sub = _curry(function(a, b) {
 console.log(sub(10, 5));    // 5
 ```
 
-#### curryr 함수
+### _curryr
 인자를 오른쪽에서 부터 채워나감
 ```javascript
 const sub10 = sub(10);
@@ -455,7 +282,7 @@ console.log(sub10(5));  // 5
 
 ```javascript
 function _curryr(fn) {
-    return function (a) {
+    return function (a, b) {
         return arguments.length === 2 ? fn(a, b) : function(b) { return fn(b, a)}
     }
 }
@@ -469,7 +296,7 @@ const sub10 = sub(10);
 console.log(sub10(5));  // -5
 ```
 
-#### _get 
+### _get
 object 의 값을 안전하게 참조하는 함수
 ```javascript
 function _get(obj, key) {
@@ -486,16 +313,16 @@ console.log(_get(users1, 'name'));
 ```javascript
 console.log(users1[10].name)    // undefined Type Error
 console.log(_get(users[10], 'name'));   // undefined
-``` 
----
-커링을 이용한 _get
+```
+
+[커링](#curry)을 이용한 _get
 ```javascript
 const _get = _curryr(function(obj, key) {
     return obj === null ? undefined : obj[key];
 })
 console.log(_get('name')(user1));
 ```
-name 을 꺼내는 함수를 만들어 재활용 할 수 있다. 
+name 을 꺼내는 함수를 만들어 재활용 할 수 있다.
 ```javascript
 const get_name = _get('name');
 console.log(get_name(user1));
@@ -503,45 +330,332 @@ console.log(get_name(user1[3]));
 ```
 이전의 _map 을 사용한 코드를 더 간결하게 할 수 있다.
 ```javascript
-console.log(
-  _map(
+_map(
     _filter(users, function(user) { return user.age >= 30; }),
-    function(user) { return user.name; }));
+    function(user) { return user.name; })
+);
 
-console.log(
-  _map(
+_map(
     _filter(users, function(user) { return user.age < 30; }),
-    function(user) { return user.age; }));
+    function(user) { return user.age; })
+);
 ```
-->
+after
 ```javascript
-console.log(
-  _map(
+_map(
     _filter(users, function(user) { return user.age >= 30; }),
     _get('name')
-))
+)
 
-console.log(
-  _map(
+_map(
     _filter(users, function(user) { return user.age < 30; }),
-    _get('age')))
+    _get('age'))
+)
 ```
 
 ### _reduce
-```javascript
+리스트의 수만큼 iter 을 반복한다.
+```jsx
 function _reduce(list, iter, memo) {
-
+	iter(iter(iter(0, 1), 2),3 );
 }
+
 console.log(
-    _reduce([1, 2, 3], function(a, b) {
-        return a + b;
-    }, 0) 
-)   // 6
+	_reduce([1,2,3], add, 0)
+)
+
+memo = add(0,1);
+memo = add(memo, 2);
+memo = add(memo, 3);
+
+return memo;
 ```
 
+reduce 는 원래들어온 자료와 다른, 새로운 축약된 형태의 자료로 가공하기 위해 사용된다.
+
+filter나 map 은 array 로 들어온 것을 array 로 다시 리턴한다.
+
+reduce 는 array 로 들어온 것을 다른 형태로 만들 수 있다.
+
+```javascript
+var slice = Array.prototype.slice;
+function _rest(list, num) {
+    return slice.call(list, num || 1);
+}
+
+function _reduce(list, iter, memo) {
+    // memo 가 없을 경우
+    if (arguments.length == 2) {
+        memo = list[0];
+        // array like 처리
+        list = _rest(list);
+    }
+
+	_each(list, function(val) {
+		memo = iter(memo, val);
+	});
+
+	return memo;
+}
+```
+
+## 파이프라인 _pipe, _go, 화살표 함수
+<Tabs
+  defaultValue="_pipe"
+  values={[
+    { label: '_pipe', value: '_pipe', },
+    { label: '_go', value: '_go', },
+  ]
+}>
+<TabItem value="_pipe">
+함수들을 인자로 받아서 함수들을 연속적으로 실행해 주는 함수
+
+함수를 연속적으로 실행하는 함수를 리턴한다.
+```javascript
+function _pipe() {
+    var fns = arguments;
+    return function(arg) {
+        return _reduce(fns, function(arg, fn) {
+            return fn(arg)
+        }, arg);
+    }
+}
+
+var f1 = _pipe(
+    function(a) { return a + 1; },
+    function(a) { return a * 2; },
+    function(a) { return a * 2; },
+);
+
+console.log(f1(1));
+```
+
+</TabItem>
+
+<TabItem value="_go">
+즉시 실행되는 _pipe 함수
+
+```javascript
+function _go(arg) {
+    var fns = _rest(arguments);
+    return _pipe.apply(null, fns)(arg);
+}
+
+_go(1,
+    function(a) { return a + 1; },
+    function(a) { return a * 2; },
+    function(a) { return a * 2; },
+    console.log
+);
+```
+
+앞서 작성한 함수들을 _go 를 이용해 작성해 보자.
+
+<Tabs
+  defaultValue="before"
+  values={[
+    { label: 'before', value: 'before', },
+    { label: 'after1', value: 'after1', },
+    { label: 'after2', value: 'after2', },
+    { label: '화살표 함수', value: '화살표 함수', },
+  ]
+}>
+<TabItem value="before">
+안쪽에서 바깥쪽으로 전개됨으로 가독성이 떨어진다.
+
+```javascript
+console.log(
+    _map(
+        _filter(users, function(user) { return user.age >= 30; }),
+        _get('name')
+    )
+)
+```
+</TabItem>
+
+<TabItem value="after1">
+
+```javascript
+_go(users,
+    function(users) {
+        return _filter(users, function(user) {
+            return user.age >= 30;
+        }
+    },
+    function(users) {
+        return _map(users, _get('name'));
+    },
+    console.log);
+```
+
+</TabItem>
+
+<TabItem value="after2">
+
+_curryr 을 이용하여 한번 더 변형할 수 있다.
+
+```javascript
+// 1
+console.log(
+    _map([1, 2, 3], function(val) { return val * 2 })
+)
+
+// 2
+console.log(
+    _map(function(val) { return val * 2; })([1, 2, 3]);
+)
+
+// 3
+_go(users,
+    _filter(function(user) { return user.age >= 30 }),
+    _map(_get('name'),
+    console.log);
+```
+
+</TabItem>
+
+<TabItem value="화살표 함수">
+
+```javascript
+_go(users,
+    _filter(user => user.age < 30),
+    _map(_get('name'))
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+</TabItem>
+
+
+</Tabs>
+
+## 함수형 프로그래밍
+- 함수가 함수를 실행한다.
+- 함수가 함수를 리턴한다.
+- 함수의 평가시점, 함수의 인자들이 적용되어가는 과정에서 Side Effect 가 없고 순수함수들로 구성된다.
+- 조합성을 강조한다.
+- 추상화의 단위를 함수로 한다.
 
 ## 고차함수
 
 함수를 인수로 받는 함수 ex) map, reduce...
 함수를 반환하는 함수 ex) bind
 
+
+## 다형성 높이기, _keys, 에러
+함수형프로그래밍에서는, **예외적인 데이터**가 들어오면,
+- **다형성을 높이는 방법으로 해결**할 수 있다.
+
+### `_each` 의 외부 다형성 높이기
+
+<Tabs
+  defaultValue="null"
+  values={[
+    { label: '_each 에 null 넣어도 에러 안나게', value: 'null' },
+    { label: '_keys 만들기', value: '_keys 만들기', },
+    { label: '_each 외부 다형성 높이기', value: '_each 외부 다형성 높이기', },
+  ]
+}>
+
+<TabItem value="null">
+
+`_each(null, console.log)` 는 error 가 발생한다.
+_each 함수 내부에서 `list.length` length 를 참조하고자 할 때 list 가 null 이기 때문이다.
+
+에러가 나지 않게 하기 위해서는
+- `_get` 함수는 null 체크를 해주고 있다.
+- `_get` 함수를 통하여 `list.length` 에 `undefined` 가 들어간다면 에러는 나지 않고
+- `i < undefined` 가 false 이기 때문에 for 문을 수행하지 않게 된다.
+
+  ```javascript
+  // _curryr 이용하여
+  var _length = _get('length');
+
+  function _each(list, iter) {
+    for (var i = 0, len = _length(list); i < len; i++) {
+      iter(list[i]);
+    }
+    return list;
+  }
+  ```
+
+**함수형프로그래밍 에서는 예외적인 데이터가 들어와도 에러가 나지 않도록 유연하게 구현한다.**
+(underscore.js 에서 구현하는 방법)
+- if 로 타입을 체크 한다거나, try-catch 를 쓰지 않는다.
+
+</TabItem>
+
+<TabItem value="_keys 만들기">
+
+```javascript
+Object.keys({ name: 'ID', age: 33 }); // [name, age]
+Object.keys([1, 2, 3, 4]);            // [0, 1, 2, 3]
+Object.keys(10);                      // []
+
+// error 이 부분을 안전하게 만드는 _keys 를 만들 것이다.
+Object.keys(null);
+
+function _is_object(obj) {
+  return typeof obj == 'object' && !!obj;
+}
+
+function _keys(obj) {
+  return _is_object(obj) ? Object.keys(obj) : [];
+}
+
+```
+
+
+</TabItem>
+
+<TabItem value="_each 외부 다형성 높이기">
+
+```javascript
+const obj = {
+  13: 'ID',
+  19: 'HD',
+  29: 'YD'
+};
+
+obj.length; // undefined
+_each(obj, function(name) {
+  console.log(name);
+});     // obj.length 가 없으므로 결과는 []
+```
+
+length 가 없어도 순회할 수 있게 만들어보자.
+```javascript
+function _each(list, iter) {
+  var keys = _keys(list);
+  for (var i = 0, len = keys.length; i < len; i++) {
+    iter(list[keys[i]]);
+  }
+  return list;
+}
+```
+
+함수형 프로그래밍에서는 최대한 다형성을 높히게 끔 코드를 작성한다.
+```javascript
+_map(obj, function(name) {
+  return name.toLowerCase();
+})
+
+_go(null,
+  _map(function(user) {
+    return user.name;
+  }),
+  _map(function(name) {
+    return name.toLowerCase();
+  }),
+  console.log)
+);
+```
+
+
+
+</TabItem>
+
+</Tabs>

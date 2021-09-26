@@ -7,7 +7,7 @@
   
 - 폰노이만 머신 
 - 한번 발동이 되면 관여할 수 없다. 
-
+````
 <img src="https://user-images.githubusercontent.com/31977543/92357083-39418a00-f122-11ea-9f3b-b42c5792094a.png" style="height: 150px;"/>
 
 ### Sync Flow Control

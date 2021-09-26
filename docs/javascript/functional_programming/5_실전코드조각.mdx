@@ -1,0 +1,461 @@
+---
+title: 5. 실전 코드조각
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## users, posts, comments
+```javascript
+var users = [
+  { id: 101, name: 'ID' },
+  { id: 102, name: 'BJ' },
+  { id: 103, name: 'PJ' },
+  { id: 104, name: 'HA' },
+  { id: 105, name: 'JE' },
+  { id: 106, name: 'JI' }
+];
+
+var posts = [
+  { id: 201, body: '내용1', user_id: 101 },
+  { id: 202, body: '내용2', user_id: 102 },
+  { id: 203, body: '내용3', user_id: 103 },
+  { id: 204, body: '내용4', user_id: 102 },
+  { id: 205, body: '내용5', user_id: 101 },
+];
+
+var comments = [
+  { id: 301, body: '댓글1', user_id: 105, post_id: 201 },
+  { id: 302, body: '댓글2', user_id: 104, post_id: 201 },
+  { id: 303, body: '댓글3', user_id: 104, post_id: 202 },
+  { id: 304, body: '댓글4', user_id: 105, post_id: 203 },
+  { id: 305, body: '댓글5', user_id: 106, post_id: 203 },
+  { id: 306, body: '댓글6', user_id: 106, post_id: 204 },
+  { id: 307, body: '댓글7', user_id: 102, post_id: 205 },
+  { id: 308, body: '댓글8', user_id: 103, post_id: 204 },
+  { id: 309, body: '댓글9', user_id: 103, post_id: 202 },
+  { id: 310, body: '댓글10', user_id: 105, post_id: 201 }
+];
+```
+
+### 1. 특정인의 posts 의 모든 comments 거르기
+```javascript title="1. 특정인의 posts 의 모든 comments 거르기"
+_.go(
+  _.where(posts, { user_id: 101 }), // _.filter(posts, (post) => post.user_id == 101),
+  _.pluck('id'), // _.map((post) => post.id),
+  (post_ids) => _.filter(comments, (comment) => _.contains(post_ids, comment.post_id)),
+  console.log
+);
+/*[
+  {id: 301, body: '댓글1', user_id: 105, post_id: 201},
+  {id: 302, body: '댓글2', user_id: 104, post_id: 201},
+  {id: 307, body: '댓글7', user_id: 102, post_id: 205},
+  {id: 310, body: '댓글10', user_id: 105, post_id: 201}
+]
+ * */
+```
+
+### 2. 특정인의 posts에 comments 를 단 친구의 이름들 뽑기
+```javascript title="2. 특정인의 posts에 comments 를 단 친구의 이름들 뽑기"
+_.go(
+  _.where(posts, { user_id: 101}),
+  _.pluck('id'),
+  (post_ids) => _.filter(comments, (comment) => _.contains(post_ids, comment.post_id)),
+  _.map((comment) => _.find(users, (user) => user.id == comment.user_id).name),
+  _.uniq,
+  console.log
+);
+// ['JE', 'HA', 'BJ']
+```
+
+### 중복 제거하기
+```javascript title="중복 제거하기 1"
+function posts_by(attr) {
+  return _.where(posts, attr);
+}
+
+_.go({ user_id: 101 },
+ posts_by,
+ ...
+);
+```
+
+```javascript title="중복 제거하기 2"
+var comments_by_posts = _.pipe(
+  _.pluck('id'),
+  (post_ids) => _.filter(comments, (comment) => _.contains(post_ids, comment.post_id)),
+);
+
+_.go({ user_id: 101 },
+  posts_by,
+  comments_by_posts
+);
+```
+
+### 3. 특정인의 posts에 comments를 단 친구들 카운트 정보
+```javascript title="3. 특정인의 posts에 comments를 단 친구들 카운트 정보"
+_.go(
+  { user_id: 101},
+  posts_by,
+  comments_by_posts,
+  _.map((comment) => _.find(users, (user) => user.id == comment.user_id).name),
+  _.count_by,
+  console.log
+);
+// {JE: 2, HA: 1, BJ: 1}
+
+var user_names_by_comments =
+   _.map((comment) => _.find(users, (user) => user.id == comment.user_id).name);
+
+_.go(
+  { user_id: 101},
+  posts_by,
+  comments_by_posts,
+  user_names_by_comments
+  _.count_by,
+  console.log
+);
+```
+
+### 문제 1,2,3 을 함수로 만들기
+```javascript title="문제 1,2,3 을 함수로 만들기"
+const f1 = _.pipe(posts_by, comments_by_posts);
+console.log(f1({ user_id: 101 }));
+
+const f2 = _.pipe(
+  f1,
+  comments_to_user_names,
+  _.uniq
+);
+console.log(f2({ user_id: 101 }));
+
+const f3 = _.pipe(
+  f1,
+  comments_to_user_names,
+  _.count_by
+);
+console.log(f3({ user_id: 101 }));
+```
+
+### 4. 특정인이 comment를 단 posts 거르기
+```javascript title="4. 특정인이 comment를 단 posts 거르기"
+_.go(
+  _.where(comments, { user_id: 105 }),
+  _.pluck('post_id'),
+  (post_ids) => _.filter(posts, (post) => _.contains(posts_ids, post.id)),
+  console.log
+);
+
+/* [
+  {id: 201, body: '내용1', user_id: 101},
+  {id: 203, body: '내용3', user_id: 103}
+] */
+```
+
+## 효율 높이기
+users + posts + comments (index_by 와 group_by 로 효율 높이기)
+
+users 들이 달려있는 comments 를 만들 것이다.
+
+<Tabs
+defaultValue={'code'}
+values={[
+  {label: 'code', value: 'code' },
+  {label: 'result', value: 'result' }
+  ]}
+>
+
+<TabItem value={'code'}>
+
+```javascript
+function find_user_by_id(user_id) {
+  return _.find(users, function(user) {
+    return user.id == user_id;
+  })
+}
+
+var comments2 = _.map(comments, function(comment) {
+  return _.extend({
+    user: find_user_by_id(comment.user_id)
+  }, comment);
+})
+```
+
+</TabItem>
+
+<TabItem value={'result'}>
+
+```json
+[
+  {
+    "user": {
+      "id": 105,
+      "name": "JE"
+    },
+    "id": 301,
+    "body": "댓글1",
+    "user_id": 105,
+    "post_id": 201
+  },
+  // ....
+]
+```
+</TabItem>
+
+</Tabs>
+
+### index_by
+어떤 키를 기준으로 인덱싱을 해주는 함수
+
+<Tabs defaultValue="code"
+values={[
+  {label: 'code', value:'code'} ,
+  {label: 'result', value:'result'} ,
+]}
+>
+
+<TabItem value="code">
+
+```javascript
+var users2 = _.index_by(users, 'id');
+console.log(users2);
+
+function find_user_by_id(user_id) {
+  return users2[user_id];
+}
+```
+
+</TabItem>
+
+<TabItem value="code">
+
+```json
+{
+  "101": {
+    "id": 101,
+    "name": "ID"
+  },
+  "102": {
+    "id": 102,
+    "name": "BJ"
+  },
+  // ...
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### group_by
+해당하는 키를 기준으로 배열로 값을 리턴한다.
+
+<Tabs
+defaultValue={'code'}
+values={[
+  {label: 'code', value:'code'} ,
+  {label: 'result', value:'result'} ,
+]}
+>
+
+<TabItem value="code">
+
+포스트에 달린 댓글들을 포함시키는 과정이다.
+
+```javascript
+var comments2 = _.go(
+  comments,
+  _.map(function(comment) {
+    return _.extend({
+      user: find_user_by_id(comment.user_id)
+    }, comment);
+  }),
+  _.group_by('post_id')
+);
+```
+
+</TabItem>
+<TabItem value={'result'}>
+
+```json
+{
+  "201": [  // post id
+    { // comments 1
+      "user": { "id": 105, "name": "JE" },
+      "id": 301,
+      "body": "댓글1",
+      "user_id": 105,
+      "post_id": 201
+    },
+    { // comments 2
+      "user": { "id": 104, "name": "HA" },
+      "id": 302,
+      "body": "댓글2",
+      "user_id": 104,
+      "post_id": 201
+    },
+    // comments of post
+  ],
+  "202": [
+    {
+      "user": {
+        "id": 104,
+        "name": "HA"
+      },
+      "id": 303,
+      "body": "댓글3",
+      "user_id": 104,
+      "post_id": 202
+    },
+    {
+      "user": {
+        "id": 103,
+        "name": "PJ"
+      },
+      "id": 309,
+      "body": "댓글9",
+      "user_id": 103,
+      "post_id": 202
+    }
+  ],
+  // ... posts with comments
+}
+```
+
+</TabItem>
+</Tabs>
+
+```javascript
+var posts2 = _.map(posts, function(post) {
+  return _.extend({
+    comments: comments2[post.id],
+    user: find_user_by_id(post.user_id)
+  }, post);
+})
+```
+
+![image](https://user-images.githubusercontent.com/31977543/132219845-9076cd0c-5dc3-407b-9d4f-a71cc7f64408.png)
+
+
+### 기존 object 의 값들을 직접 변경하는 방식의 문제점
+만들어진 posts3 를 user 아래에 두려고 한다.
+
+이 때 user 를 생성하지 않고 기존 user 를 변경하는 방식을 사용할 때의 문제점이 있다.
+```javascript
+_.each(users2, function(user) {
+  user.posts = _.filter(posts2, function(post) {
+    return post.user_id == user.id;
+  })
+});
+```
+
+재귀적으로 user 가 참조되는 상태이다.
+
+![image](https://user-images.githubusercontent.com/31977543/132220837-77c688da-8715-4979-8043-91f35b45e1d2.png)
+
+이것은 `JSON.stringify` 를 하였을 때 문제를 관찰할 수 있다.
+```javascript
+JSON.stringify(users2);
+
+/*
+Uncaught TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'Object'
+    |     property 'posts' -> object with constructor 'Array'
+    |     index 0 -> object with constructor 'Object'
+    --- property 'user' closes the circle
+    at JSON.stringify (<anonymous>)
+    at <anonymous>:1:6
+(anonymous) @ VM2281:1
+ */
+```
+
+따라서 기존 객체를 변경하는 방식이 아닌 새로운 객체를 만드는 방식을 택해야 한다.
+
+```javascript
+var posts3 =  _.group_by(posts2, 'user_id');
+var user3 = _.map(users2, function(user) {
+  return _.extend({
+    posts: posts3[user.id]
+  }, user);
+});
+```
+
+![image](https://user-images.githubusercontent.com/31977543/132222447-d392c59f-629f-41bc-b4a5-3c60de0febf3.png)
+
+<Tabs
+defaultValue={'code'}
+values={[
+  {label: 'code', value:'code'} ,
+  {label: 'result', value:'result'} ,
+]}
+>
+<TabItem value="code">
+
+특정인의 posts 의 모든 comments 거르기
+```javascript
+var user = user3[0];
+_.go(
+  user.posts,
+  _.pluck('comments'),
+  _.flatten
+);
+
+// 혹은
+_.go(
+  _.deep_pluck(user, 'posts.comments'),
+  _.flatten
+);
+```
+
+</TabItem>
+
+<TabItem value="result">
+
+![image](https://user-images.githubusercontent.com/31977543/132223379-3b111ad3-8974-42b1-a2db-7f116dd3a0c6.png)
+
+</TabItem>
+
+</Tabs>
+
+
+<Tabs
+  defaultValue={'code'}
+  values={[
+    {label: 'code', value:'code'} ,
+    {label: 'result', value:'result'} ,
+  ]}
+>
+
+<TabItem value="code">
+
+특정인의 posts comments 를 단 친구들 카운트 정보
+```javascript
+_.go(user,
+  _.deep_pluck('posts.comments.user.name'),
+  _.count_by
+);
+```
+</TabItem>
+
+<TabItem value="result">
+
+```json
+{
+  "JE": 2,
+  "HA": 1,
+  "BJ": 1
+}
+```
+</TabItem>
+
+</Tabs>
+
+특정인이 comments 를 단 posts 거르기
+```javascripts
+_.filter(posts2, function(post) {
+  return _.find(post.comments, function(comment) {
+    return comment.user_id == 105;
+  });
+});
+```
+

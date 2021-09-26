@@ -31,6 +31,9 @@ module.exports = [
         `${CSS_RENDERING}Transform3D`,
         `${CSS_RENDERING}draw_3d_drum`,
         `${CSS_RENDERING}semantic_web`,
+        `${CSS_RENDERING}dataset`,
+        `${CSS_RENDERING}display_model`,
+        `${CSS_RENDERING}flexbox`,
     ]
   }
 ];

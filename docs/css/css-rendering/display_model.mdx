@@ -1,0 +1,147 @@
+---
+title: 8-1 Display Model
+---
+
+:::note CSS
+CSS is a language
+- for describing the rendering of structured documents (such as HTML and XML)
+- on screen, on paper, etc.
+
+CSS 는 구조화 된 문서(HTML/XML) 을 스크린에 렌더링 하기위해 기술하는 언어.
+:::
+
+
+## Display
+CSS Display Model Level 3
+- https://drafts.csswg.org/css-display/
+
+:::note Display
+- layout
+- Geometry 를 구성할 때 쓰는 알고리즘을 결정
+:::
+
+### Display Group
+Display 의 방식이 다양하고 계속 추가되고 있기 때문에 카테고리로 나누었다.
+
+- OutSide
+- InSide
+- ListItem
+- Internal
+- Box
+- Legacy
+
+Initial(inline)
+
+:::note display type
+요소가 box 를 생성하는 방법의 두 가지 기본 특성
+
+1. inner display type
+    - 하위 상자가 배치되는 방식을 지정한다.
+2. outer display type
+    - 요소 (principal box) 자체가 flow layout 에 참여하는 방식을 지정한다.
+:::
+
+## display-outside
+요소의 Outer Display Type 결정한다.
+
+block | inline | run-in
+
+**[Normal Flow](https://eyabc.github.io/docs/css/css-rendering/normal_flow#normal-flow)** 에 관련된 것들.
+- BFC
+- IFC
+- Relative Position
+
+**Normal Flow 를 관리하고 선언하는 기본적인 속성**
+
+The element generates a box... when placed in flow layout
+
+### block(block flow)
+- block-level block container aka block box
+
+### inline(inline flow)
+- inline box
+
+### run-in(run-in flow)
+- 경우에 따라 block - inline 이 된다.
+- **at-risk, and may be dropped** during the CR(W3C Process term-of-art) period:
+- run-in box (inline box with special box-tree-munging rules)
+
+## display-listitem
+
+:::tip
+초창기 display 모델은 html 태그와 깊이 관련있었다.
+- CSS 1 스펙에서는 태그에 스타일 스펙이 정의되어 있었다.
+:::
+
+- 태그를 list 처럼 그려달라는 스펙이다.
+- 여전히 태그 자체가 그래픽 로직을 내장하는 것 → table
+
+:::note restricted in the grammar
+`<display-outside>? && [ flow | flow-root ]? && list-item`
+- list-items are limited to the **Flow Layout display types** (block/inline/run-in with flow/flow-root inner types).
+- This restriction **may be relaxed in a future** level of this module.
+:::
+
+## display-box
+contents | none
+
+### none
+요소와 하위요소는
+- no box
+- no text run → 텍스트 노드가 나타나지 않는다.
+- 빈 요소가 컨텐츠를 대체하는 것처럼 제거 된다.
+
+### contents
+요소 자체는 Box 를 생성하지 않지만, 해당 자식요소 혹은 pseudo-elements(`::before`, `::after`...요소의 자식 앞/뒤에 생성되는 의사 요소)는 상자를 생성한다.
+
+eg. 박스를 그리는 html 을 버리고, native(OS) 의 요소로 대체해서 그리는 것
+
+contents 는 기본적으로,
+- 예를 들어, [grid 셀 안에 grid 요소가 있을 때, 내부의 grid 요소에 contents 를 주면 부모 grid 셀 요소를 대체하게 된다.](https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout/Relationship_of_grid_layout#%EA%B7%B8%EB%A6%AC%EB%93%9C%EC%99%80_display_contents)
+- 자식을 감싼 부모를, 자식이 대체하게 된다.
+- nativeOS 로 대체된 것이 마치 부모(Origin) 를 무시하고 그려진 것처럼 보인다.
+- 태그를 sematic 태그로 유지하되 layout 상으로 승격시키고 싶을 때 사용한다.
+- 이 글을 쓰는 시점(2021년 6월 15일)에서 [주요 브라우저에서 올바르게 구현되지 않았으므로](https://github.com/w3c/csswg-drafts/issues/3040) 웹에서 이 기능을 사용하면 접근성 도구가 요소의 의미 체계에 액세스하는 것을 방지할 수 있으므로 주의해서 수행해야 합니다.
+![image](https://user-images.githubusercontent.com/31977543/127868681-077339f5-bc04-4143-98b3-d8def30d8177.png)
+
+[contents 를 기본값으로 가지고 있는 것들](https://drafts.csswg.org/css-display/#unbox)
+Some elements aren’t rendered purely by CSS box concepts;
+
+- br, wbr, meter, progress, canvas, embed, object, audio, iframe, img, video, frame, frameset, input, textarea, select,
+legend, button, details, fieldset
+
+:::info img
+img 는 box-model 이 아니다. 이미지가 로딩된 후에 크기가 변해 버리기 때문이다.
+:::
+
+## display-inside
+flow | flow-root | table | flex | grid | ruby
+
+바깥쪽 부모 입장에서 나를 어떻게 정의하는가?
+
+- 내가 인라인이라는 뜻은 부모가 봤을 때 인라인이라는 의미
+- 내가 블록이라는 뜻은 부모가 나를 배치했을 때 블록이라는 의미
+- 요소의 안쪽을 어떻게 구성할 지 결정
+
+## display-legacy
+inline-block | inline-table | inline-flex | inline-grid
+
+inside 과 outside 를 `-` 로 두개의 속성을 한꺼번에 기술할 수 있게 함.
+
+일반적으로 inside 속성에 `-` 가 붙지 않으면 `block-` 이 생략 된 것이다.
+
+## display-internal (legacy)
+table-row-group | table-header-group |
+table-footer-group | table-row | table-cell |
+table-column-group | table-column | table-caption |
+ruby-base | ruby-text | ruby-base-container |
+ruby-text-container
+
+특정 layout 시스템 안(inside)에 들어왔을 때 내부의 요소가 사용해야 하는 속성들이다.
+
+display 는, display-inside 외에는 더이상 확장하지 않고 있다.
+- flex, grid 에 관련되어 있는 것은 이 스펙에 없고, flex-, grid 계열의 새로운 속성을 지정하였다.
+
+
+[table-cell](https://yeoninim.tistory.com/18) 이외에는 다 대체가능하다. table 의 부모와 함께 쓰여야 한다.
+

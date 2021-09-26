@@ -1,0 +1,213 @@
+---
+title: 8-2 Flexbox
+---
+
+## CSS Flexible Box Layout Module
+- https://drafts.csswg.org/css-flexbox-1/
+
+구형인터페이스
+- Jul 2009 Working Draft (display: box;)
+- Mar 2011 Working Draft (display: flexbox;)
+- Nov 2011 Working Draft (display: flexbox;)
+- Mar 2012 Working Draft (display: flexbox;)
+
+모던인터페이스
+- Jun 2012 Working Draft (display: flex;)
+- Sep 2012 Candidate Recommendation (display: flex;)
+
+## flexbox
+
+### axis
+:::note flex-item
+flex 요소 안의 직계 자식
+:::
+![image](https://user-images.githubusercontent.com/31977543/128011249-1f17cdf9-96ef-41d8-9fe4-3f7167370a77.png)
+
+:::note flex-line
+flex-item 을 배치하는 가상의 선
+- flexbox 는 기본적으로 그림을 그릴 때 한 줄만 그리는 정책을 가지고 있다.
+:::
+
+:::note main-axis
+flex-line 의 기본값은 x 축이다.
+:::
+
+:::note cross-axis
+main-axis 에 수직으로 교차하는 축
+:::
+
+![image](https://user-images.githubusercontent.com/31977543/128012111-1d583b90-9454-44f6-afc4-b4662dec4ade.png)
+
+
+### flex-direction
+- main 축과 cross 축을 바꿀 수 있다.
+
+default
+- 기본적으로 왼쪽 → 오른쪽으로, 위 → 아래로 배치
+
+row-reverse
+- 오른쪽 → 왼쪽 배치
+
+![image](https://user-images.githubusercontent.com/31977543/128013523-99c07cd9-394d-4c36-91cc-7cafb8acb76d.png)
+
+column
+- 기본은 위 → 아래
+
+column-reverse
+- 아래 → 위
+
+![image](https://user-images.githubusercontent.com/31977543/128013944-193d57bc-f9af-4ec9-aeb0-64ba68b607af.png)
+
+
+[이 외에 공식문서에는 축이 결정되는 여러가지 방식이 나와 있다.](https://drafts.csswg.org/css-flexbox-1/#axis-mapping)
+
+## 정렬
+### justify-content
+- 메인축을 기준으로 정렬
+
+flex-start
+- direction 의 시작
+- default 에서 왼쪽
+
+
+flex-end
+- direction 의 끝
+- default 에서 오른쪽
+
+![image](https://user-images.githubusercontent.com/31977543/128016416-37787770-6281-4997-9fe9-4d26131b70bd.png)
+
+
+center
+
+space-between
+- 사이에 여백을 둔다
+
+space-around
+- 양쪽끝에도 여백을 둔다
+
+![image](https://user-images.githubusercontent.com/31977543/128016679-60cf50b4-3053-4c1d-a5bd-48a76d214801.png)
+
+
+### align-items
+- cross 축에서의 정렬
+
+flex-start
+
+flex-end
+
+center
+
+baseline
+
+stretch
+
+![image](https://user-images.githubusercontent.com/31977543/128020742-816eed12-e425-4aae-b951-3712808fdb91.png)
+
+## CSS box alignment module level 3
+위의 위치지정방법을 다른 레이아웃에서도 쓸 수 있게 하였다.
+
+- https://drafts.csswg.org/
+
+## flex-wrap
+- flex line 을 여러줄 쓰고 싶을 땐
+
+nowrap(default) | wrap | wrap-reverse
+
+wrap
+- 부모 컨텐츠 사이즈를 넘어가면 다음줄에서 flex-line 을 다시 그린다.
+- 현재 flex-line 에서 가장 하단이 큰 곳에 그린다.
+
+## [align-content](https://drafts.csswg.org/css-flexbox-1/#align-content-property)
+- flex-wrap 에 적용되는 속성
+- wrapping 할 때 flex-line 을 어떻게 정렬할 것이냐
+
+![image](https://user-images.githubusercontent.com/31977543/128023725-cf708480-a3ed-4d1b-bbbe-963b21af2229.png)
+
+![image](https://user-images.githubusercontent.com/31977543/128025953-d61567eb-8b85-4928-8da6-c1f74765a94d.png)
+
+## flex-item
+### `order: 1`
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="html"
+  values={[
+    { label: 'html', value: 'html', },
+    { label: 'result', value: 'result', },
+  ]
+}>
+<TabItem value="html">
+
+```html
+<div display: flex>
+    <div order:2>a</div>
+    <div order:1>b</div>
+</div>
+```
+
+</TabItem>
+
+<TabItem value="result">
+
+b a
+
+</TabItem>
+</Tabs>
+
+flexbox 의 장점은 order 를 이용하면 순서를 마음대로 바꿀 수 있다.
+
+정렬할 때 js 로 order 값만 바꿔주면 된다.
+
+dom render 이 아닌 **post process** 를 하기 때문에 빠르다 (gpu)
+
+reflow 가 일어나지 않고 repaint 만 일어난다.
+
+### align-self
+align-items 와 관련되어 있다.
+
+![image](https://user-images.githubusercontent.com/31977543/128025647-e8d5b208-ee82-4931-9372-477952431e73.png)
+
+### flex-grow | flex-shrink | flex-basis
+flex 영역 안에서의 크기를 결정한다.
+
+- grow
+    - 0 : 100% 차지
+
+- 보통 1~ 에서 부터 값을 준다.
+   - 1 의 의미 : flexbox 내 컨텐츠에게 값을 균등 배분했을 때 가중치
+   - 다른 곳들에 모두 30 30 30 을 주나 1 1 1 을 주나 같다.
+    - 소수점도 적용이 된다.
+
+- shrink
+    - 기본적으로 값을 1을 준다.
+        - 밀리지 않고 자신의 값을 유지하는 것을 의미
+
+- basis
+  - auto | content
+  - auto 와 content 는 같다.
+  - content
+    - flexbox 안에 있는 컨텐츠의 크기 = 나의 크기
+  - flex-basis 속성 없이 width 나 height 를 주면 기본값이 된다.
+
+- max-width min-width 와 grow shrink 와의 관계
+    - max-width 이 flexbox 를  이긴다.
+
+- 세가지 속성은 한꺼번에 줄 수 있다.
+  - `flex: 0 1 auto`
+  -  값 하나만 준다면
+    - `flex: initial | auto | none | 1~`
+     - none
+        - flex 에 반응하지 않는다. 고정 크기를 유지한다.
+     - initial
+        - none 과 비슷하다. 기본적으로 flex 하지 않지만 확장만 되고 축소는 안된다.
+     - auto
+       -  grow 만큼 커지거나 shrink 만큼 줄어들 수 있는 것들
+  - 1~ 같은 비율을 여러개 준다면 content 가 있든 없든, 자식의 순서에 맞춰서 가중치를 주게 된다.
+
+
+Reference
+---
+- http://w3.unpocodetodo.info/css3/flex-align-self.php
+
