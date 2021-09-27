@@ -8,14 +8,16 @@
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <item>
-            <link>https://eyabc.github.io/blog/2021/09/27/</link>
-            <guid>https://eyabc.github.io/blog/2021/09/27/</guid>
+            <title><![CDATA[20210927]]></title>
+            <link>https://eyabc.github.io/blog/2021/09/27/20210927</link>
+            <guid>20210927</guid>
             <pubDate>Mon, 27 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[오늘은 회사에서 인수인계 받은 금융줌의 프로젝트를 실행시키고, 코드를 보면서 궁금한 점들을 찾아 빠르게 읽어보았습니다.]]></description>
         </item>
         <item>
-            <link>https://eyabc.github.io/blog/2021/09/26/</link>
-            <guid>https://eyabc.github.io/blog/2021/09/26/</guid>
+            <title><![CDATA[20210926]]></title>
+            <link>https://eyabc.github.io/blog/2021/09/26/20210926</link>
+            <guid>20210926</guid>
             <pubDate>Sun, 26 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[10일의 연휴끝에 오랜만에 카페에 와서 공부중입니다~! 역시 카페에 와야 공부가 되는군요 😊]]></description>
         </item>
