@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Respect myself Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Respect myself Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Respect myself" href="/opensearch.xml"><title data-react-helmet="true">JS 메모리 누수 | Respect myself</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="JS 메모리 누수 | Respect myself"><meta data-react-helmet="true" name="description" content="JS 메모리 누수"><meta data-react-helmet="true" property="og:description" content="JS 메모리 누수"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/javascript/javascript/JS 메모리 누수"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/javascript/javascript/JS 메모리 누수"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.5c092552.js" as="script">
-<link rel="preload" href="/runtime~main.ce6b583a.js" as="script">
-<link rel="preload" href="/main.6bc4acbd.js" as="script">
-<link rel="preload" href="/1.305a9b26.js" as="script">
-<link rel="preload" href="/3.4c78b580.js" as="script">
-<link rel="preload" href="/1be78505.7b2ec2f1.js" as="script">
-<link rel="preload" href="/344.ab0c5203.js" as="script">
-<link rel="preload" href="/935f2afb.1d5a5435.js" as="script">
-<link rel="preload" href="/341.4088aac0.js" as="script">
-<link rel="preload" href="/17896441.55fba4fa.js" as="script">
-<link rel="preload" href="/ece6f40f.6d3d22ad.js" as="script">
+<link rel="preload" href="/styles.05f0a9c4.js" as="script">
+<link rel="preload" href="/runtime~main.74c2d271.js" as="script">
+<link rel="preload" href="/main.8e74b163.js" as="script">
+<link rel="preload" href="/1.339dbb70.js" as="script">
+<link rel="preload" href="/3.b0ed920a.js" as="script">
+<link rel="preload" href="/1be78505.7f89a872.js" as="script">
+<link rel="preload" href="/345.76b2e3cb.js" as="script">
+<link rel="preload" href="/935f2afb.14052882.js" as="script">
+<link rel="preload" href="/342.9d9ac2d7.js" as="script">
+<link rel="preload" href="/17896441.2f8597a2.js" as="script">
+<link rel="preload" href="/ece6f40f.6ef6fed7.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -27,16 +27,16 @@
 이 클로저의 범위에는 큰 사이즈의 배열에 대한 간접적인 참조를 동반하기 때문에 상당한 양의 메모리 누수가 발생하게 됩니다.</li></ul><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="5-gc-의-비직관적인-동작"></a>5. GC 의 비직관적인 동작<a class="hash-link" href="#5-gc-의-비직관적인-동작" title="Direct link to heading">#</a></h2><p>언제 수집될 지 모름.
 그러나 대부분의 GC는 <code>메모리 할당</code>이 이뤄질 때 수집하고,
 그 외는 유휴 상태</p><p><code>TODO</code></p><div class="mdxCodeBlock_1zKU"><div class="codeBlockContent_actS"><div tabindex="0" class="prism-code language-text codeBlock_tuNs thin-scrollbar"><div class="codeBlockLines_3uvA" style="color:rgb(36, 41, 46);background-color:#f6f8fa"><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">사이즈가 큰 데이터 할당을 여러번 수행합니다.</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">Garbage Collector에 의해 대부분(혹은 전부)은 더 이상 접근되지 않는다라고 표시가 됩니다.</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">(더 이상 사용하지 않은 경우 null 로 초기화 했다고 가정)</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">더 이상의 할당을 수행하지 않습니다.</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">이 시나리오에서 대부분의 GC들은 더 이상 수집을 수행하지 않습니다. </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">즉, 더 이상 접근되지 않는 데이터 셋들이 남아있음에도 불구하고 수집이 일어나지 않습니다. </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">이는 엄격히 메모리 누수는 아니지만, 일반적인 메모리 사용량보다 더 많은 메모리를 사용하게 됩니다.</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">https://developer.chrome.com/devtools/docs/demos/memory/example2</span></div></div></div><button type="button" aria-label="Copy code to clipboard" class="copyButton_2GIj">Copy</button></div></div></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/javascript/javascript/글로벌 변수를 사용하면 안되는 이유"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« 글로벌 변수를 사용하면 안되는 이유</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/javascript/javascript/엄격모드"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">엄격모드 »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#메모리-누수" class="table-of-contents__link">메모리 누수</a><ul><li><a href="#메모리-누수의-문제점" class="table-of-contents__link">메모리 누수의 문제점</a></li><li><a href="#todo-악영향의-예시" class="table-of-contents__link"><code>TODO</code> 악영향의 예시</a></li><li><a href="#자바스크립트에서-메모리-관리" class="table-of-contents__link">자바스크립트에서 메모리 관리</a></li><li><a href="#자바스크립트에서의-메모리-누수" class="table-of-contents__link">자바스크립트에서의 메모리 누수</a></li></ul></li><li><a href="#mark-and-sweep-알고리즘" class="table-of-contents__link">Mark and Sweep 알고리즘</a><ul><li><a href="#예상치-못한-참조" class="table-of-contents__link">예상치 못한 참조</a></li></ul></li><li><a href="#js-메모리-누수의-일반적인-형태" class="table-of-contents__link">JS 메모리 누수의 일반적인 형태</a><ul><li><a href="#1-우발적으로-형성된-전역변수" class="table-of-contents__link">1. 우발적으로 형성된 전역변수</a></li><li><a href="#2-잊혀진-타이머와-콜백" class="table-of-contents__link">2. 잊혀진 타이머와 콜백</a></li><li><a href="#3-dom-에서의-외부-참조" class="table-of-contents__link">3. DOM 에서의 외부 참조</a></li><li><a href="#4-클로저" class="table-of-contents__link">4. 클로저</a></li><li><a href="#클로저가-생성되는-이유" class="table-of-contents__link">클로저가 생성되는 이유</a></li><li><a href="#replacething-이-호출될-때-마다-클로저-생성" class="table-of-contents__link">replaceThing 이 호출될 때 마다 클로저 생성.</a></li><li><a href="#unused-내부-함수가-없을-때-originalthingthething-이-사용되지-않을때" class="table-of-contents__link">unused 내부 함수가 없을 때 (originalThingtheThing 이 사용되지 않을때)</a></li><li><a href="#unused-내부-함수의-originalthing-을-참조-todo" class="table-of-contents__link">unused 내부 함수의 originalThing 을 참조 <code>TODO</code></a></li></ul></li><li><a href="#5-gc-의-비직관적인-동작" class="table-of-contents__link">5. GC 의 비직관적인 동작</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2021 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.5c092552.js"></script>
-<script src="/runtime~main.ce6b583a.js"></script>
-<script src="/main.6bc4acbd.js"></script>
-<script src="/1.305a9b26.js"></script>
-<script src="/3.4c78b580.js"></script>
-<script src="/1be78505.7b2ec2f1.js"></script>
-<script src="/344.ab0c5203.js"></script>
-<script src="/935f2afb.1d5a5435.js"></script>
-<script src="/341.4088aac0.js"></script>
-<script src="/17896441.55fba4fa.js"></script>
-<script src="/ece6f40f.6d3d22ad.js"></script>
+<script src="/styles.05f0a9c4.js"></script>
+<script src="/runtime~main.74c2d271.js"></script>
+<script src="/main.8e74b163.js"></script>
+<script src="/1.339dbb70.js"></script>
+<script src="/3.b0ed920a.js"></script>
+<script src="/1be78505.7f89a872.js"></script>
+<script src="/345.76b2e3cb.js"></script>
+<script src="/935f2afb.14052882.js"></script>
+<script src="/342.9d9ac2d7.js"></script>
+<script src="/17896441.2f8597a2.js"></script>
+<script src="/ece6f40f.6ef6fed7.js"></script>
 </body>
 </html>
