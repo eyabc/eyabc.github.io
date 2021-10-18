@@ -4,9 +4,16 @@
         <title>Respect myself Blog</title>
         <link>https://eyabc.github.io/blog</link>
         <description>Respect myself Blog</description>
-        <lastBuildDate>Tue, 28 Sep 2021 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 18 Oct 2021 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[20211018]]></title>
+            <link>https://eyabc.github.io/blog/2021/10/18/20211018</link>
+            <guid>20211018</guid>
+            <pubDate>Mon, 18 Oct 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[오늘부터 습관 만들기를 실천하고 있습니다.]]></description>
+        </item>
         <item>
             <title><![CDATA[20210928]]></title>
             <link>https://eyabc.github.io/blog/2021/09/28/20210928</link>
