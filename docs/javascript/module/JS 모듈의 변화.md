@@ -1,4 +1,6 @@
-# JS Module 의 변화
+---
+title: JS Module 의 변화
+---
 
 ## 초기 스크립트
 - 작은 크기, 단순함
@@ -45,7 +47,7 @@ function function_name_foo() {
 ```
 - 함수 스코프
 - 다른 스코프에서 함수를 가져올 수 있다.
-- 전역 객체를 침범하는 문제
+- 여전히 전역 객체를 침범하는 문제
 
 
 ## 모듈 시스템의 등장
@@ -80,8 +82,8 @@ function function_name_foo() {
 - 파일 스코프가 없다
 - `<script>` 를 통해 JS 파일을 로드하면 여전히 전역변수가 오염됨
 - require 는 Sync flow 함수다.
-    - 디스크에서는 속도가 빠르기 때문에 문제가 없다. -> non blocking? 
-    - 네트워크를 통해 필요한 모듈을 내려받기 전까지는 브라우저가 아무일도 할 수 없음. -> blocking? 
+    - 디스크에서는 속도가 빠르기 때문에 문제가 없다. -> non blocking
+    - 네트워크를 통해 필요한 모듈을 내려받기 전까지는 브라우저가 아무일도 할 수 없음. -> blocking 
  
 ## 브라우저의 event loop 
 2008 년 V8 크롬 엔진으로 non-blocking, async 환경을 쓸 수 있게 되었다.
@@ -181,3 +183,4 @@ ES6 모듈 문법을 ES5 에서 지원하기 위해 고안됨.
 - Webpack
     - AMD, CommonJS, ES6 모듈용 번들러
      
+## [CommonJS와 ES Modules은 왜 함께 할 수 없는가?](https://yceffort.kr/2020/08/commonjs-esmodules)

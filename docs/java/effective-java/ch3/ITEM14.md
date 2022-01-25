@@ -1,57 +1,78 @@
 ---
-
-sidebarDepth: 2
-
+title: 14. Comparable 을 구현할지 고려하라
 ---
 
-# ITEM14 Comparable 을 구현할지 고려하라
-
-**순서를 고려해야 하는 값 클래스를 작성** → 꼭 Comparable 인터페이스를 구현  
-- 그 인스턴스들을 쉽게 정렬하고, 검색하고, 비교 기능을 제공하는 컬렉션과 어우러지도록 해야한다.   
+:::note  **순서를 고려해야 하는 값 클래스를 작성** → 꼭 Comparable 인터페이스를 구현  
+그 인스턴스들을 쉽게 정렬하고, 검색하고, 비교 기능을 제공하는 컬렉션과 어우러지도록 해야한다.   
+:::
 
 ## compareTo
+:::note compareTo
 Comparable 인터페이스의 유일한 메서드
 - Object 메서드가 아님
 - Object equals 와 유사함
+:::
 
-## compareTo 특징
-- compareTo 는 단순 동치성 비교 + **순서 비교** 
-- Comparable 을 구현한 클래스
-    - 객체는 자연 순서 존재
-    - 객체들의 배열은 `Arrays.sort(a);` 로 정렬 가능
-- Comparable 을 구현하면 이 인터페이스를 활용하는 수 많은 제네릭 알고리즘과 컬렉션의 효과를 사용할 수 있음
-    - 자바 플랫폼 라이브러리의 모든 값 클래스와 열거타입[34]이 Comparable 을 구현함.
-    - 알파벳, 숫자, 연대 같이 순서가 명확한 값 클래스를 작성한다면 반드시 Comparable 인터페이스를 구현하자
-    - 검색, 극단값 계산, 자동 정렬되는 컬렉션 관리 가능
-    - 아래 코드는 String 이 Comparable 을 구현 → 명령줄 인수들을 알파벳 순으로 출력함
-    ```java
-    public class WordList {
-        public static void main(String[] args) {
-            Set<String> s = new TreeSet<>();
-            Collections.addAll(s, args);
-            System.out.println(s);
-        }   
-    }
-    ```
+### compareTo 특징
+#### 1. compareTo 는 단순 동치성 비교 + **순서 비교**
+---
+Object equals 와 유사하지만 compareTo는 순서까지 비교한다.
+    
+#### 2.Comparable 을 구현한 클래스
+---
+- 객체는 자연 순서 존재
+- 객체들의 배열은 `Arrays.sort(a);` 로 정렬 가능
+    
+    
+#### 3. Comparable 을 구현하면 이 인터페이스를 활용하는 수 많은 제네릭 알고리즘과 컬렉션의 효과를 사용할 수 있음
+---
+- 자바 플랫폼 라이브러리의 모든 값 클래스와 열거타입[34](/docs/java/effective-java/ch6/ITEM34)이 Comparable 을 구현함.
+- **알파벳, 숫자, 연대 같이 순서가 명확한 값 클래스를 작성한다면 반드시 Comparable 인터페이스를 구현하자**
+- 검색, 극단값 계산, 자동 정렬되는 컬렉션 관리 가능
+
+아래 코드는 String 이 Comparable 을 구현하였기 때문에 → 명령줄 인수들을 알파벳 순으로 출력함
+```java
+public class WordList {
+    public static void main(String[] args) {
+        Set<String> s = new TreeSet<>();
+        Collections.addAll(s, args);
+        System.out.println(s);
+    }   
+}
+```
+
+:::info
+HashSet
+- 데이터를 중복 저장할 수 없고 순서를 보장하지 않음
+
+TreeSet
+- 중복된 데이터를 저장할 수 없고 입력한 순서대로 값을 저장하지 않음
+- TreeSet은 기본적으로 오름차순으로 데이터를 정렬함
+
+LinkedHashSet
+- 중복된 데이터를 저장할 수 없고 입력된 순서대로 데이터를 관리함
+:::
  
-## compareTo 일반 규약
+### compareTo 일반 규약
 equals 규약과 유사함
 ```java
 public interface Comparable<T> {
     int compareTo(T t);
 }
 ```
-이 객체와 주어진 객체의 순서를 비교한다.
+:::note 이 객체와 주어진 객체의 순서를 비교한다.
 - 이 객체가 주어진 객체보다 
     - 작으면 음의정수 반환
     - 같으면 0 반환
     - 크면 양의정수 반환
 - 이 객체와 비교할 수 없는 타입의 객체가 주어지면
     - ClassCastException 을 던짐
-    
-> sng(표현식) 표기        
-> 부호 함수(signum function)    
-> 표현식의 값이 음수, 0, 양수 일 때 -1, 0, 1 을 반환하도록 정의됨
+:::
+
+:::info sng(표현식) 표기        
+부호 함수(signum function)    
+- 표현식의 값이 음수, 0, 양수 일 때 -1, 0, 1 을 반환하도록 정의됨
+:::
 
 Comparable 을 구현한 클래스는
 - 모든 x, y 에 대해  
@@ -74,45 +95,45 @@ Comparable 을 구현한 클래스는
 
 ### compareTo
 - 타입이 다른 객체를 신경쓰지 않아도 됨
-- 타입이 다른 객체가 주어지면 ClassCastException 을 던지면 됨.
-- 규약에서는 다른 타입 비교도 허용하지만,    
-    보통 비교할 객체들이 구현한 공통 인터페이스(Collections, Set, Map)를 매개로 이뤄진다.
+    - **타입이 다른 객체가 주어지면 ClassCastException 을 던지면 됨.**
+    - 규약에서는 다른 타입 비교도 허용하지만,    
+        보통 비교할 객체들이 구현한 공통 인터페이스(Collections, Set, Map)를 매개로 이뤄진다.
     
-- hashCode 규약을 지키지 못하면 해시를 사용하는 클래스와 어울리지 못하듯,      
-compareTo 규약을 지키지 못하면 비교를 활용하는 클래스와 어울리지 못한다.
+- hashCode 규약을 지키지 못하면 해시를 사용하는 클래스와 어울리지 못하듯, **compareTo 규약을 지키지 못하면 비교를 활용하는 클래스와 어울리지 못한다.**
     - 비교를 활용하는 클래스 
         - 정렬된 컬렉션 TreeSet, TreeMap
         - 검색과 정렬알고리즘을 활용하는 Collections, Arrays
     - 해당 컬렉션이 구현한 인터페이스(Collections, Set, Map..) 에 정의된 동작과 어울리지 못함.
         - 이 인터페이스들은 equals 메서드의 규약을 따른다고 되어 있지만, 동치성을 비교할 때 compareTo 를 사용함
-- compareTo 와 equals 가 일관되지 않는 BigDecimal 클래스
-    - HashSet 인스턴스를 생성한 다음
-        - `new BigDecimal("1.0")`, `new BigDecimal("1.00")` 을 추가한다.
-        - equals 메서드로 비교하면 서로 다르기 때문에 hashSet 은 원소를 2개 갖는다.
-    - TreeSet 인스턴스를 사용하면 원소 1개 만 갖는다.
-        - compareTo 메서드로 비교하면 두 bigDecimal 인스턴스가 같다.
+
+compareTo 와 equals 가 일관되지 않는 BigDecimal 클래스
+- HashSet 인스턴스를 생성한 다음
+    - `new BigDecimal("1.0")`, `new BigDecimal("1.00")` 을 추가한다.
+    - equals 메서드로 비교하면 서로 다르기 때문에 hashSet 은 원소를 2개 갖는다.
+- TreeSet 인스턴스를 사용하면 원소 1개 만 갖는다.
+    - compareTo 메서드로 비교하면 두 bigDecimal 인스턴스가 같다.
   
 ## Comparable 을 구현한 클래스를 확장해 값을 추가하는 방법
-- 확장하여 값을 추가할 때 compareTo 규약을 지킬 방법이 없다.      
+- 확장(상속)하여 값을 추가할 때 compareTo 규약을 지킬 방법이 없다.      
 - 컴포지션을 사용하자
 
 ## compareTo 메서드 작성 요령
-[equals 와 비슷함](https://eyabc.github.io/Doc/dev/java/effective-java/ch3/ITEM10.html#equals-%EB%A9%94%EC%84%9C%EB%93%9C-%EA%B5%AC%ED%98%84-%EB%B0%A9%EB%B2%95)
-1. == 연산자를 사용해 입력이 자기 자신의 참조인지 확인한다.
-2. instanceof 연산자로 입력이 올바른 타입인지 확인한다.
-3. 입력을 올바른 타입으로 형변환한다.
+[equals 와 비슷함](/docs/java/effective-java/ch3/ITEM10.html#equals-%EB%A9%94%EC%84%9C%EB%93%9C-%EA%B5%AC%ED%98%84-%EB%B0%A9%EB%B2%95)
+1. `==` 연산자를 사용해 입력이 자기 자신의 참조인지 확인한다.
+2. `instanceof` 연산자로 입력이 올바른 타입인지 확인한다.
+3. 입력을 올바른 타입으로 *형변환*한다.
 4. 입력 객체와 자기 자신의 대응되는 핵심 필드들이 모두 일치하는지 하나씩 검사한다.
 
 ### equals와 차이점
-- Comparable 은 타입을 인수로 받는 제네릭 인터페이스      
-    - compareTo 메서드의 인수 타입은 컴파일 타임에 정해짐
-    - 입력 인수타입을 확인하거나 형변환 할 필요가 없다.
+- Comparable 은 타입을 인수로 받는 **제네릭 인터페이스**      
+    - compareTo 메서드의 인수 타입은 *컴파일 타임*에 정해짐
+    - *입력 인수타입을 확인하거나 형변환 할 필요가 없다.*
 - null 을 인수로 넣어 호출하면 NullPointerException 을 던져야 한다.
 
 ### 객체 compareTo 의 비교
-compareTo 는 각 필드의 동치를 비교하는 것이 아니라, 순서를 비교함
+compareTo 는 각 필드의 동치를 비교하는 것이 아니라, *순서를 비교함*
 
-- 객체참조 필드를 비교하려면 compareTo 메서드를 재귀적으로 호출함
+- 객체참조 필드를 비교하려면 → compareTo 메서드를 재귀적으로 호출함
 - Comparator 비교자의 사용
     - Comparable 을 구현하지 않은 필드
     - 표준이 아닌 순서로 비교해야 할 때
@@ -183,3 +204,9 @@ static Comparator<Object> hashCodeOrder = new Comparator<>() {
 static Comparator<Object> hashCodeOrder = 
     Comparator.comparingInt(o -> o.hashCode());
 ```
+
+
+Reference
+---
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/3%EC%9E%A5/14_Comparable%EC%9D%84_%EA%B5%AC%ED%98%84%ED%95%A0%EC%A7%80_%EA%B3%A0%EB%A0%A4%ED%95%98%EB%9D%BC_%EC%9D%B4%EC%A3%BC%ED%98%84.md
+

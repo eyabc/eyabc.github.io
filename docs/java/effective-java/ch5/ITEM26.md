@@ -1,13 +1,18 @@
-# ITEM26 로타입 raw type 은 사용하지 말라
+---
+title: 26. 로타입 raw type 은 사용하지 말라
+---
+
+:::tip
 - 로타입을 사용하면 런타임 예외가 일어날 수 있으니 사용하면 안된다.
 - 제네릭 도입 이전 코드와의 호환성을 위해 제공될 뿐임
+:::
 
 ## 제네릭 타입 generic type
 
 ### 제네릭 클래스, 제네릭 인터페이스
 클래스와 인터페이스 선언에 타입 매개변수가 쓰임
 
-#### List 인터페이스
+### List 인터페이스
 원소타입을 나타내는 타입 매개변수 E 를 받는다.
 
 - List 인터페이스의 완전한 이름은 `List<E>` 이다.
@@ -22,8 +27,9 @@ public interface List<E> extends Collection<E> {
 ## 매개변수화 타입
 제네릭 타입은 매개변수화 타입을 정의함
 
-매개변수화 타입
-- *클래스(인터페이스)이름 <실제 타입 매개변수>*
+:::note 매개변수화 타입
+*클래스(인터페이스)이름 <실제 타입 매개변수>*
+:::
 
 `List<String>` 
 - **원소의 타입이 String 인 리스트**를 뜻하는 **매개변수화 타입**
@@ -32,10 +38,13 @@ public interface List<E> extends Collection<E> {
     - **실제 (actual) 타입 매개변수**
 
 ## 로타입 raw type
-- 제네릭 타입을 정의 → 딸린 로타입도 함께 정의
+:::tip
+제네릭 타입을 정의하면 → 딸린 로타입도 함께 정의된다.
+:::
 
-#### 의미
-- 제네릭 타입에서 타입 매개변수를 전혀 사용하지 않을 때
+:::note raw type 의미
+제네릭 타입에서 타입 매개변수를 전혀 사용하지 않는 것
+:::
 
 `List<E>` 의 로타입 → List
 
@@ -95,7 +104,7 @@ private final Collection<Stamp> stamps = ...;
 #### 런타임에 실패한다 - unsafeAdd 메서드가 로타입 List 를 사용
 컴파일은 되지만, 로타입 List 를 사용하여 경고발생,     
 하지만 런타임에서 ClassCastException 이 발생하고야 만다.    
-```java
+```java {7}
 public static void main(String[] args) {
     List<String> strings = new ArrayList<>();
     unsafeAdd(strings, Integer.valueOf(42));
@@ -110,11 +119,13 @@ private statis void unsafeAdd(List list, Object o) {
 List 를 매개변수화타입 `List<Object>` 로 바꾸면 컴파일 조차 되지 않게 된다.
 
 ## 비한정적 와일드카드 타입 unbounded wildcard type
+:::note
 제네릭 타입을 쓰고 싶지만, 실제 타입 매개변수가 무엇인지 신경쓰고 싶지 않을 때 사용함
-
 - 어떤 타입이라도 담을 수 있는 가장 범용적인 매개변수화 타입
 - `Set<E>` → `Set<?>` 
 - 타입안전, 유연함
+:::
+
 
 잘못된 예 - 모르는 타입의 원소도 받는 로 타입을 사용함
 ```java

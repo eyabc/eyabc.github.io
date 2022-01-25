@@ -54,7 +54,7 @@
     ```
   * 설치할 수 있는 버전 목록
     ``` shell script
-    $ npm ls-remote
+    $ nvm ls-remote
     ```
   * 버전 전환
     ```shell script

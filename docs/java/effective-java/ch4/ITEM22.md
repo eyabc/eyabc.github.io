@@ -1,4 +1,6 @@
-# ITEM22 인터페이스는 타입을 정의하는 용도로만 사용하라
+---
+title: 22. 인터페이스는 타입을 정의하는 용도로만 사용하라
+---
 
 ## 안티패턴 - 상수 인터페이스
 ### 상수 인터페이스 
@@ -20,27 +22,27 @@ public interface PhysicalConstants {
 4. final 이 아닌 클래스가 상수 인터페이스를 구현한다면, 모든 하위 클래스의 이름 공간이 그 인터페이스가 정의한 상수들로 오염된다.
 
 ## 상수 공개 방법
-1. 특정 클래스나 인터페이스와 강하게 연관된 상수라면 자체에 추가해야 한다.
-    - 모든 숫자 기본타입의 박싱 클래스
-    - Integer 와 Double 에는 MIN_VALUE, MAX_VALUE 상수가 있음
+#### 1. 특정 클래스나 인터페이스와 강하게 연관된 상수라면 자체에 추가해야 한다.
+- 모든 숫자 기본타입의 박싱 클래스
+- Integer 와 Double 에는 MIN_VALUE, MAX_VALUE 상수가 있음
 
-2. 열거 타입   
-3. 인스턴스화 할 수 없는 상수 유틸리티 클래스
-    ```java
-    public class PhysicalConstants {
-        private PhysicalConstants() { } // 인스턴스화 방지
-        public static final double AVOGADROS_NUMBER = ...;
-        public static final double BOLTZMANN_CONST = ...;
-        // ...
+#### 2. 열거 타입   
+#### 3. 인스턴스화 할 수 없는 상수 유틸리티 클래스
+```java
+public class PhysicalConstants {
+    private PhysicalConstants() { } // 인스턴스화 방지
+    public static final double AVOGADROS_NUMBER = ...;
+    public static final double BOLTZMANN_CONST = ...;
+    // ...
+}
+```
+정적 임포트를 사용해 상수 이름만으로 사용하기
+```java
+import static ...PysicalConstants.*;    
+public class Test {
+    double atoms(double mols) {
+        return AVOGADROS_NUMBER * mols;
     }
-    ```
-   - 정적 임포트를 사용해 상수 이름만으로 사용하기
-        ```java
-        import static ...PysicalConstants.*;    
-        public class Test {
-            double atoms(double mols) {
-                return AVOGADROS_NUMBER * mols;
-            }
-        }
-        ```
+}
+```
 

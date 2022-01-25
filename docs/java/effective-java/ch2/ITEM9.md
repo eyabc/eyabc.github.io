@@ -1,4 +1,7 @@
-# ITEM9 try-finally 보다는 try-with-resources 를 사용하라
+---
+title: 9. try-finally 보다는 try-with-resources 를 사용하라
+---
+
 ## close 메서드 호출로 직접닫아주어야 하는 자원
 - InputStream
 - OutputStream
@@ -6,10 +9,10 @@
 
 클라이언트가 놓치기 쉬워서 예측할 수 없는 성능 문제로 이어지기도함.
 
-## try-finally  
+## try-finally
 전통적인 자원 회수 수단이지만, 최선의 방책이 아니다.
 
-### 1. 자원이 둘 이상이면 너무 지저분하다.
+#### 1. 자원이 둘 이상이면 너무 지저분하다.
 
 ```java
 static void copy(String src, String dst) throws IOException {
@@ -23,14 +26,14 @@ static void copy(String src, String dst) throws IOException {
                 out.write(buf, 0, n);
         } finally {
             out.close()
-        }   
+        }
     } finally {
         in.close();
     }
-}   
+}
 ```
 
-### 2. 예외는 try / finally 블록에서 모두 발생할 수 있다.
+#### 2. 예외는 try / finally 블록에서 모두 발생할 수 있다.
 기기에서 물리적인 문제가 생긴다면, readLine 메서드가 예외를 던지고, 같은 이유로 close 메서드도 실패한다.
 
 두번째 예외가 첫번째 예외를 덮는다.
@@ -82,6 +85,9 @@ static void copy(String src, String dst) throws IOException {
 }
 ```
 
+![](https://user-images.githubusercontent.com/42054054/105153029-4ac48500-5b4b-11eb-8cf8-ba1f3830e2b9.png)
+
+
 ### try-with-resource 와 catch 함께 쓰기
 
 ```java
@@ -94,3 +100,7 @@ static String firstLineOfFile(String path, String defaultVal) {
     }
 }
 ```
+
+Reference
+---
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/2%EC%9E%A5/9_try_finally%EB%B3%B4%EB%8B%A4%EB%8A%94_try_with_resources%EB%A5%BC_%EC%82%AC%EC%9A%A9%ED%95%98%EB%9D%BC_%ED%99%A9%EC%A4%80%ED%98%B8.md

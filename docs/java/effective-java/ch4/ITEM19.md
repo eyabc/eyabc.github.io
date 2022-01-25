@@ -1,12 +1,16 @@
-# ITEM19 상속을 고려해 설계하고 문서화 하라, 그러지 않았다면 상속을 금지하라
+---
+title: 19. 상속을 고려해 설계하고 문서화 하라, 그러지 않았다면 상속을 금지하라
+---
 
 ## 상속을 고려한 설계와 문서화
 
-상속용 클래스는 
-- 재정의 할 수 있는 메서드들을 내부적으로 어떻게 이용하는지([자기사용](./ITEM18.html#self-문제)) 문서로 남겨야 한다.
+:::tip 상속용 클래스는 
+재정의 할 수 있는 메서드들을 내부적으로 어떻게 이용하는지([자기사용](docs/java/effective-java/ch4/ITEM18#self-문제)) 문서로 남겨야 한다.
+:::
 
-> 재정의 가능
-> - public 과 protected 메서드 중 final 이 아닌 모든 메서드
+:::info 재정의 가능
+public 과 protected 메서드 중 final 이 아닌 모든 메서드
+:::
 
 ## Implementation Requirements
 API 문서의 메서드 설명 끝에서 Implementation Requirements 로 시작하는 절을 종종 볼 수 있다.

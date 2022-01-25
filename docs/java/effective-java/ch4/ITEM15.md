@@ -1,15 +1,17 @@
-# ITEM15 클래스와 멤버의 접근 권한을 최소화하라
+---
+title: 15. 클래스와 멤버의 접근 권한을 최소화하라
+---
 
 ## 잘 설계된 컴포넌트의 특징
 **정보 은닉** 혹은 **캡슐화**
 - 클래스 내부 데이터/구현을 완벽히 숨긴다 
-- 모든 클래스의 멤버의 가장 낮은 접근 수준 부   
+- 모든 클래스의 멤버의 가장 낮은 접근 수준 부여   
 → 구현과 API 의 분리
 
-- 오직 API 를 통해서만 다른컴포넌트와 소통하며 서로의 내부 동작 방식에는 신경쓰지 않음
+- 오직 API 를 통해서만 다른컴포넌트와 소통하며 ** *서로의 내부 동작 방식에는 신경쓰지 않음* **
   
 ## 정보 은닉의 장점
-시스템을 구성하는 컴포넌트들을 서로 독립시켜서   
+**시스템을 구성하는 컴포넌트들을 서로 독립시켜서**   
 - 개발, 테스트, 최적화, 적용, 분석, 수정을 개별적으로 할 수 있게 해준다.
 
 1. 시스템 개발속도 향상
@@ -34,21 +36,37 @@
         
 
 ## topLevel 클래스, 인터페이스
+:::tip
 public 일 필요가 없는 클래스의 접근 수준을 package-private 톱 레벨 클래스로 좁히자
+:::
 
 ### package-private
-- 해당 패키지 안에서만 이용가능
+해당 패키지 안에서만 이용가능
+
 - API 가 아닌 내부 구현이 되어 언제든 수정 가능
 - topLevel 클래스인 이유
     - 클래스 안에 private static 으로 중첩시키면, 바깥 클래스에서 접근할 수 있게 된다. 
-    
+
+:::tip
+한 클래스에서만 사용하는 package-private 톱레벨 클래스나 인터페이스는 이를 사용하는 클래스 안에 private static 으로 중첩시키자
+:::
+
 ### public
 - 공개 API
 - 하위 호환을 위해 영원히 관리 해야 함. 
 
 ## 멤버 접근 수준
-멤버
+:::note 멤버
 - 필드, 메서드, 중첩클래스, 중첩인터페이스
+:::
+
+
+|                 | 해당 클래스 안에서 접근 가능? | 같은 패키지 안에서 접근 가능? | 상속받은 클래스에서 접근 가능? | 외부에서 접근 가능? |
+| --------------- | ----------------------------- | ----------------------------- | ------------------------------ | ------------------- |
+| public          | O                             | O                             | O                              | O                   |
+| protected       | O                             | O                             | O                              | X                   |
+| package-private | O                             | O                             | X                              | X                   |
+| private         | O                             | X                             | X                              | X                   |
 
 ### private
 멤버를 선언한 톱 레벨 클래스에서만 접근 가능
@@ -65,10 +83,12 @@ package-private 의 접근 범위를 포함하며, 이 멤버를 선언한 클�
 ### public
 모든 곳에서 접근 가능
 
-> - 클래스의 공개 API 를 세심히 설계한다
-> - 그 외 모든 멤버는 private 으로 만든다
-> - 같은 패키지의 다른클래스가 접근해야 하는 멤버에 한하여 package-private 을 쓴다.
-> - 권한을 풀어주는 일을 자주 하게 된다면 컴포넌트를 더 분해해야 하는 것은 아닌지 다시 고민한다
+:::caution
+- 클래스의 공개 API 를 세심히 설계한다
+- 그 외 모든 멤버는 private 으로 만든다
+- 같은 패키지의 다른클래스가 접근해야 하는 멤버에 한하여 package-private 을 쓴다.
+- **권한을 풀어주는 일을 자주 하게 된다면 컴포넌트를 더 분해해야 하는 것은 아닌지 다시 고민한다**
+:::
 
 ### private / package-private 멤버
 - 모두 해당 클래스의 구현에 해당하므로 보통은 API 에 영향을 주지 않는다.
@@ -76,44 +96,50 @@ package-private 의 접근 범위를 포함하며, 이 멤버를 선언한 클�
 
 ### public 클래스의 protected
 - 공개 API, 영원히 지원되야 한다.
-- 내부 동작 방식을 API 문서에 적어 사용자에게 공개해야 한다.[19]
+- 내부 동작 방식을 API 문서에 적어 사용자에게 공개해야 한다.[19](/docs/java/effective-java/ch4/ITEM19)
 - 적을수록 좋다.
 
 ### 멤버 접근성을 최소화를 방해하는 제약
 상위 클래스의 메서드를 재정의 할 때, 접근수준을 더 좁게 할 수 없다. 
-- 리스코프치환원칙
-    - 상위 클래스의 인스턴스는 하위 클래스의 인스턴스로 대체해 사용할 수 있어야 한다
+
+:::info 리스코프치환원칙
+상위 클래스의 인스턴스는 하위 클래스의 인스턴스로 대체해 사용할 수 있어야 한다
+:::
     
 ### 테스트 목적의 접근 범위
 적당한 수준까지는 넓혀도 괜찮다
-- public 클래스의 멤버 private → package-private 까지만 허용
+- **public 클래스의 멤버 private → package-private 까지만 허용**
     - 테스트 코드를 테스트 대상과 같은 패키지에 두면 package-private 요소에 접근 가능
-- 테스트만을 위해 클래스, 인터페이스, 멤버를 공개 API 로 만들어서는 안된다.
+    
+:::caution
+테스트만을 위해 클래스, 인터페이스, 멤버를 공개 API 로 만들어서는 안된다.
+:::
 
-### public 클래스의 인스턴스 필드는 되도록 public 이 아니어야 한다.[16]
-다음과 같은 조건에, 불변식을 보장할 수 없다. (Thread safe 하지 않다)
+### public 클래스의 인스턴스 필드는 되도록 public 이 아니어야 한다. [16](/docs/java/effective-java/ch4/ITEM16)
+다음과 같은 조건에, **불변식을 보장할 수 없다. (Thread safe 하지 않다)**
 - 필드가 가변 객체를 참조할 때
 - final 이 아닌 인스턴스 필드를 public 으로 선언할 때
 
-> 상수
-> - public static final 필드로 공개해도 좋다.
-> - 대문자알파벳, _으로 단어 구분[68]
-> - 기본 타입 값이나, 불변 객체를 참조해야함[17]
+:::info 상수
+- public static final 필드로 공개해도 좋다.
+- 대문자알파벳, _으로 단어 구분 [68](/docs/java/effective-java/ch9/ITEM68)
+- 기본 타입 값이나, **불변 객체를 참조**해야함 [17](/docs/java/effective-java/ch4/ITEM17)
+:::
 
 ### 길이가 0 이 아닌 배열은 모두 변경 가능함
-- 클래스에서 public static final 배열필드를 두거나, 이 필드를 반환하는 접근자 메서드를 제공해서는 안된다.
+**클래스에서 public static final 배열필드를 두거나, 이 필드를 반환하는 접근자 메서드를 제공해서는 안된다.**
   
 해결책 : 클라이언트가 원하는 방향으로 둘 중 하나를 사용한다.
 
-1. 배열을 private 으로 만든다 → public 불변 리스트를 추가 한다.
-```java
+1. 배열을 private 으로 만든다 → **public 불변 리스트를 추가 한다.**
+```java title="public 불변 리스트" {3}
 private static final Thing[] PRIVATE_VALUES = { ... };
 public static final List<Thing> VALUES = 
     Collections.unmodifiableList(Arrays.asList(PRIVATE_VALUES));
 ```
 
-2. 배열을 private 으로 만든다 → 복사본을 반환하는 public 메서드를 추가한다 (방어적 복사)
-```java
+2. 배열을 private 으로 만든다 → **복사본을 반환하는 public 메서드를 추가한다 (방어적 복사)**
+```java {3} 
 private static final Thing[] PRIVATE_VALUES = { ... };
 public static final Thing[] values() {
     return PRIVATE_VALUES().clone();
@@ -121,9 +147,13 @@ public static final Thing[] values() {
 ```
 
 ## 자바9 모듈 시스템 도입
-- 패키지들의 묶음
+패키지들의 묶음
+
+:::note
 - 패키지 중 export (공개) 할 것들을 (관례상 module-info.java 파일에) 선언함.
 - protected / public 멤버라도 export 하지 않으면 모듈 외부에서는 접근 불가
+:::
+
 - 클래스를 외부에 공개하지 않으면서도 같은 모듈을 이루는 패키지 사이에서는 자유롭게 공개 가능
 - 모듈안의 public 클래스의 public/protected 형태로 사용하는 것은 흔치는 않다.
     - 패키지들 사이에서 클래스의 재배치로 해결가능하다
@@ -131,7 +161,7 @@ public static final Thing[] values() {
 ### 모듈의 접근 수준은 주의해서 사용해야 함
 모듈의 JAR 파일을 자신의 모듈경로가 아닌 애플리케이션의 classpath 에 두면 ??
 그 모듈 안의 모든 패키지는 마치 모듈이 없는 것처럼 행동함.
-- 모듈의 export 여부와 상관없이, public 클래스가 선언한 모든 public 혹은 protected 멤버를 모듈 밖에서도 접근 가능
+- 모듈의 export 여부와 상관없이, public 클래스가 선언한 모든 public 혹은 protected 멤버를 모듈 밖에서도 접근 가능하게 된다.
 
 ### 모듈의 장점을 사용하기 위해 할 일 
 1. 패키지를 모듈 단위로 묶는다
@@ -145,3 +175,6 @@ public static final Thing[] values() {
 그러나 JDK 외에도 모듈 개념이 널리 받아들여질지 예측하기는 아직 이르다.
 꼭 필요한 경우가 아니라면 당분간은 사용하지 않는 것이 좋다.
 
+Reference
+---
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/4%EC%9E%A5/15_%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80_%EB%A9%A4%EB%B2%84%EC%9D%98_%EC%A0%91%EA%B7%BC_%EA%B6%8C%ED%95%9C%EC%9D%84_%EC%B5%9C%EC%86%8C%ED%99%94%ED%95%98%EB%9D%BC_%ED%99%A9%EC%A4%80%ED%98%B8.md

@@ -1,37 +1,59 @@
-# ITEM13 clone 재정의는 주의해서 진행하라
+---
+title: 13. clone 재정의는 주의해서 진행하라
+---
 
+:::tip
 - Cloneable 은 여러가지 문제를 안고 있다.
-- 기본 원칙은 '복제 기능은 생성자와 팩터리를 이용하는게 최고다'
-- 단 배열만은 clone 메서드 방식이 가장 깔끔한, 규칙의 예외다.
+- 기본 원칙은 _복제 기능은 생성자와 팩터리를 이용하는게 최고다_
+- 단 **배열**만은 clone 메서드 방식이 가장 깔끔한, 규칙의 예외다.
+:::
 
 ## Cloneable
-- 복제해도 되는 클래스임을 명시하는 용도인 믹스인 인터페이스[20](./ITEM20)
-- 여러문제에도 불구하고 널리 쓰인다.
+:::note Cloneable
+- **복제해도 되는 클래스임을 명시하는 용도**인 믹스인 인터페이스 [20](/docs/java/effective-java/ch4/ITEM20)
+:::
+
+```java
+public interface Cloneable {}
+```
+여러문제에도 불구하고 널리 쓰인다.
+
+:::info 믹스인 
+다른 클래스의 부모클래스가 되지 않으면서 다른 클래스에서 사용할 수 있는 메서드를 포함하는 클래스
+- '상속' 이 아닌 '포함'
+:::
+
 
 ### Cloneable 의 문제점
-Cloneable 을 구현하는 것 만으로 외부 객체에서 clone 메서드를 호출 할 수 없는 이유
-- clone 메서드가 Cloneable 이 아닌 Object 에 선언되어 있다. 
+:::caution Cloneable 을 구현하는 것 만으로 외부 객체에서 clone 메서드를 호출 할 수 없다.
+- clone 메서드가 Cloneable 이 아닌 Object 에 선언되어 있다.
 - clone 메서드는 protected 이다
+:::
 
 ### Cloneable 인터페이스의 역할
 메서드 하나 없지만 놀라운 일을 한다.
 
-- Object 의 protected 메서드인 clone 의 동작 방식을 결정한다.
+:::note Cloneable 인터페이스의 역할
+Object 의 protected 메서드인 clone 의 동작 방식을 결정한다.
+:::
 - Cloneable 을 구현한 클래스의 인스턴스에서 clone 을 호출할 때
     - 그 객체의 필드들을 하나하나 복사한 객체를 반환한다.
 - 그렇지 않은 클래스의 인스턴스에서 호출하면 `CloneNotSupportedException` 을 던진다.
-    
-#### 일반적으로, 인터페이스를 구현한다는 것은
-해당 클래스가 그 인터페이스에서 정의한 기능을 제공한다고 선언하는 행위
 
-#### 이례적으로, Cloneable 은 
+:::info 일반적으로, 인터페이스를 구현한다는 것은
+해당 클래스가 그 인터페이스에서 정의한 기능을 제공한다고 선언하는 행위
+:::
+
+:::tip 이례적으로, Cloneable 은
 상위 클래스(Object)에 정의된 protected 메서드(clone)의 동작 방식을 변경함.
+:::
 
 ## clone 메서드의 일반 규약
 - 이 객체의 복사본을 생성해 반환
     - 복사는 구현한 클래스에 따라 다를 수 있음
 
-`true` 가 필수 
+:::note
+`true` 가 필수
 - `x.clone() != x`
 - `x.clone().getClass == x.getClass()`
 
@@ -42,33 +64,44 @@ Cloneable 을 구현하는 것 만으로 외부 객체에서 clone 메서드를 
 - 메서드가 반환하는 객체는 `super.clone` 을 호출해 얻어야 한다. 관례를 따른다면 다음은 참이다
     - `x.clone().getClass() == x.getClass()`
 - 반환된 객체와 원본 객체는 독립적 이어야 한다.
+:::
 
-### 취약점
+```java
+java.lang.Object
+protected native Object clone() throws CloneNotSupportedException;
+```
+
+### 일반 규약의 취약점
+:::caution
 Object 명세의 clone 메서드의 일반 규약은 허술하다.
+:::
 
-- clone 메서드가 super.clone 이 아닌, 
+- clone 메서드가 super.clone 이 아닌,
 생성자를 호출해 얻은 인스턴스를 반환해도 컴파일 문제 없음
 - 이 클래스의 하위 클래스에서 super.clone 호출 → 상위 클래스의 객체를 반환
-- final 클래스라면 이 문제에 해당하지 않는다. 
+- final 클래스라면 이 문제에 해당하지 않는다.
     - 그러나 super.clone 을 호출하지 않는다면, Cloneable 을 구현할 이유도 없다.
 
 ## 불변 상태만 참조하는 클래스용 clone 메서드
-- 모든 필드가 기본타입 이거나 불변 객체를 참조한다면 객체는 완벽히 복사된다.
-- 쓸데없는 복사를 지양한다는 관점에서, 불변 클래스는 굳이 clone 메서드를 제공하지 않는 것이 좋다.
+모든 필드가 기본타입 이거나 불변 객체를 참조한다면 객체는 완벽히 복사된다.
+:::tip
+쓸데없는 복사를 지양한다는 관점에서, 불변 클래스는 굳이 clone 메서드를 제공하지 않는 것이 좋다.
+:::
+
 ```java
 // PhoneNumber 는 불변 클래스
 // PhoneNumber 클래스는 Cloneable 를 구현 하였음
 @Override public PhoneNumber clone() {
-    // try-catch 
+    // try-catch
     // Object clone 메서드가 CloneNotSupportedException 을 던지도록 선언 되었기 때문
     try {
         // Object 의 clone 메서드는 Object 를 반환하지만
         // PhoneNumber 의 clone 메서드는 PhoneNumber를 반환한다.
-        return (PhoneNumber) super.clone(); 
+        return (PhoneNumber) super.clone();
     } catch (CloneNotSupportedException e) {
         // 일어날 수 없는 일이다. 절대 실행되지 않음
         // PhoneNumber 가 Cloneable 을 구현하지 않았을 때
-        throw new AssertionError(); 
+        throw new AssertionError();
     }
 }
 ```
@@ -76,18 +109,18 @@ Object 명세의 clone 메서드의 일반 규약은 허술하다.
 ## 가변 상태를 참조하는 클래스용 clone 메서드
 
 ### 문제점
-[ITEM7](./../ch2/ITEM7) 의 Stack 클래스의 
+[ITEM7](./../ch2/ITEM7) 의 Stack 클래스의
 `elements` 필드는 원본 Stack 인스턴스와 **똑같은 배열을 참조하여 불변식을 해친다.**
 ```java
 public class Stack {
     private Object[] elements;
     private int size = 0;
     private static final int DEFAULT_INITIAL_CAPACITY = 16;
-    
+
     public Stack() {
         elements = new Object[DEFAULT_INITIAL_CAPACITY];
     }
-    
+
     // ...
 }
 ```
@@ -106,24 +139,37 @@ public class Stack {
 }
 ```
 
-### 참조 타입이 final 일 때 문제점
+### 복제할 수 있는 클래스를 만들기 위해 final 을 제거해야 한다.
 final 필드는 새로운 값을 할당할 수 없다.
+> error! `result.elements = elements.clone();`
 
-error! `result.elements = elements.clone();`
+:::caution 참조 타입이 final 일 때 문제점
+일반용법, **가변 객체를 참조하는 필드는 final 로 선언하라** 와 충돌함
+:::
 
-복제할 수 있는 클래스를 만들기 위해 final 을 제거해야 한다.
-- 일반용법, **가변 객체를 참조하는 필드는 final 로 선언하라** 와 충돌함
+:::tip
+가변 필드를 super.clone() 으로 복제해버리면,
+값을 복제하는 것이 아니라 주소값을 복사하여 문제가 생길 수 있다.
+
+clone 은 원본 객체에 아무런 영향을 끼치지 않는 동시에 복제된 객체의 불변식을 보장해야 한다.
+clone() 에서 재귀적으로 가변 객체 참조 필드를 복사하면 된다.
+
+그런데 만약 가변 참조 필드가 final 이라면 새로운 값을 참조할 수 없으므로 위의 방식을 적용할 수 없다.
+가변 객체를 참조하는 필드는 final 로 선언하라 라는 용법과 충돌하게 된다.
+
+따라서 Cloneable 을 구현하면 final 을 때버려야 하는 상황이 올 수 있다.
+:::
 
 ### 참조 타입의 재귀적 clone 호출로 해결되지 않는 문제 : 해시테이블
 ```java
 public class HashTable implements Cloneable {
     private Entry[] buckets = ...;
-    
+
     private static class Entry {
         final Object key;
         Object value;
         Entry next;
-    
+
         Entry(Object key, Object value, Entry next) {
             this.key = key;
             this.value = value;
@@ -132,26 +178,27 @@ public class HashTable implements Cloneable {
     }
     // ...
 }
-``` 
+```
 
-#### 잘못된 clone 메서드 - 가변 상태를 공유함
-- 복제본은 자신만의 buckets 배열을 가진다.
-```java
+:::caution 잘못된 clone 메서드 - 가변 상태를 공유함
+복제본은 자신만의 buckets 배열을 가져야 한다.
+:::
+- 원본 복제본 모두 예기치 않은 동작이 일어날 수 있다.
+- **각 버킷을 구성하는 연결 리스트를 복사**하여 해결한다.
+
+```java title="buckets 배열은 원본과 같은 연결 리스트를 참조한다"
 @Override public HashTable clone() {
     try {
         HashTable result = (HashTable) super.clone();
         result.buckets = buckets.clone();
         return result;
     } catch (CloneNotSupportedException e) {
-              throw new AssertionError();
+        throw new AssertionError();
     }
 }
 ```
-buckets 배열은 원본과 같은 연결 리스트를 참조한다
-- 원본 복제본 모두 예기치 않은 동작이 일어날 수 있다.
-- **각 버킷을 구성하는 연결 리스트를 복사**하여 해결한다.
 
-#### 복잡한 가변 상태를 갖는 클래스용 재귀적 clone 메서드
+### 복잡한 가변 상태를 갖는 클래스용 재귀적 clone 메서드
 다음 예제는, 버킷이 너무 길지 않다면 잘 작동한다.
 리스트가 길면 스택오버플로를 일으킬 위험이 있기 때문에 좋은 방법은 아니다.
 
@@ -163,13 +210,13 @@ public class HashTable implements Cloneable {
         final Object key;
         Object value;
         Entry next;
-    
+
         Entry(Object key, Object value, Entry next) {
             this.key = key;
             this.value = value;
             this.next = next;
         }
-    
+
         // 이 엔트리가 가리키는 연결 리스트를 재귀적으로 복사
         Entry deepCopy() {
             return new Entry(key, value,
@@ -178,7 +225,7 @@ public class HashTable implements Cloneable {
     }
     /*
         super.clone 을 호출하여 얻은 객체의 모든 필드를 초기 상태로 설정한 다음
-        원본 객체의 상태를 다시 생성하는 고수준의 메서드들을 호출한다. 
+        원본 객체의 상태를 다시 생성하는 고수준의 메서드들을 호출한다.
         간단하고 우아한 코드를 얻게 되지만 저수준에서 바로 처리할 때보다는 느리다.
         Cloneable 아키텍처의 기초가 되는 필드 단위 객체 복사를 우회하기 때문에
         전체 Cloneable 아키텍처와는 어울리지 않는 방식이기도 하다.
@@ -187,23 +234,23 @@ public class HashTable implements Cloneable {
         try {
             HashTable result = (HashTable) super.clone();
             result.buckets = new Entry[buckets.length];
-            for (int i = 0; i < buckets.length; i++) 
+            for (int i = 0; i < buckets.length; i++)
                 if (buckets[i] != null)
                     result.buckets[i] = buckets[i].deepCopy();
             return result;
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError();            
+            throw new AssertionError();
         }
     }
     // ...
 }
 ```
 
-#### 엔트리 자신이 가리키는 연결 리스트를 반복적으로 복사한다.
+####  보완 - 엔트리 자신이 가리키는 연결 리스트를 반복적으로 복사한다.
 ```java
 Entry deepCopy() {
     Entry result = new Entry(key, value, next);
-    for (Entry p = result; p.next != null; p = p.next) 
+    for (Entry p = result; p.next != null; p = p.next)
         p.next = new Entry(p.next.key, p.next.value, p.next.next);
     return result
 }
@@ -211,19 +258,23 @@ Entry deepCopy() {
 
 ## 주의사항
 
-#### 1. clone 메서드 안에서 재정의 될 수 있는 메서드를 호출하면 안된다.[19]
-- 만약 clone 이 하위 클래스에서 재정의한 메서드를 호출하면, 하위 클래스는 복제 과정에서 자신의 상태를 교정할 기회를 잃어 버리게 되어 원본과 복제본의 상태가 달라질 수 있다. ??
+#### 1. clone 메서드 안에서 *재정의 될 수 있는 메서드*를 호출하면 안된다. [19](/docs/java/effective-java/ch4/ITEM19)
+---
+만약 clone 이 하위 클래스에서 재정의한 메서드를 호출하면, 
+- 하위 클래스는 복제 과정에서 자신의 상태를 교정할 기회를 잃어 버리게 되고 원본과 복제본의 상태가 달라질 수 있다.
 - 앞서 용법에서 `put(key, value)` 기능은 final 이거나 private 이어야 한다.
 
 #### 2. Object 의 clone 메서드는 CloneNotSupportedException 을 던진다. 그러나 재정의한 메서드는 그렇지 않다.
-- public 인 clone 메서드에서는 throws 절을 없애야 한다.[71]??
-    
+---
+public 인 clone 메서드에서는 throws 절을 없애야 한다.[71](/docs/java/effective-java/ch10/ITEM71)
+
 #### 3. 상속용 클래스는 Cloneable 을 구현해서는 안된다.
+---
 해결방법
 1. Object 를 상속할 때 처럼, Cloneable 구현 여부를 하위 클래스에서 선택할 수 있게함.
     - 제대로 작동하는 protected clone 메서드를 구현
     - CloneNotSupportedException 을 던질 수 있다고 선언
-     
+
 2. 하위 클래스에서 Cloneable 을 지원하지 못하게 하는 clone 메서드
 ```java
 @Override
@@ -232,8 +283,8 @@ protected final Object clone() throws ConeNotSupportedException {
 }
 ```
 
-#### 4. Cloneable 을 구현한 스레드 안전 클래스를 작성할 때는 clone 메서드도 동기화 필요[78]
-
+#### 4. Cloneable 을 구현한 스레드 안전 클래스를 작성할 때는 clone 메서드도 동기화 필요 [78](/docs/java/effective-java/ch11/ITEM78)
+---
 ## 요약
 Cloneable 을 구현하는 모든 클래스는 clone 을 재정의 해야 한다.
 - 접근제한자 : public
@@ -243,7 +294,7 @@ Cloneable 을 구현하는 모든 클래스는 clone 을 재정의 해야 한다
     - 복제본이 가진 객체 참조 모두가 복사된 객체를 가리키게 하기
     - 기본 타입 필드와 불변 객체 참조만 갖는 클래스라면 아무 필드도 수정할 필요가 없다.
     - 일련번호나 고유 ID 는 비록 기본 타입이나 불변일지라도 수정해 준다.
-    
+
 ## 복사의 또다른 방법
 Cloneable 의 방법은 복잡하다.
 Cloneable 을 이미 구현한 클래스를 확장한다면 어쩔 수 없이 clone 을 잘 동작하도록 구현해야 한다.
@@ -255,7 +306,7 @@ public Yum(Yum yum) { ... }
 ```
 
 ### 복사 팩터리
-복사 생성자를 모방한 정적 팩터리[1]
+복사 생성자를 모방한 정적 팩터리
 ```java
 public static Yum newInstance(Yum yum) { ... }
 ```
@@ -278,3 +329,30 @@ public static Yum newInstance(Yum yum) { ... }
 - 클라이언트는 원본의 구현 타입에 얽매이지 않고 복제본의 타입을 직접 선택할 수 있음
     - HashSet 객체 s 를 TreeSet 타입으로 복제할 수 있다.
     - `new TreeSet<>(s)`
+
+### Collections copy 정적 메서드의 내부 구현
+```java
+public static <T> void copy(List<? super T> dest, List<? extends T> src) {
+    int srcSize = src.size();
+    if (srcSize > dest.size())
+        throw new IndexOutOfBoundsException("Source does not fit in dest");
+
+    if (srcSize < COPY_THRESHOLD ||
+        (src instanceof RandomAccess && dest instanceof RandomAccess)) {
+        for (int i=0; i<srcSize; i++)
+            dest.set(i, src.get(i));
+    } else {
+        ListIterator<? super T> di=dest.listIterator();
+        ListIterator<? extends T> si=src.listIterator();
+        for (int i=0; i<srcSize; i++) {
+            di.next();
+            di.set(si.next());
+        }
+    }
+}
+```
+
+Reference
+---
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/3%EC%9E%A5/13_clone_%EC%9E%AC%EC%A0%95%EC%9D%98%EB%8A%94_%EC%A3%BC%EC%9D%98%ED%95%B4%EC%84%9C_%EC%A7%84%ED%96%89%ED%95%98%EB%9D%BC_%EA%B9%80%EB%AF%BC%EA%B1%B8.md
+- https://github.com/Meet-Coder-Study/book-effective-java/blob/main/3%EC%9E%A5/13_clone_%EC%9E%AC%EC%A0%95%EC%9D%98%EB%8A%94_%EC%A3%BC%EC%9D%98%ED%95%B4%EC%84%9C_%EC%A7%84%ED%96%89%ED%95%98%EB%9D%BC_%EB%B0%95%EC%B0%BD%EC%9B%90.md

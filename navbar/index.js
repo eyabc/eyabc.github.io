@@ -15,6 +15,7 @@ const ETC = require('./etc.js');
 const CSS = require('./css.js');
 const DEV_ETC = require('./DevEtc.js');
 const DOING = require('./doing.js');
+const LINUX = require('./linux.js');
 
 module.exports = {
   title: '나를 존중하는 시간',
@@ -26,12 +27,13 @@ module.exports = {
     ...makeTargetSelf([
       JAVASCRIPT,
       JAVA,
-      STUDY,
+      // STUDY,
       CSS,
       DEV_ETC,
-      ETC,
-      DOING,
-      {to: 'blog', label: 'Blog', position: 'left'},
+      LINUX,
+      // ETC,
+      // DOING,
+      // {to: 'blog', label: 'Blog', position: 'left'},
       // Please keep GitHub link to the right for consistency.
       {
         href: 'https://github.com/eyabc/eyabc.github.io',

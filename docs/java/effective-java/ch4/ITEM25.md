@@ -1,12 +1,13 @@
-# ITEM25 톱레벨 클래스는 한 파일에 하나만 담으라
+---
+title: 25. 톱레벨 클래스는 한 파일에 하나만 담으라
+---
 
 ## 한 파일에 멀티 톱레벨 클래스
 - 컴파일러 에러는 안난다.
 - 아무런 득이 없다
 - 심각한 위험이 있을 수 있다.
 
-Utensil.java
-```java
+```java title="Utensil.java"
 class Utensil {
     static final String NAME = "pan";
 }
@@ -14,9 +15,7 @@ class Dessert {
     static final String NAME = "cake";
 }
 ```
-
-Dessert.java
-```java
+```java title="Dessert.java"
 class Utensil {
     static final String NAME = "pot";
 }
@@ -25,7 +24,7 @@ class Dessert {
 }
 ```
 
-똑같은 클래스의 이름을 가지고 있는 두가지 파일이 존재할 때, 아래 컴파일 결과는 무엇일까? 
+**똑같은 클래스의 이름을 가지고 있는 두가지 파일**이 존재할 때, 아래 컴파일 결과는 무엇일까? 
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -51,7 +50,7 @@ public class Main {
 ## 문제 해결
 톱레벨 클래스 (Utensil, Dessert) 를 서로 다른 소스 파일로 분리한다
 
-- 굳이 한파일에 담고 싶으면 정적 멤버 클래스[24]를 사용한다
+- 굳이 한파일에 담고 싶으면 정적 멤버 클래스[24](/docs/java/effective-java/ch4/ITEM24) 를 사용한다
 ```java
 public class Test {
     public static void main(String[] args) {
