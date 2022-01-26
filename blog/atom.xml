@@ -2,11 +2,18 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://eyabc.github.io/blog</id>
     <title>Respect myself Blog</title>
-    <updated>2022-01-01T00:00:00.000Z</updated>
+    <updated>2022-01-26T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://eyabc.github.io/blog"/>
     <subtitle>Respect myself Blog</subtitle>
     <icon>https://eyabc.github.io/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[20220126]]></title>
+        <id>20220126</id>
+        <link href="https://eyabc.github.io/blog/2022/01/26/20220126"/>
+        <updated>2022-01-26T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[글쓰기의 힘이란..!]]></summary>
+    </entry>
     <entry>
         <title type="html"><![CDATA[20220101]]></title>
         <id>20220101</id>
