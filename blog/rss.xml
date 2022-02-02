@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>Respect myself Blog</title>
+        <title>창조적 독점 Blog</title>
         <link>https://eyabc.github.io/blog</link>
-        <description>Respect myself Blog</description>
+        <description>창조적 독점 Blog</description>
         <lastBuildDate>Wed, 26 Jan 2022 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
