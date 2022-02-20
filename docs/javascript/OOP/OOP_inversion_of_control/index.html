@@ -8,7 +8,7 @@
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="창조적 독점 Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="창조적 독점" href="/opensearch.xml"><title data-react-helmet="true">Inversion of Control | 창조적 독점</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="Inversion of Control | 창조적 독점"><meta data-react-helmet="true" name="description" content="IoC 가 달성되면 객체 지향 전체가 달성됐다고 볼 수 있다."><meta data-react-helmet="true" property="og:description" content="IoC 가 달성되면 객체 지향 전체가 달성됐다고 볼 수 있다."><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/javascript/OOP/OOP_inversion_of_control"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/javascript/OOP/OOP_inversion_of_control"><link rel="stylesheet" href="/styles.3ada4974.css">
 <link rel="preload" href="/styles.fd765784.js" as="script">
-<link rel="preload" href="/runtime~main.6ac9296e.js" as="script">
+<link rel="preload" href="/runtime~main.5ca0e847.js" as="script">
 <link rel="preload" href="/main.76e21469.js" as="script">
 <link rel="preload" href="/1.183ba78a.js" as="script">
 <link rel="preload" href="/3.e1b4a4bc.js" as="script">
@@ -17,7 +17,7 @@
 <link rel="preload" href="/935f2afb.7af35d1e.js" as="script">
 <link rel="preload" href="/375.0fc5b5f9.js" as="script">
 <link rel="preload" href="/17896441.7326dbdc.js" as="script">
-<link rel="preload" href="/9956c384.e2009409.js" as="script">
+<link rel="preload" href="/9956c384.52e1370f.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -33,7 +33,7 @@
 참여할 객체 자체를 생성 할 수 없음.
 참여 할 객체를 상황에 맞게 생성하고 행위까지 위임하기 위해 추상 팩토리메소드를 사용 함~</p></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/javascript/OOP/OOP_dependency_inversion"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« Dependency Inversion 제어의 역전</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/javascript/OOP/OOP_design_patterns"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Design Patterns »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#제어-역전의-개념과-필요성" class="table-of-contents__link">제어 역전의 개념과 필요성</a><ul><li><a href="#개념" class="table-of-contents__link">개념</a></li></ul></li><li><a href="#제어-역전-실제-구현" class="table-of-contents__link">제어 역전 실제 구현</a></li><li><a href="#추상-팩토리-메소드-패턴" class="table-of-contents__link">추상 팩토리 메소드 패턴</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
 <script src="/styles.fd765784.js"></script>
-<script src="/runtime~main.6ac9296e.js"></script>
+<script src="/runtime~main.5ca0e847.js"></script>
 <script src="/main.76e21469.js"></script>
 <script src="/1.183ba78a.js"></script>
 <script src="/3.e1b4a4bc.js"></script>
@@ -42,6 +42,6 @@
 <script src="/935f2afb.7af35d1e.js"></script>
 <script src="/375.0fc5b5f9.js"></script>
 <script src="/17896441.7326dbdc.js"></script>
-<script src="/9956c384.e2009409.js"></script>
+<script src="/9956c384.52e1370f.js"></script>
 </body>
 </html>
