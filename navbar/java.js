@@ -8,8 +8,10 @@
  */
 // eslint-disable-next-line header/header
 module.exports = {
+  activeBasePath: 'java',
   label: 'Java',
   position: 'left',
+  to: 'docs/java/index',
   items: [
     {
       type: 'doc',

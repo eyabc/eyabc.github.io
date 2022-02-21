@@ -12,4 +12,19 @@ module.exports = {
   activeBasePath: 'javascript',
   label: 'JavaScript',
   position: 'left',
+  items: [
+    {
+      type: 'doc',
+      docId: 'nest-js',
+      label: 'Nest JS',
+      to: 'docs/nest-js/index',
+    },
+    {
+      type: 'doc',
+      docId: 'dev-settings',
+      label: 'dev-settings',
+      to: 'docs/javascript/dev-settings/index',
+    },
+
+  ],
 };

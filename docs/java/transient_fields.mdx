@@ -1,0 +1,48 @@
+---
+title: transient fields 임시 필드
+
+---
+
+### transient keyword in Java
+- 직렬화에서 제외되는 필드이다.
+<small> a field should not be part of the serialization (which means saved, like to a file) process. </small>
+- 객체의 영구 상태에 속하지 않습니다.
+<small> Variables may be marked transient to indicate that they are not part of the persistent state of an object. </small>
+<small>were saved to persistent storage</small>
+
+```java
+class GalleryImage implements Serializable
+{
+    private Image image;
+    private transient Image thumbnailImage;
+
+    private void generateThumbnail()
+    {
+        // Generate thumbnail.
+    }
+
+    private void readObject(ObjectInputStream inputStream)
+            throws IOException, ClassNotFoundException
+    {
+        inputStream.defaultReadObject();
+        generateThumbnail();
+    }
+}
+```
+
+generateThumbnail 메서드는 thumbnailImage 를 호출하여 생성된 축소판 이미지입니다
+
+원본 이미지와 축소판 이미지를 모두 유지하는 대신 원본만 image 직렬화합니다.
+
+이것은 직렬화된 개체를 저장하는 데 더 적은 스토리지가 필요함을 의미합니다.
+(물론 이것은 시스템 요구 사항에 따라 바람직할 수도 있고 바람직하지 않을 수도 있습니다. 이것은 단지 예일 뿐입니다.)
+
+역직렬화 시 readObject 메서드가 호출되어 개체의 상태를 직렬화가 발생한 상태로 복원하는 데 필요한 모든 작업을 수행합니다.
+여기서 썸네일을 생성해야 하므로 readObject메서드를 호출하여 썸네일이 생성되도록 메서드를 재정의합니다
+
+추가 정보는 [Discover the secrets of the Java Serialization API](abc) (Sun Developer Network에서 원래 제공) 문서 transient에 특정 필드의 직렬화를 방지하기 위해 키워드가 사용되는 시나리오와 사용에 대해 설명하는 섹션이 있습니다.
+
+Origin
+---
+- https://stackoverflow.com/questions/910374/why-does-java-have-transient-fields
+- https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.3.1.3

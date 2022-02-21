@@ -1,0 +1,204 @@
+https://docs.nestjs.com/guards
+
+## Guards
+
+![guards](https://docs.nestjs.com/assets/Guards_1.png)
+
+:::note guards
+- `@Injectable()` 로 어노테이션된 클래스이다.
+- `CanActivate` interface 를 구현한다.
+- 하나의 책임을 갖는다.
+  - **런타임에, 특정조건(authorization::[permissions, roles, ACLs ...]) 에 따라 request 가 route handler 에 의해 처리될지 결정한다.**
+:::
+
+Authorization 은 일반적으로 전통적인 Express 에서 미들웨어로 처리된다.
+- 토큰 validation, request 객체에 프로퍼티 연결하기와 같은 작업은
+-  → 특정 route 컨텍스트(및 해당 메타데이터) 와 강력하게 연관이 없다.
+
+:::note Guards (CF. Middleware)
+미들웨어는 어떤 핸들러가 next() 다음에 호출될지 알지 못한다.
+- Guards
+  - ExecutionContext instance 실행컨텍스트 인스턴스에 접근할 수 있다.
+  - 다음에 실행되는 것을 알 수 있다.
+  - (exception filters, pipes, and interceptors) 와 마찬가지로 요청/응답 주기의 정확한 지점에 처리 논리를 삽입한다.
+  - 각각의 middleware 다음에 실행되지만, interceptor 와 pipe 이전에 실행됩니다.
+:::
+
+## Authorization guard
+```typescript title="auth.guard.ts" {4,5,10}
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest();
+    return validateRequest(request);
+  }
+}
+```
+
+Authorization 은 Guards 의 훌륭한 사례이다.
+- 특정 Routes 는 Permission 이 있는 호출자에게서만 이용가능해야 하기 때문임.
+
+앞으로의 예제는, Authenticated 유저로 가정합니다.
+- token 이 Request Header 에 있음
+- AuthGuard 는 token 을 추출하고, validate 하여, request 를 진행 및 중단을 결정한다.
+
+`validateRequest()` 는 필요한 구현에 따라 정교할 수도 있고 간단할 수 도 있다. <br />
+이 챕터에서는 validate 구현보단, validateRequest() 내에서, Guards 가 어떻게 request/response 사이클에 맞는지 보여준다.
+
+:::note Guard
+- 모든 guard 는 `canActivate()` 를 구현해야 한다.
+- `canActivate()` 반환값의 특징
+  - 타입: boolean
+  - 현재 요청이 허가여부를 가리킨다.
+  - Promise 나 Observable 으로, 동기 / 비동기적인 response 를 반환할 수 있다.
+  - Nest 는 반환값으로 다음 action 을 제어한다.
+    - `true`, request 진행
+    - `false`, request 거부
+:::
+
+## Execution context 실행 컨텍스트
+- `canActivate()` 함수의 단 하나의 인수로서 `ExecutionContext` 인스턴스를 가진다.
+- `ExecutionContext` 는 `ArgumentsHost` 상속한다.
+  - 위 예제에서는 ArgumentsHost 에 정의된, Request 객체를 참조하는 헬퍼 메서드를 사용하였다.
+- ExecutionContext 는 ArgumentsHost 을 상속하면서, 추가적인 헬퍼 메서드를 가지고 있다.
+  - 현재 실행 프로세스에서 추가적인 정보를 가지고 있다.
+  - Generic Guards 를 만드는데에 유용하다.
+  - 컨트롤러, 메서드, 실행 컨텍스트에서 광범위하게 적용가능하다.
+
+## Role-based Authentication
+특정 Role 을 가진 유저에게만 접근을 허가해 주는 Guard 이다.
+
+```typescript title="roles.guard.ts:: 기본 guard 템플릿 - 모든 요청을 허가한다."
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    return true;
+  }
+}
+```
+
+## Binding guards
+
+```typescript title="controller-scoped guard using the @UseGuards()" {2}
+@Controller('cats')
+// single argument or a comma-separated list of arguments
+@UseGuards(RolesGuard) // 프레임워크에게 인스턴스의 초기화를 위임하고, 의존성 주입을 가능하게 한다.
+// same as @UseGuards(new RolesGuard())
+export class CatsController {}
+```
+
+:::note Guard 의 스코프
+Pipe 와 ExceptionFilter 와 같이 정의할 수 있다.
+- controller-scoped
+- method-scoped
+- global-scoped
+:::
+
+```typescript title="global guard"
+const app = await NestFactory.create(AppModule);
+app.useGlobalGuards(new RolesGuard());
+```
+
+> <small>
+>  하이브리드 앱의 경우 useGlobalGuards() 메서드는 기본적으로 게이트웨이 및 마이크로 서비스에 대한 가드를 설정하지 않습니다(이 동작을 변경하는 방법에 대한 정보는 하이브리드 애플리케이션 참조). "표준"(비하이브리드) 마이크로 서비스 앱의 경우 useGlobalGuards()는 가드를 전역적으로 마운트합니다.
+> </small>
+
+
+
+```typescript title="app.module.ts:: 의존성 주입을 하려면, Guard 를 any 모듈에 직접 설정하면 된다."
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+
+@Module({
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    }
+  ]
+})
+export class AppModue {}
+```
+
+## 핸들러마다 Role 설정하기
+```typescript title="cats.controllers.ts" {2}
+@Post()
+@SetMetadata('roles', ['admin'])
+aysnc create(@Body() createCatDto: CreateCatDto) {
+  this.catsService.create(createDto);
+}
+```
+
+- Guard 의 가장 중요한 특징은 `execution context` 이다. Role 에 대해 알 수 있다.
+- Role 은 각각의 핸들러 마다 할당될 수 있다.
+- `@SetMetadata()`
+  - 커스텀 metadata 를 라우트 핸들러에게 제공해준다.
+
+- `'roles'` 는 key 이다. `['admin']` 특정한 값이다.
+
+- `@SetMetadata()` 를 라우트에 직접적으로 사용하는것은 좋지 않은 예시이다.
+- 아래처럼 데코레이터를 생성해서 사용하자.
+```typescript title="role.decorator.ts"
+improt { SetMetata } from '@nestjs/common';
+export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
+```
+```typescript title="cats.controller.ts"
+@Post()
+@Roles('admin')
+async create(@Body() craeteCatDto: CreateCatDto) {
+  this.catsService.create(createCatDto);
+}
+```
+
+## Putting it all together
+
+```typescript title="roles.guard.ts" {6,9,15}
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    if (!roles) {
+      return true;
+    }
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
+    return matchRoles(roles, user.roles);
+  }
+}
+```
+
+{6} `Reflector` 헬퍼 클래스
+- 라우트의 role(custom metadata) 에 접근하는 방법을 제공한다.
+- 프레임워크의 `@nestjs/core` 패키지에서 제공한다.
+
+{15} `matchRoles()` 의 로직은 필요에 따라 간단하거나 정교할 수 있다.
+-  이 챕터의 주요 포인트는, Guard 가 request/response 사이클에 맞는 방법을 보여주는 것이다.
+
+
+```json title="부적절한 권한으로부터의 endpoint 를 요청하였을 때, Nest 가 다음을 자동으로 reponse 로 리턴한다."
+{
+  "statusCode": 403,
+  "message": "Forbidden resource",
+  "error": "Forbidden"
+}
+```
+
+- guard 가 `false` 를 반환하면, 프레임워크는 `ForbiddenException` 에러를 던진다.
+- `throw new UnauthorizedException();`  같이 guard 에서 다른 에러를 던진다면, 전역 예외 처리 필터에 의해 처리 될 것이다.
+
+

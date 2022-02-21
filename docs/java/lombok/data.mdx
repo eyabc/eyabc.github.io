@@ -1,0 +1,54 @@
+---
+title: Lombok - @Data
+---
+
+<img alt="image" height="400"
+     src="https://user-images.githubusercontent.com/31977543/151168472-4b2cafbc-1d85-40d8-b8e7-028c41e382af.png" />
+
+## @Data 가 generate 하는 것들
+generates all the boilerplate
+
+- `@Getter` 모든 field 에 대한 getters
+- `@ToString` toString 메서드
+- `@EqualsAndHashCode` hashCode 메서드 equals 메서드 implementaions, 모든 [non-transient fields](/docs/java/transient_fields) 를 체크한다.
+- `@Setter` non final field 에 대한 모든 setter
+- `@RequiredArgsConstructor` 생성자 <br/>
+<small> 명시적으로 작성된 생성자가 있으면 Data는 생성자를 생성하지 않음 </small>
+
+initializer 가 없는 모든 non-final fields 는 `@NonNull` 어노테이션이 붙는다.
+
+## 이름이 있는 static 생성자 메서드 생성
+`@Data(staticConstructor = "of")`
+- 기본 생성자는 private 으로 생성 된다.
+
+## getter 와 setter 의 접근자
+기본적으로 public 으로 생성
+
+@Getter(`AccessLevel.NONE`), @Setter(`AccessLevel.NONE`)
+- private 으로 생성하는 방법
+
+## transient & static 필드는 제외 된다.
+
+## 이미 정의된 메서드가 존재할 때
+- lombok 은 이미 정의된 메서드를 생성하지 않음
+- lombok 이 생성하는 메서드와 사용자가 정의한 메서드가 parameter 가 다르더라도
+롬복은 메서드를 생성하지 않음.
+- lombok 메서드를 생성하고 싶다면 메서드에 `@lombok.experimental.Tolerate` 을 선언한다.
+
+## Generic 클래스의 생성자
+```java
+@Data(staticConstructor="of") class Foo<T> {
+    private T x;
+}
+
+Foo.of(5);  // new Foo<Integer>(5);
+```
+
+
+
+Origin
+---
+https://projectlombok.org/features/Data
+
+
+

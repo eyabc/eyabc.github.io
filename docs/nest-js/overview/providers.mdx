@@ -1,0 +1,70 @@
+
+## 공급자로서 주입되는 대상들
+- Nest 런타임 시스템에 위임된다.
+- services, repositories, factories, helpers ...
+
+## Service
+Controller 의 공급자
+
+`@Injectable()`
+- Nest IoC 컨테이너에서 관리할 수 있는 클래스임을 선언.
+
+```typescript {3} title="CLI with '$ nest g service cats'"
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class CatsService { }
+```
+
+```typescript {3} title="생성자 기반 의존성 주입"
+@Controller('cats')
+export class CatsController {
+  constructor(private catsService: CatsService) {}
+}
+```
+
+## Scopes
+Provider 는 어플리케이션 수명주기와 동기화된 수명을 갖는다.
+(커스텀가능)
+
+## Custom Providers
+공급자를 정의하는 방법
+
+you can use plain values, classes, and either asynchronous or synchronous factories.
+
+## Optional Providers
+```typescript {3,5}
+import { Injectable, Optional, Inject } from '@nestjs/common';
+
+@Injectable()
+export class HttpService<T> {
+  constructor(@Optional() @Inject('HTTP_OPTIONS') private httpClient: T) {}
+} // @Inject('HTTP_OPTIONS') default Value
+```
+
+## Property-based, 속성 기반 주입
+```typescript {5,6}
+import { Injectable, Inject } from '@nestjs/common';
+
+@Injectable()
+export class HttpService<T> {
+  @Inject('HTTP_OPTIONS')
+  private readonly httpClient: T;
+}
+```
+최상위 클래스를 확장한 하위 클래스에서 `super` 를 통한 주입의 번거로움 해결
+- 이외, [생성자 주입을 선호한다](/..)
+
+## 공급자 등록 app.module.ts
+```typescript {3}
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class AppModule {}
+```
+
+## 디렉터리 구조
+![image](https://user-images.githubusercontent.com/31977543/152130934-b9fb5d8e-26f4-4405-b0b9-dea90328074a.png)
+
+

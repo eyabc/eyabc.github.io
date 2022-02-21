@@ -1,0 +1,31 @@
+yarn workspaces -> mono repo
+
+## terms
+project
+- workspaces, repository itself
+
+workspace
+- local package made up from your own sources from that same project.
+
+worktree
+- list their own child workspaces.
+
+Any project contains at least one workspace: the root one.
+
+##  declare a worktree
+```json title="/package.json"
+"workspaces": [ ".packages/*” ]
+```
+packages 에 있는 모든 폴더를 쓰겠다. (정규식)
+
+
+## Babel
+- [바벨 저장소](https://github.com/babel/babel)에 보면, package.json 이 있다.
+- packages 의 하위 폴더들은 각각 package.json 을 가지고 있음.
+- node_modules 가 공유됨
+
+![image](https://user-images.githubusercontent.com/31977543/154635434-5e64baf3-d1ca-4a02-82e8-559b6929455d.png)
+
+Origin
+-
+https://yarnpkg.com/features/workspaces

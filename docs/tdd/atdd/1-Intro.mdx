@@ -1,0 +1,195 @@
+![image](https://user-images.githubusercontent.com/31977543/150976959-9a8a3842-8385-4c1e-ae7f-deb1ef408335.png)
+
+
+뇌피셜 <small>인수 테스트를 작성하려면.. 요구사항을 명확하게 이해해야 합니다.</small> <br/>
+<small>요구사항을 명확하게 이해하지 못하면. 인수 테스트 작성이 어렵습니다. </small>
+
+```
+지하철 노선에 구간을 등록하는 기능을 구현
+새로운 구간의 상행역은 현재 등록되어있는 하행 종점역이어야 한다.
+새로운 구간의 하행역은 현재 등록되어있는 역일 수 없다.
+새로운 구간 등록시 위 조건에 부합하지 않는 경우 에러 처리한다....?????
+```
+요구사항에서 구간과 구간 사이에는 구간을 등록하는 것에 대한 설명은..?<br/>
+----> <small> 현재 미션에서는 고려하지 않고 추후미션에서 나온다는 것을 경험자를 통해 알수 있었음... </small> <br/>
+구간과 노선이 어떤 관계지.. ? <br/>
+----> <small> 요구사항 페이지의 가장 아래에 기술되어 있어 앞부분만 보아서 요구사항의 도메인 파악이 어려움 존재 </small> <br/>
+*전반적인 요구사항을 이해해야 인수테스트의 시나리오 작성 가능*
+
+---
+*요구사항을 명확하게 이해함으로서, 개발 과정 사이에 많은 오류를 줄이며 생산성을 높일 수 있습니다.*
+
+
+### ATDD란?
+- 원래는 **다양한 관점을 가진 팀원(기획, 개발, 테스트 등)들과 협업을 위한** 애자일 방법 중 하나
+- 다른 관점에서 원활한 커뮤니케이션 없이 논의를 한다면 서로 다른 결과물을 상상하여 작업을 진행할 수 있음
+- 따라서 프로덕트 결과물이 나오는 시점에서야 이해하고 있던 내용이 다름을 인지하게 되는 경우 발생
+- ATDD는 이러한 리스크를 사전에 방지하고자 기획 단계부터 인수 테스트를 통해 공통의 이해를 도모하여 프로젝트를 진행
+
+
+### ATTD 는 시나리오 기반 테스트를 합니다.
+도메인이나 기술에 대한 배경 지식이 없어도 이해할 수 있음
+- 다양한 관점을 가진 팀원(기획, 개발, 테스트 등)들과 협업가능!
+
+### 시나리오
+뉴스줌에 처음 적응할 때, 도메인에 대한 이해가 부족하여 기능을 만드는데 많은 코드를 고쳐야만 했습니다.
+TDD만 알던시절...
+
+1년이 지나, 저와 같이 뉴스줌을 담당할 팀원분이 새로 오셨습니다. 👏👏👏👏
+
+새로운 팀원 분은 오자마자 뉴스줌 대선TF 에 합류를 하게되었습니다. 😭😭😭😭
+
+라떼와 같이 시행 착오 겪을 시간이 없습니다....
+
+구현해야 할 기능들을 노션으로 정리해 드린 후, Q&A 시간을 가진 후, 이해한 내용을 바탕으로, diagram 까지 요구합니다...
+
+<img src="https://user-images.githubusercontent.com/31977543/150981706-b2d4cb35-c905-4a78-91b6-80bcc3467c36.png" height={300} />
+
+<img src="https://user-images.githubusercontent.com/31977543/150982938-720b7c72-e76f-4770-85d5-154ea6ac78f6.png" height={300} />
+
+흠..그래도 뭔가 부족합니다 🤔
+
+### ATDD 는 어떻게 할까?
+```
+Feature: 지하철 노선 관련 기능
+  Scenario: 지하철 노선을 생성한다.
+    When 지하철 노선을 생성 요청한다.
+    Then 지하철 노선이 생성된다.
+  Scenario: ....
+```
+
+
+#### 1. 도메인을 정의합니다.
+
+```java title="지하철 노선 관리 기능"
+@DisplayName("지하철 노선 관리 기능")
+@SpringBootTest(...)
+class LineAcceptanceTest extends AcceptanceTest {}
+```
+
+#### 2. 도메인에 대한 행위를 시나리오로 정의합니다.
+```java title="지하철 노선을 생성한다."
+/**
+ * Given 지하철역이 두개 주어지고
+ * When 지하철 노선 생성을 요청 하면
+ * Then 지하철 노선 생성이 성공하고
+ * Then 구간이 새로 만들어 진다.
+ */
+@DisplayName("지하철 노선 생성")
+@Test
+void createLine() {
+  // given
+
+  // when
+
+  // when
+}
+```
+
+```java title="지하철 노선을 삭제한다."
+/**
+ * Given 존재하지 않는 지하철역으로
+ * When 지하철 노선 생성 요청 하면
+ * Then 지하철 노선 생성이 실패한다.
+ */
+@DisplayName("지하철 노선 생성 시, 존재하지 않는 지하철역을 등록")
+@Test
+void createLineAsInvalidStation() {}
+
+/**
+ * Given 지하철역이 두개 주어지고
+ * Given 노선의 distance 를 1 미만 으로 주어질 때
+ * When 지하철 노선 생성 요청 하면
+ * Then 지하철 노선 생성이 실패한다.
+ */
+@DisplayName("지하철 노선 생성 시, 노선의 distance 를 1 미만 으로 입력")
+@Test
+void createLineAsInvalidDistance() { }
+```
+등...
+
+#### 3. 테스트 코드를 작성한다.
+```java
+/**
+ * Given 지하철역이 두개 주어지고
+ * When 지하철 노선 생성을 요청 하면
+ * Then 지하철 노선 생성이 성공하고
+ * Then 구간이 새로 만들어 진다.
+ */
+@DisplayName("지하철 노선 생성")
+@Test
+void createLine() {
+    // Given -> API 를 호출하기 위한 조건 및 전제
+    long 강남역_id = 지하철역_생성_요청(StationRequest.of(강남역))
+            .jsonPath().getLong("id");
+    long 역삼역_id = 지하철역_생성_요청(StationRequest.of(역삼역))
+            .jsonPath().getLong("id");
+
+    // when -> API 호출
+    ExtractableResponse<Response> response = 지하철_노선_생성_요청(LineRequest.of(_2호선, _2호선_COLOR, 강남역_id, 역삼역_id, 7));
+
+    // then -> 검증
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    assertThat(response.jsonPath().getString("name")).isEqualTo(_2호선);
+    assertThat(isNull(response.jsonPath().get("id"))
+                    || isNull(response.jsonPath().get("createdDate"))
+                    || isNull(response.jsonPath().get("modifiedDate"))).isFalse();
+    assertThat(response.jsonPath().getString("color")).isEqualTo(_2호선_COLOR);
+    List<Station> stations = response.jsonPath().get("stations");
+    assertThat(stations.size()).isEqualTo(2);
+}
+
+public static ExtractableResponse<Response> 지하철역_생성_요청(StationRequest params) {
+    return RestAssured.given().log().all()
+            .body(params)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post(STATION_API_PATH)
+            .then().log().all()
+            .extract();
+}
+
+public static ExtractableResponse<Response> 지하철_노선_생성_요청(LineRequest lineRequest) {
+    return RestAssured
+            .given().log().all()
+            .body(lineRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().post(LINE_CONTROLLER_COMMON_PATH)
+            .then().log().all().extract();
+}
+```
+> 인수 테스트는 블랙 박스 테스트의 성격을 가지는게 좋습니다.
+시스템 내부 코드를 가능한 직접 호출하지 말고 외부에서 요청하는 방식으로 검증하는 것을 추천합니다.
+
+<img height="300" src="https://user-images.githubusercontent.com/31977543/150988188-cf80b983-5ea7-46cc-a467-f41e1a774a11.png"/>
+
+
+#### 4. API 를 구현합니다.
+```java
+@RestController
+@RequestMapping("/lines")
+public class LineController {
+  private LineService lineService;
+
+  public LineController(LineService lineService) {
+      this.lineService = lineService;
+  }
+
+  @PostMapping
+  public ResponseEntity<LineResponse> createLine(@RequestBody LineRequest lineRequest) {
+      try {
+          LineResponse line = lineService.saveLine(lineRequest);
+          return ResponseEntity.created(URI.create("/lines/" + line.getId())).body(line);
+      } catch (DataIntegrityViolationException e) {
+          return new ResponseEntity<>(HttpStatus.CONFLICT);
+      }
+  }
+}
+```
+
+#### 5. 구현한 API 가 시나리오(요구사항) 대로 잘 동작하는지 검증하기 위해 앞서 작성한 테스트 코드를 실행합니다.
+<img src="https://user-images.githubusercontent.com/31977543/150987146-d9e53ec1-f135-4d86-bb57-94b99a9019c2.png" height={400}/>
+
+Origin
+---
+- NextStep ATDD 과정

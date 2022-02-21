@@ -18,9 +18,9 @@ const DOING = require('./doing.js');
 const LINUX = require('./linux.js');
 
 module.exports = {
-  title: '나를 존중하는 시간',
+  title: '창조적 독점',
   logo: {
-    alt: 'Respect myself',
+    alt: '창조적 독점',
     src: 'img/logo.svg',
   },
   items: [
@@ -33,7 +33,7 @@ module.exports = {
       LINUX,
       // ETC,
       // DOING,
-      // {to: 'blog', label: 'Blog', position: 'left'},
+      {to: 'blog', label: 'Blog', position: 'left'},
       // Please keep GitHub link to the right for consistency.
       {
         href: 'https://github.com/eyabc/eyabc.github.io',

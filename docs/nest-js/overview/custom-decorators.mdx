@@ -1,0 +1,135 @@
+https://docs.nestjs.com/custom-decorators
+
+## Custom route decorators
+
+Nest 는 데코레이터 중심으로 구축되었다.
+
+:::note [ES2016 decorator](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841)
+- 함수를 반환하고, target, name, property 를 인수로 가질 수 있는 표현식
+- @ character 를 class, method, property Top 에 데코레이팅 할 수 있다.
+:::
+
+
+## Param decorators
+Nest 가 제공하는 Param decorators 는,
+- HTTP route handler 와 함께 쓰인다.
+
+|  |  |
+|---|---|
+| `@Request()`, `@Req()`	| req |
+| `@Response()`, `@Res()*`	| res |
+| `@Next()` |	next |
+| `@Session()` | req.session |
+| `@Param(key?: string)` |	req.params / req.params[key] |
+| `@Body(key?: string)` |	req.body / req.body[key] |
+| `@Query(key?: string)` |	req.query / req.query[key] |
+| `@Headers(name?: string)` |	req.headers / req.headers[name] |
+| `@Ip()` |	req.ip |
+| `@HostParam()` | 	req.hosts |
+
+
+custom decorators 가 유용한 이유
+- note.js 에서는, 프로퍼티들을 Request 객체에 붙이는 것이 관습니다.
+- 프로퍼티들을 각각의 route handler 에게서 추출할 수 있다.
+```typescript
+const user = req.user;
+```
+
+`@User` 데코레이터를 사용함으로써, 코드를 가독성있게 할 수 있다.
+```typescript title="user.decorator.ts"
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+
+export const User = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user;
+  }
+);
+```
+```typescript
+@Get()
+aysnc findOne(@User() user: UserEntity) {
+  console.log(user)
+}
+```
+
+## Passing data
+```typescript title="사용자 Entity"
+{
+  "id": 101,
+  "firstName": "Alan",
+  "lastName": "Turing",
+  "email": "alan@email.com",
+  "roles": ["admin"]
+}
+```
+데코레이터의 동작이 Condition 에 따라 달라지면, Data Parameter 를 사용하여, <br/>
+decorator's 팩터리 함수에 argument 를 전달 할 수 있다.
+
+```typescript title="key 로 request 객체에서 속성을 추출하는 커스텀 데코레이터"
+@Get()
+async findOne(@User('firstName') firstName: string) {
+  console.log(`Hello ${firstName}`);
+}
+```
+
+```typescript title="user.decorator.ts"
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+export const User = createParamDecorator(
+  (data: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const user = request.user;
+    return data ? user?.[data] : user;  // Condition 에 따라 반환하는 결과값이 다름
+  }
+);
+```
+
+:::tip `createParamDecorator<T>()`
+TS 에서 `createParamDecorator<T>()` 는 Generic 이다.
+
+타입안정성을 강제하기 위해서
+- `createParamDecorator<string>((data, ctx) => ...)` 보다 (any 타입)
+- `createParamDecorator((data: string, ctx) => ...)` 을 사용할 수 있다.
+:::
+
+
+## Working with pipes
+```typescript
+@Get()
+async findOne(
+  @User(new ValidationPipe({ validateCustomDecorators: true }))
+  user: UserEntity,
+) {
+  console.log(user);
+}
+```
+
+Nest 는 내장 매개변수(@Body(), @Param(), @Query) 와 동일한 방식응로 커스텀 매개변수 데코레이터를 처리한다.
+- 커스텀 매개변수 데코레이터에서도, 파이프를 실행할 수 있음.
+
+:::tip validateCustomDecorators
+`validateCustomDecorators` 옵션은 항상 true 이어야 한다.
+
+`ValidationPipe` 는 기본적으로, 커스텀 데코레이터가 달린 인자를 검사하지 않기 때문이다.
+:::
+
+## Decorator Composition
+
+```typescript
+@Get('users')
+@Auth('admin')
+findAllUsers() {}
+```
+
+```typescript title="auth.decorator.ts :: 인증과 관련된 모든 데코레이터를 단일 데코레이터로 결합"
+import { applyDecorators } from '@nestjs/common';
+export function Auth(...roles Role[]) {
+  return applyDecorators(
+    setMetadata('roles', roles),
+    UseGuards(AuthGuard, RolesGuard),
+    ApiBearerAuth(),
+    ApiUnauthorizedResponse({ description: 'Unauthorized' }),
+  );
+}
+```
+`applyDecorators` 여러 데코레이터를 구성하는 헬퍼 메서드

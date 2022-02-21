@@ -9,8 +9,8 @@
 const navbar = require('./navbar');
 
 module.exports = {
-  title: 'Respect myself',
-  tagline: 'Respect myself',
+  title: '창조적 독점',
+  tagline: '창조적 독점',
   url: 'https://eyabc.github.io',
   baseUrl: '/',
   onBrokenLinks:'warn',

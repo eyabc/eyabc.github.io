@@ -1,0 +1,130 @@
+https://docs.nestjs.com/modules
+
+![](https://docs.nestjs.com/assets/Modules_1.png)
+
+
+## Root Module (entryPoint)
+모듈은 Provider 를 캡슐화 한다.
+
+정의된 공급자만 주입가능함.
+```typescript
+@Module({
+  providers: [],    // Nest Injector에 의해 인스턴스화 되고 모듈에서 공유될 수 있음
+  controlelrs: [],  // 인스턴스화 해야하는 컨트롤러 세트
+  imports: [],      // 모듈을 import
+  exports: [],      // providers 의 하위 집합, import 된 다른 모듈에서 사용된다.
+})
+```
+
+## Feature Modules
+![image](https://user-images.githubusercontent.com/31977543/152132405-a1020ccd-7e3a-4cbc-9b30-03016146b31e.png)
+
+```typescript title="cats/cats.module.ts CLI with '$ nest g module cats'"
+import { Module } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {}
+```
+```typescript title="app.module.ts"
+import { Module } from '@nestjs/common';
+import { CatsModule } from './cats/cats.module';
+
+@Module({
+  imports: [CatsModule],
+})
+export class AppModule {}
+```
+
+## Shared Modules 공유 모듈
+![](https://docs.nestjs.com/assets/Shared_Module_1.png)
+
+Nest 모듈은 싱글턴이다. (default)
+- 공급자의 인스턴스는 여러 모듈에서 공유가능함.
+- 모든 모듈은 자동으로 공유모듈이다.
+
+```typescript title="cats.module.ts" {4}
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+  exports: [CatsService]    // cat 모듈은 import 한 모듈에서 사용가능하다.
+})
+export class CatsModule {}
+```
+
+## Module re-exporting
+```typescript {2,3}
+@Module({
+  imports: [CommonModule],
+  exports: [CommonModule],
+})
+export class CoreModule {}
+```
+
+## Dependency Injection Providers in Module
+설정 목적으로 사용한다.
+
+```typescript {3,6}
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+})
+export class CatsModule {
+  constructor(private catsService: CatsService) {}
+}
+```
+
+모듈 클래스 자체를 주입하게 되면 순환 종속성 문제가 발생한다.
+
+## Global Modules 전역 모듈
+- ex) DB Connections
+- 단 한번 등록한다.
+  - Root 나 Code-module 에서 등록함
+  - 사용 시 imports 를 할 필요 없음
+- 전역 모듈은 좋은 디자인은 아니며 일반적으로 module import 를 사용한다.
+
+```typescript {1}
+@Global()
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+  exports: [CatsService],
+})
+export class CatsModule {}
+```
+
+## 동적 모듈 Dynamic Module
+- ex) Database Module
+
+```typescript {9,11}
+import { Module, DynamicModule } from '@nestjs/common';
+import { createDatabaseProviders } from './database.providers';
+import { Connection } from './connection.provider';
+
+@Module({
+  providers: [Connection],
+})
+export class DatabaseModule {
+  static forRoot(entities = [], options?): DynamicModule {
+    const providers = createDatabaseProviders(options, entities);
+    return {
+      module: DatabaseModule,
+      providers: providers,
+      exports: providers,
+      // global: true, 전역 선언
+    };
+  }
+}
+```
+
+```typescript {2,3}
+@Module({
+  imports: [DatabaseModule.forRoot([User])],
+  exports: [DatabaseModule],
+})
+export class AppModule {}
+```

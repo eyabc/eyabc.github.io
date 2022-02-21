@@ -1,0 +1,211 @@
+https://docs.nestjs.com/middleware
+
+- route handler 전에 호출되는 함수
+![](https://docs.nestjs.com/assets/Middlewares_1.png)
+
+- request, response 객체에 접근 가능
+- middleware 의 `next()` 함수
+  - 어플리케이션의 response-request 사이클 내에 있다.
+
+- Nest 의 default middleware 는 <ins>express middleware</ins> 와 같다.
+
+- express middleware 의 기능
+  - 어떤 코드든 실행 가능하다.
+  - request/response 객체를 바꿀 수 있다.
+  - request-response 사이클을 종료한다.
+  - stack 의 다음 middleware 함수를 호출한다.
+  - 만약 현재 Middleware 함수가 request-response 사이클을 종료하지 못한다면,
+  `next()` 를 호출하여 다음 middleware 함수에게 제어를 넘긴다.
+  그렇지 않으면, 요청이 중단된다.
+
+## Custom Nest Middleware
+- 함수나 클래스 내에서 `@Injectable()` 으로 커스텀 Nest 미들웨어를 구현 가능
+- 클래스: `NestMiddleware` 를 구현해야한다.
+  ```typescript title="logger.middleware.ts" {5}
+  import { Injectable, NestMiddleware } from '@nestjs/common';
+  import { Request, Response, NextFunction } from 'express';
+
+  @Injectable()
+  export class LoggerMiddleware implements NestMiddleware {
+    use(req: Request, res: Response, next: NextFunction) {
+      console.log('Request...');
+      next();
+    }
+  }
+  ```
+- 함수 : 별도의 액션이 필요하지 않다.
+
+## Dependency Injection
+- 미들웨어의 의존성 주입은 fully supported 하다.
+- 모듈과 같이 의존성 주입이 가능하다.
+- 보통 생성자 주입 방식을 택한다.
+
+## 미들웨어 적용하기
+```typescript title="app.module.ts" {8,9,11}
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { CatsModule } from './cats/cats.module';
+
+@Module({
+  imports: [CatsModule],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('cats');
+  }
+}
+```
+- 모듈클래스는 `NestModule` 를 구현해야 한다.
+- 모듈 클래스 내에, `configure()` 메서드를 설정한다.
+
+```typescript title="cats 컨트롤러에 LoggerMiddleware 를 적용"
+consumer
+  .apply(LoggerMiddleware)
+  .forRoutes('cats');
+```
+
+```typescript title="/cats 경로의 GET 메서드에 한해 LoggerMiddleware 를 적용"
+consumer
+  .apply(LoggerMiddleware)
+  .forRoutes({ path: 'cats', method: RequestMethod.GET });
+```
+
+:::note
+configure 메서드를 async 메서드로 사용가능하다.
+:::
+
+## 라우트 와일드카드
+`forRoutes({ path: 'ab*cd', method: RequestMethod.ALL });`
+
+정규식 패턴을 사용할 수 있다.
+
+:::note
+fastify 라이브러리나, 버전에 따라 정규식이 다르게 해석될 수 있다.
+:::
+
+## MiddlewareConsumer
+- 헬퍼 클래스 이다.
+- 미들웨어 관리를 위한 여러 메서드를 제공한다.
+- 메서드는 체이닝으로 사용가능함.
+
+```typescript title="app.module.ts" {9,10}
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { CatsModule } from './cats/cats.module';
+
+@Module({
+  imports: [CatsModule],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('cats');
+  }
+}
+```
+
+### forRoutes() 의 인자
+```typescript title="MiddlewareConfigProxy forRoute"
+export interface MiddlewareConfigProxy {
+    exclude(...routes: (string | RouteInfo)[]): MiddlewareConfigProxy;
+    /**
+     * Attaches passed either routes or controllers to the currently configured middleware.
+     * If you pass a class, Nest would attach middleware to every path defined within this controller.
+     *
+     * @param {(string | Type | RouteInfo)[]} routes
+     * @returns {MiddlewareConsumer}
+     */
+    forRoutes(...routes: (string | Type<any> | RouteInfo)[]): MiddlewareConsumer;
+}
+```
+
+- 단일 혹은 Comma 로 구분된 복수 문자열
+- RouteInfo 객체
+  ```typescript title="RouteInfo"
+  export interface RouteInfo {
+    path: string;
+    method: RequestMethod;
+  }
+  ```
+- 단일 혹은  Comma 로 구분된 복수 컨트롤러 클래스
+
+### apply()
+```typescript title="MiddlewareConsumer apply"
+export interface MiddlewareConsumer {
+    /**
+     * @param {...(Type | Function)} middleware middleware class/function or array of classes/functions
+     * to be attached to the passed routes.
+     *
+     * @returns {MiddlewareConfigProxy}
+     */
+    apply(...middleware: (Type<any> | Function)[]): MiddlewareConfigProxy;
+}
+```
+`apply()` 메서드는 인자로 단일 혹은 복수 미들웨어를 사용할 수 있다.
+
+### 라우트 제외하기
+```typescript title="MiddlewareConfigProxy exclude" {8}
+export interface MiddlewareConfigProxy {
+    /**
+     * Excludes routes from the currently processed middleware.
+     *
+     * @param {(string | RouteInfo)[]} routes
+     * @returns {MiddlewareConfigProxy}
+     */
+    exclude(...routes: (string | RouteInfo)[]): MiddlewareConfigProxy;
+
+    forRoutes(...routes: (string | Type<any> | RouteInfo)[]): MiddlewareConsumer;
+}
+```
+
+```typescript {3,4,5,6}
+consumer
+  .apply(LoggerMiddleware)
+  .exclude(
+    { path: 'cats', method: RequestMethod.GET },
+    { path: 'cats', method: RequestMethod.POST },
+    'cats/(.*)',
+  )
+  .forRoutes(CatsController);
+```
+
+## Functional Middleware
+LoggerMiddleware : 멤버변수 / 추가적인 메서드 / 의존성 이 존재하지 않은 클래스 미들웨어
+- Functional Middleware 사용가능
+
+```typescript title="logger.middleware.ts"
+import { Request, Response, NextFunction } from 'express';
+
+export function logger(req: Request, res: Response, next: NextFunction) {
+  console.log(`Request...`);
+  next();
+};
+```
+
+## Multiple Middleware
+`consumer.apply(cors(), helmet(), logger).forRoutes(CatsController);`
+
+## Global Middleware 전역 미들웨어
+```typescript title="main.ts" {2}
+const app = await NestFactory.create(AppModule);
+app.use(logger);
+await app.listen(3000);
+```
+
+```typescript title="INestApplication use" {8}
+export interface INestApplication extends INestApplicationContext {
+    /**
+     * A wrapper function around HTTP adapter method: `adapter.use()`.
+     * Example `app.use(cors())`
+     *
+     * @returns {this}
+     */
+    use(...args: any[]): this;
+}
+```
+- `app.use()` 는 Functional Middleware 만 사용가능
+- 전역 미들웨어는 DI 컨테이너에 액세스 할 수 없다.
+
