@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="창조적 독점 Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="창조적 독점 Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="창조적 독점" href="/opensearch.xml"><title data-react-helmet="true">Ngnix | 창조적 독점</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="Ngnix | 창조적 독점"><meta data-react-helmet="true" name="description" content="Nginx"><meta data-react-helmet="true" property="og:description" content="Nginx"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/dev-etc/Ngnix"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/dev-etc/Ngnix"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.fd765784.js" as="script">
-<link rel="preload" href="/runtime~main.c07a7f04.js" as="script">
-<link rel="preload" href="/main.76e21469.js" as="script">
-<link rel="preload" href="/1.183ba78a.js" as="script">
-<link rel="preload" href="/3.e1b4a4bc.js" as="script">
-<link rel="preload" href="/1be78505.87ed96f6.js" as="script">
-<link rel="preload" href="/378.f3a93af0.js" as="script">
-<link rel="preload" href="/935f2afb.7af35d1e.js" as="script">
-<link rel="preload" href="/375.0fc5b5f9.js" as="script">
-<link rel="preload" href="/17896441.7326dbdc.js" as="script">
-<link rel="preload" href="/003201ba.246e3b80.js" as="script">
+<link rel="preload" href="/styles.0d081a27.js" as="script">
+<link rel="preload" href="/runtime~main.71b4179d.js" as="script">
+<link rel="preload" href="/main.0c998794.js" as="script">
+<link rel="preload" href="/1.0e70445d.js" as="script">
+<link rel="preload" href="/3.6683a965.js" as="script">
+<link rel="preload" href="/1be78505.9d9f000c.js" as="script">
+<link rel="preload" href="/382.ef0c5560.js" as="script">
+<link rel="preload" href="/935f2afb.7602bd87.js" as="script">
+<link rel="preload" href="/379.9f407f49.js" as="script">
+<link rel="preload" href="/17896441.192fc0ec.js" as="script">
+<link rel="preload" href="/003201ba.ac9d5226.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -25,16 +25,16 @@
 새로이 만들어 회피한다..
 예를들어 test.textory.io 의 프론트 도메인으로 접속을 하면
 proxy_pass:port 설정을 통해 CORS 를 회피하게 되는 것이다. </li></ul><p>회피 설정은 </p><div class="mdxCodeBlock_1zKU"><div class="codeBlockContent_actS"><div tabindex="0" class="prism-code language-shell codeBlock_tuNs thin-scrollbar"><div class="codeBlockLines_3uvA" style="color:rgb(36, 41, 46);background-color:#f6f8fa"><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">$ </span><span class="token function" style="color:rgb(111, 66, 193)">sudo</span><span class="token plain"> </span><span class="token function" style="color:rgb(111, 66, 193)">vi</span><span class="token plain"> etc/hosts 설정을 하고 </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">$ nginx -s reload</span></div></div></div><button type="button" aria-label="Copy code to clipboard" class="copyButton_2GIj">Copy</button></div></div><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="ngnixconf"></a>ngnix.conf<a class="hash-link" href="#ngnixconf" title="Direct link to heading">#</a></h2><ul><li>인증서를 발급받는다.(raks) </li><li>ngnix.conf 파일을 받는다. (raks)<ul><li>/Users/&quot;computerName&quot;/...<ul><li>computerName 부분을 수정한다. </li></ul></li></ul></li></ul><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="reference"></a>Reference<a class="hash-link" href="#reference" title="Direct link to heading">#</a></h2><ul><li>Nesoy Blog <a href="https://nesoy.github.io/articles/2017-06/Cross-Domain" target="_blank" rel="noopener noreferrer">https://nesoy.github.io/articles/2017-06/Cross-Domain</a></li><li>nginx 부팅시 자동실행 <a href="https://gist.github.com/SergeyMiracle/17753a17531a1f38015364fad159587b" target="_blank" rel="noopener noreferrer">https://gist.github.com/SergeyMiracle/17753a17531a1f38015364fad159587b</a></li></ul></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/dev-etc/맥에서 NodeJS 설치하는 방법"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« 맥에서 NodeJS 설치하는 방법</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/dev-etc/MacTerminalCommand"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">MacTerminalCommand »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#nginx" class="table-of-contents__link">Nginx</a></li><li><a href="#nginx-부팅시-자동-실행" class="table-of-contents__link">Nginx 부팅시 자동 실행</a></li><li><a href="#cross-domain" class="table-of-contents__link">Cross-Domain</a></li><li><a href="#cross-domain-배경" class="table-of-contents__link">Cross-Domain 배경</a></li><li><a href="#cross-domain-해결" class="table-of-contents__link">Cross-Domain 해결</a></li><li><a href="#ngnixconf" class="table-of-contents__link">ngnix.conf</a></li><li><a href="#reference" class="table-of-contents__link">Reference</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.fd765784.js"></script>
-<script src="/runtime~main.c07a7f04.js"></script>
-<script src="/main.76e21469.js"></script>
-<script src="/1.183ba78a.js"></script>
-<script src="/3.e1b4a4bc.js"></script>
-<script src="/1be78505.87ed96f6.js"></script>
-<script src="/378.f3a93af0.js"></script>
-<script src="/935f2afb.7af35d1e.js"></script>
-<script src="/375.0fc5b5f9.js"></script>
-<script src="/17896441.7326dbdc.js"></script>
-<script src="/003201ba.246e3b80.js"></script>
+<script src="/styles.0d081a27.js"></script>
+<script src="/runtime~main.71b4179d.js"></script>
+<script src="/main.0c998794.js"></script>
+<script src="/1.0e70445d.js"></script>
+<script src="/3.6683a965.js"></script>
+<script src="/1be78505.9d9f000c.js"></script>
+<script src="/382.ef0c5560.js"></script>
+<script src="/935f2afb.7602bd87.js"></script>
+<script src="/379.9f407f49.js"></script>
+<script src="/17896441.192fc0ec.js"></script>
+<script src="/003201ba.ac9d5226.js"></script>
 </body>
 </html>
