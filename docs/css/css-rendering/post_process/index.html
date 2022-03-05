@@ -7,18 +7,18 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="창조적 독점 Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="창조적 독점 Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="창조적 독점" href="/opensearch.xml"><title data-react-helmet="true">6-2 Post Process | 창조적 독점</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="6-2 Post Process | 창조적 독점"><meta data-react-helmet="true" name="description" content="그래픽 파이프 라인"><meta data-react-helmet="true" property="og:description" content="그래픽 파이프 라인"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/css/css-rendering/post_process"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/css/css-rendering/post_process"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.050f9290.js" as="script">
-<link rel="preload" href="/runtime~main.de4d3fc8.js" as="script">
-<link rel="preload" href="/main.c66cd361.js" as="script">
-<link rel="preload" href="/1.acdaefb7.js" as="script">
-<link rel="preload" href="/3.5599a69d.js" as="script">
-<link rel="preload" href="/1be78505.cd333e75.js" as="script">
-<link rel="preload" href="/385.9206f589.js" as="script">
-<link rel="preload" href="/935f2afb.c9982a88.js" as="script">
-<link rel="preload" href="/382.5106ed3b.js" as="script">
-<link rel="preload" href="/17896441.49cebee9.js" as="script">
-<link rel="preload" href="/2.be55f0c4.js" as="script">
-<link rel="preload" href="/26810508.aa0d0cec.js" as="script">
+<link rel="preload" href="/styles.90c6868f.js" as="script">
+<link rel="preload" href="/runtime~main.ac0c4055.js" as="script">
+<link rel="preload" href="/main.48f3922a.js" as="script">
+<link rel="preload" href="/1.7ba2fa19.js" as="script">
+<link rel="preload" href="/3.702b4201.js" as="script">
+<link rel="preload" href="/1be78505.76c37b36.js" as="script">
+<link rel="preload" href="/386.25322191.js" as="script">
+<link rel="preload" href="/935f2afb.162cb29e.js" as="script">
+<link rel="preload" href="/383.bea76081.js" as="script">
+<link rel="preload" href="/17896441.1464d7fe.js" as="script">
+<link rel="preload" href="/2.012a5424.js" as="script">
+<link rel="preload" href="/26810508.eae98c2e.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -29,17 +29,17 @@
 <strong>좌표의 색상</strong>이 무엇인지를 기억한다.</p></div></div><ul><li>기존의 브라우저는 버퍼의 개념이 없었기 때문에 fragment 까지만 처리가 되었다.</li><li>IE5.5 이후에 모든 브라우저는 버퍼를 거치고 그림을 그리게 되었다.</li></ul><p>예전에는 그림을 CPU 가 그렸고 그래프 파이프 라인을 타고 바로 그려졌다.
 지금은 그림을 GPU 가 그린다 (대부분)</p><ul><li>GPU 는 그림을 그릴 때, <strong>CPU 가 만들어낸 이미지를 GPU 에 올려줘야지만</strong> 그릴 수 있다.</li><li>GPU 에게 그림을 주기 위해서라도 <strong>버퍼 구조</strong>를 만들게 된다.</li><li>Post Process 단계를 CPU 에게 혹은 GPU 에게 넘겨줄 수 있다.</li><li><strong>GPU</strong> 가 훨씬더 빠르다.</li></ul><p>모던 브라우저는 CPU 를 이용해서 Geometry fragment 를 한다.
 그 이후에 가공한 버퍼를 GPU 에게 넘겨 준 후 PostProcess 를 처리한 후</p><p>디스플레이에 화면이 보여진다.</p><p>CPU 와 GPU 에게 일을 양분하면서 자원의 최대 효율을 끌어낼려고 한다.</p><p>post process 를 쓰는 대표적인 것은 ?</p><ul><li>transform</li><li>keyframe animation..</li></ul><p>이때 CPU 가 널널해진다.</p><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="reference"></a>Reference<a class="hash-link" href="#reference" title="Direct link to heading">#</a></h2><ul><li><a href="https://ktpark1651.tistory.com/208?category=681949" target="_blank" rel="noopener noreferrer">https://ktpark1651.tistory.com/208?category=681949</a></li></ul></div></article><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/css/css-rendering/Transform3D_SCSS_Compass"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« 6-1 Transform 3D &amp; SCSS &amp; Compass</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/css/css-rendering/Transform3D"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">6-3 Transform 3D »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#그래픽-파이프-라인" class="table-of-contents__link">그래픽 파이프 라인</a></li><li><a href="#버퍼" class="table-of-contents__link">버퍼</a></li><li><a href="#reference" class="table-of-contents__link">Reference</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.050f9290.js"></script>
-<script src="/runtime~main.de4d3fc8.js"></script>
-<script src="/main.c66cd361.js"></script>
-<script src="/1.acdaefb7.js"></script>
-<script src="/3.5599a69d.js"></script>
-<script src="/1be78505.cd333e75.js"></script>
-<script src="/385.9206f589.js"></script>
-<script src="/935f2afb.c9982a88.js"></script>
-<script src="/382.5106ed3b.js"></script>
-<script src="/17896441.49cebee9.js"></script>
-<script src="/2.be55f0c4.js"></script>
-<script src="/26810508.aa0d0cec.js"></script>
+<script src="/styles.90c6868f.js"></script>
+<script src="/runtime~main.ac0c4055.js"></script>
+<script src="/main.48f3922a.js"></script>
+<script src="/1.7ba2fa19.js"></script>
+<script src="/3.702b4201.js"></script>
+<script src="/1be78505.76c37b36.js"></script>
+<script src="/386.25322191.js"></script>
+<script src="/935f2afb.162cb29e.js"></script>
+<script src="/383.bea76081.js"></script>
+<script src="/17896441.1464d7fe.js"></script>
+<script src="/2.012a5424.js"></script>
+<script src="/26810508.eae98c2e.js"></script>
 </body>
 </html>
