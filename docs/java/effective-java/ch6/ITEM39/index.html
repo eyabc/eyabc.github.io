@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="함께 자라기 Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="함께 자라기 Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="함께 자라기" href="/opensearch.xml"><title data-react-helmet="true">39. 명명 패턴보다 애너테이션을 사용하라 | 함께 자라기</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="39. 명명 패턴보다 애너테이션을 사용하라 | 함께 자라기"><meta data-react-helmet="true" name="description" content="애너테이션으로 할 수 있는 일을 명명 패턴으로 처리할 이유는 없다."><meta data-react-helmet="true" property="og:description" content="애너테이션으로 할 수 있는 일을 명명 패턴으로 처리할 이유는 없다."><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/java/effective-java/ch6/ITEM39"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/java/effective-java/ch6/ITEM39"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.e437ce1f.js" as="script">
-<link rel="preload" href="/runtime~main.89330cf9.js" as="script">
-<link rel="preload" href="/main.1011c7aa.js" as="script">
-<link rel="preload" href="/1.533a2708.js" as="script">
-<link rel="preload" href="/3.c449d64e.js" as="script">
-<link rel="preload" href="/1be78505.949cbabe.js" as="script">
-<link rel="preload" href="/402.bdb4762b.js" as="script">
-<link rel="preload" href="/935f2afb.99e7f231.js" as="script">
-<link rel="preload" href="/399.a13e5947.js" as="script">
-<link rel="preload" href="/17896441.bf2482bb.js" as="script">
-<link rel="preload" href="/39af1905.96f1abf6.js" as="script">
+<link rel="preload" href="/styles.ee7c8104.js" as="script">
+<link rel="preload" href="/runtime~main.4ae4e763.js" as="script">
+<link rel="preload" href="/main.6c77e146.js" as="script">
+<link rel="preload" href="/1.59fcb85f.js" as="script">
+<link rel="preload" href="/3.ec858e6a.js" as="script">
+<link rel="preload" href="/1be78505.25fa1539.js" as="script">
+<link rel="preload" href="/403.3a976c17.js" as="script">
+<link rel="preload" href="/935f2afb.5601415f.js" as="script">
+<link rel="preload" href="/400.929d4362.js" as="script">
+<link rel="preload" href="/17896441.ff8d940a.js" as="script">
+<link rel="preload" href="/39af1905.28dfeccf.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -46,16 +46,16 @@
 </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                    ExceptionTest[] excTests = </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                        m.getAnnotationsByType(ExceptionTest.class);</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain" style="display:inline-block">
 </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                    for (ExceptionTest excTest : excTests) {</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                        if (excType.value().isInstance(exc)) {</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                            passed++;</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                            break;</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                        }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                    }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain" style="display:inline-block">
 </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                    if (passed == oldPassed)</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                        System.out.println(&quot;테스트 %s 실패: %s%n&quot;, m, exc);</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                } catch (Exception exc) {</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                    System.out.println(&quot;잘못 사용한 @ExceptionTest: &quot; + m);                    </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">                }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">            }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        System.out.println(&quot;성공: %d, 실패\: %d%n&quot;, passed, tests - passed);</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">    }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">}</span></div></div></div><button type="button" aria-label="Copy code to clipboard" class="copyButton_2GIj">Copy</button></div></div></div></article><div class="margin-vert--xl"><div class="row"><div class="col"></div><div class="col text--right"><em><small>Last updated on <time datetime="2021-07-21T15:54:13.000Z" class="docLastUpdatedAt_1gIo">7/22/2021</time></small></em></div></div></div><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/java/effective-java/ch6/ITEM38"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« 38. 확장할 수 있는 열거 타입이 필요하면 인터페이스를 사용하라</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/java/effective-java/ch6/ITEM40"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">40. @Override 애너테이션을 일관되게 사용하라 »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#명명-패턴의-단점" class="table-of-contents__link">명명 패턴의 단점</a></li><li><a href="#애너테이션" class="table-of-contents__link">애너테이션</a><ul><li><a href="#메타애너테이션-meta-annotation" class="table-of-contents__link">메타애너테이션 meta-annotation</a></li><li><a href="#마커-marker-애너테이션-타입-선언" class="table-of-contents__link">마커 (marker) 애너테이션 타입 선언</a></li><li><a href="#매개변수-하나를-받는-애너테이션-타입" class="table-of-contents__link">매개변수 하나를 받는 애너테이션 타입</a></li><li><a href="#배열-매개변수를-받는-애너테이션-타입-1" class="table-of-contents__link">배열 매개변수를 받는 애너테이션 타입 1</a></li><li><a href="#배열-매개변수를-받는-애너테이션-타입-2-repeatable" class="table-of-contents__link">배열 매개변수를 받는 애너테이션 타입 2 <em>@Repeatable</em></a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.e437ce1f.js"></script>
-<script src="/runtime~main.89330cf9.js"></script>
-<script src="/main.1011c7aa.js"></script>
-<script src="/1.533a2708.js"></script>
-<script src="/3.c449d64e.js"></script>
-<script src="/1be78505.949cbabe.js"></script>
-<script src="/402.bdb4762b.js"></script>
-<script src="/935f2afb.99e7f231.js"></script>
-<script src="/399.a13e5947.js"></script>
-<script src="/17896441.bf2482bb.js"></script>
-<script src="/39af1905.96f1abf6.js"></script>
+<script src="/styles.ee7c8104.js"></script>
+<script src="/runtime~main.4ae4e763.js"></script>
+<script src="/main.6c77e146.js"></script>
+<script src="/1.59fcb85f.js"></script>
+<script src="/3.ec858e6a.js"></script>
+<script src="/1be78505.25fa1539.js"></script>
+<script src="/403.3a976c17.js"></script>
+<script src="/935f2afb.5601415f.js"></script>
+<script src="/400.929d4362.js"></script>
+<script src="/17896441.ff8d940a.js"></script>
+<script src="/39af1905.28dfeccf.js"></script>
 </body>
 </html>

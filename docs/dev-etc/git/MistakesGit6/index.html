@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="함께 자라기 Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="함께 자라기 Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="함께 자라기" href="/opensearch.xml"><title data-react-helmet="true">MistakesGit6 | 함께 자라기</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="MistakesGit6 | 함께 자라기"><meta data-react-helmet="true" name="description" content="깃 사용자가 가장 흔히 저지르는 6가지 실수와 대처 방법"><meta data-react-helmet="true" property="og:description" content="깃 사용자가 가장 흔히 저지르는 6가지 실수와 대처 방법"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/dev-etc/git/MistakesGit6"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/dev-etc/git/MistakesGit6"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.e437ce1f.js" as="script">
-<link rel="preload" href="/runtime~main.89330cf9.js" as="script">
-<link rel="preload" href="/main.1011c7aa.js" as="script">
-<link rel="preload" href="/1.533a2708.js" as="script">
-<link rel="preload" href="/3.c449d64e.js" as="script">
-<link rel="preload" href="/1be78505.949cbabe.js" as="script">
-<link rel="preload" href="/402.bdb4762b.js" as="script">
-<link rel="preload" href="/935f2afb.99e7f231.js" as="script">
-<link rel="preload" href="/399.a13e5947.js" as="script">
-<link rel="preload" href="/17896441.bf2482bb.js" as="script">
-<link rel="preload" href="/f6144eea.50a27b69.js" as="script">
+<link rel="preload" href="/styles.ee7c8104.js" as="script">
+<link rel="preload" href="/runtime~main.4ae4e763.js" as="script">
+<link rel="preload" href="/main.6c77e146.js" as="script">
+<link rel="preload" href="/1.59fcb85f.js" as="script">
+<link rel="preload" href="/3.ec858e6a.js" as="script">
+<link rel="preload" href="/1be78505.25fa1539.js" as="script">
+<link rel="preload" href="/403.3a976c17.js" as="script">
+<link rel="preload" href="/935f2afb.5601415f.js" as="script">
+<link rel="preload" href="/400.929d4362.js" as="script">
+<link rel="preload" href="/17896441.ff8d940a.js" as="script">
+<link rel="preload" href="/f6144eea.95bf0db8.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -40,16 +40,16 @@
 복잡한 과정인 만큼 수작업에서 실수가 있을 수 있다.</p><p>다른 곳에서 동기화해야 하는 로컬 분기의 데이터를 삭제하는 경우 강제푸시 외에는 달리 동기화할 방법이 없다.
 전체 커밋 트리를 다시 써야하므로 사실상 원격에 완전히 새로운 히스토리를 쓰는 것이다.
 변경 이후 다른 모든 사람의 리포지토리는 더 이상 유효하지 않으므로 이들도 다시 작성된 리포지토리의 사본을 가져오도록 해야한다.</p><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="reference"></a>Reference<a class="hash-link" href="#reference" title="Direct link to heading">#</a></h2><ul><li><a href="http://www.itworld.co.kr/news/142318#csidx141596ceb4fa221a7af7cdd6402973f" target="_blank" rel="noopener noreferrer">http://www.itworld.co.kr/news/142318#csidx141596ceb4fa221a7af7cdd6402973f</a></li></ul></div></article><div class="margin-vert--xl"><div class="row"><div class="col"></div><div class="col text--right"><em><small>Last updated on <time datetime="2021-07-21T15:54:13.000Z" class="docLastUpdatedAt_1gIo">7/22/2021</time></small></em></div></div></div><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/dev-etc/git/git"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« git</div></a></div><div class="pagination-nav__item pagination-nav__item--next"></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#깃-사용자가-가장-흔히-저지르는-6가지-실수와-대처-방법" class="table-of-contents__link">깃 사용자가 가장 흔히 저지르는 6가지 실수와 대처 방법</a></li><li><a href="#마지막-커밋에-깜박하고-변경을-추가하지-않았을-때" class="table-of-contents__link">마지막 커밋에 깜박하고 변경을 추가하지 않았을 때</a><ul><li><a href="#실수-방지" class="table-of-contents__link">실수 방지</a></li></ul></li><li><a href="#로컬-마스터에-변경을-커밋했을-때" class="table-of-contents__link">로컬 마스터에 변경을 커밋했을 때</a><ul><li><a href="#실수-방" class="table-of-contents__link">실수 방</a></li></ul></li><li><a href="#파일이나-디렉터리를-버렸을-때" class="table-of-contents__link">파일이나 디렉터리를 버렸을 때</a></li><li><a href="#실수로-분기를-삭제했을-때" class="table-of-contents__link">실수로 분기를 삭제했을 때</a></li><li><a href="#git-push-로-원격-분기를-손상시켰을-때" class="table-of-contents__link">git push 로 원격 분기를 손상시켰을 때</a></li><li><a href="#공개-리포지토리에-비공개-정보를-커밋해버렸을-때" class="table-of-contents__link">공개 리포지토리에 비공개 정보를 커밋해버렸을 때</a></li><li><a href="#reference" class="table-of-contents__link">Reference</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.e437ce1f.js"></script>
-<script src="/runtime~main.89330cf9.js"></script>
-<script src="/main.1011c7aa.js"></script>
-<script src="/1.533a2708.js"></script>
-<script src="/3.c449d64e.js"></script>
-<script src="/1be78505.949cbabe.js"></script>
-<script src="/402.bdb4762b.js"></script>
-<script src="/935f2afb.99e7f231.js"></script>
-<script src="/399.a13e5947.js"></script>
-<script src="/17896441.bf2482bb.js"></script>
-<script src="/f6144eea.50a27b69.js"></script>
+<script src="/styles.ee7c8104.js"></script>
+<script src="/runtime~main.4ae4e763.js"></script>
+<script src="/main.6c77e146.js"></script>
+<script src="/1.59fcb85f.js"></script>
+<script src="/3.ec858e6a.js"></script>
+<script src="/1be78505.25fa1539.js"></script>
+<script src="/403.3a976c17.js"></script>
+<script src="/935f2afb.5601415f.js"></script>
+<script src="/400.929d4362.js"></script>
+<script src="/17896441.ff8d940a.js"></script>
+<script src="/f6144eea.95bf0db8.js"></script>
 </body>
 </html>
