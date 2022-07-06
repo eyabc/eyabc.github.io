@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Mindfulness Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Mindfulness Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Mindfulness" href="/opensearch.xml"><title data-react-helmet="true">Polymorphism | Mindfulness</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="Polymorphism | Mindfulness"><meta data-react-helmet="true" name="description" content="ES6 클래스"><meta data-react-helmet="true" property="og:description" content="ES6 클래스"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/javascript/OOP/OOP_polymorphism"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/javascript/OOP/OOP_polymorphism"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.7b63f67f.js" as="script">
-<link rel="preload" href="/runtime~main.e5051e33.js" as="script">
-<link rel="preload" href="/main.35ec171b.js" as="script">
-<link rel="preload" href="/1.ca932bcb.js" as="script">
-<link rel="preload" href="/3.dcc43a26.js" as="script">
-<link rel="preload" href="/1be78505.8e462968.js" as="script">
-<link rel="preload" href="/409.bb737967.js" as="script">
-<link rel="preload" href="/935f2afb.c0dae717.js" as="script">
-<link rel="preload" href="/406.094b4ff4.js" as="script">
-<link rel="preload" href="/17896441.36f346a1.js" as="script">
-<link rel="preload" href="/aeba19fb.b6731df4.js" as="script">
+<link rel="preload" href="/styles.a31fdaae.js" as="script">
+<link rel="preload" href="/runtime~main.6cbd141e.js" as="script">
+<link rel="preload" href="/main.253e72a1.js" as="script">
+<link rel="preload" href="/1.06359279.js" as="script">
+<link rel="preload" href="/3.687a2a20.js" as="script">
+<link rel="preload" href="/1be78505.c9d77f7e.js" as="script">
+<link rel="preload" href="/410.66e1130e.js" as="script">
+<link rel="preload" href="/935f2afb.02de1746.js" as="script">
+<link rel="preload" href="/407.61967c55.js" as="script">
+<link rel="preload" href="/17896441.d031eff3.js" as="script">
+<link rel="preload" href="/aeba19fb.f6237700.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -28,16 +28,16 @@ worker 인스턴스가 태어날 때, 가장 가까운 HardWorker Prototype 으�
 <img src="https://user-images.githubusercontent.com/31977543/110197906-e870db00-7e91-11eb-86ef-cb35fd9b08eb.png" alt="image"></p><p>프로토타입 체인을 통해서 대체 가능성을 달성한다.
 <img src="https://user-images.githubusercontent.com/31977543/110197979-646b2300-7e92-11eb-9824-ade468fcd3b6.png" alt="image">
 <img src="https://user-images.githubusercontent.com/31977543/110197985-6d5bf480-7e92-11eb-9627-e8e9ea6dd62b.png" alt="image"></p><p>자바스크립트는 Polymorphism 이 성립 → <em>객체지향 언어</em> </p></div></article><div class="margin-vert--xl"><div class="row"><div class="col"></div><div class="col text--right"><em><small>Last updated on <time datetime="2021-07-21T15:54:13.000Z" class="docLastUpdatedAt_1gIo">7/22/2021</time></small></em></div></div></div><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/docs/javascript/OOP/OOP_value_and_identifier_context"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">« Value Context vs Identifier Context</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/docs/javascript/OOP/OOP_object_essentials"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Object essentials 객체의 본질 »</div></a></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#polymorphism-대체-가능성-substitution" class="table-of-contents__link">Polymorphism: &quot;대체 가능성&quot; substitution</a></li><li><a href="#polymorphism-내적-일관성-internal-identity" class="table-of-contents__link">Polymorphism: &quot;내적 일관성&quot; internal identity</a></li><li><a href="#객체지향-언어의-polymorphism" class="table-of-contents__link">객체지향 언어의 Polymorphism</a></li><li><a href="#polymorphism-of-prototype" class="table-of-contents__link">Polymorphism of Prototype</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.7b63f67f.js"></script>
-<script src="/runtime~main.e5051e33.js"></script>
-<script src="/main.35ec171b.js"></script>
-<script src="/1.ca932bcb.js"></script>
-<script src="/3.dcc43a26.js"></script>
-<script src="/1be78505.8e462968.js"></script>
-<script src="/409.bb737967.js"></script>
-<script src="/935f2afb.c0dae717.js"></script>
-<script src="/406.094b4ff4.js"></script>
-<script src="/17896441.36f346a1.js"></script>
-<script src="/aeba19fb.b6731df4.js"></script>
+<script src="/styles.a31fdaae.js"></script>
+<script src="/runtime~main.6cbd141e.js"></script>
+<script src="/main.253e72a1.js"></script>
+<script src="/1.06359279.js"></script>
+<script src="/3.687a2a20.js"></script>
+<script src="/1be78505.c9d77f7e.js"></script>
+<script src="/410.66e1130e.js"></script>
+<script src="/935f2afb.02de1746.js"></script>
+<script src="/407.61967c55.js"></script>
+<script src="/17896441.d031eff3.js"></script>
+<script src="/aeba19fb.f6237700.js"></script>
 </body>
 </html>
