@@ -1,0 +1,138 @@
+---
+
+title: HTTPS 를 개발환경에서 사용하는 이유
+
+---
+
+
+<img alt="https guarantees trust and security"
+     src="https://user-images.githubusercontent.com/31977543/161273023-6af79bc5-1bf6-463e-9075-5ec223b4fa71.png"
+     width="400" />
+
+## HTTPS 를 로컬 개발에서 사용해야 하는 이유
+
+> 글을 처음 읽었을 때, 로컬 환경에서 왜 HTTPS 를 사용해야 할까? 이런 논제가 나의 호기심을 자극하였다.
+글을 읽으면서 생각을 해보니, 종합설계를 할 때에 구글 맵을 로컬에서 개발하려면 HTTPS 가 필요했었고,
+스타트업에서 잠시 업무를 했을 때에도 로컬에서 mkcert 를 설치해 HTTPS 를 사용했던 것 같다. 당시 mkcert 에 대한 이해가 없었고
+단순히 stackOverflow 와 사수가 해주는 대로만 따랐었던 것이 기억이 났었다.
+
+### Environment parity
+#### dev 환경은 prod 환경과 유사해야 한다.
+
+- 모던 소프트웨어 개발/배포 에서의 Main Principle 중 하나이다.
+
+#### 개발시 발견할 수 없는, 위험을 감소할 수 있다.
+- 개발 시, 로컬환경에서 HTTP 기반 CDN JS 라이브러리를 사용하면, <br />HTTPS 기반인 prod 환경에서는 예상과는 다르게 동작할 수 있다.
+
+#### Mixed Content
+- 페이지에 HTTPS 컨텐츠와 HTTP 컨텐츠가 혼합되어 있는 경우
+- HTTPS 기반 페이지에서, HTTP 기반 자원을 로드하는 경우
+- 브라우저가 혼동할 수 있다.
+- [HTTPS downgrade 공격](https://auth0.com/blog/preventing-https-downgrade-attacks/)의 위험 존재
+- prod 환경에서만 발견할 수 있다.
+
+### 강력한 보안 정책 CSP (Content Security Policy)
+Mixed content 와 안전하지 않은 요청을 차단하기 위해, Content Security Policy 를 사용해야 한다.
+
+CSP 는 dev 와 prod 환경에서 모두 HTTPS 를 사용하도록 지시한다.
+
+### 브라우저 Specific 을 사용하기 위해 HTTPS 를 사용한다.
+- Service workers, Security Cookies, Prefixed Cookies 를 사용하려면 HTTPS 를 사용해야 한다.
+
+### 커스텀 hostname
+`localhost`
+- 예약된 이름
+- `127.0.0.1` IP 주소와 매핑된다.
+
+Custom hostname
+- eg. `myapplication` or `myhost.dev`
+- 여러 개발환경과 구분하기 위해 의미있는 hostname 을 부여한다.
+- 내 컴퓨터의 `hosts` 파일을 수정하여 변경한다. (윈도우의 systencl...? )
+
+> CORS 이슈나, 실행하는 어플리케이션이 많아 포트로 혼동될 경우, custom hostname 을 사용했던 것 같다.
+
+### 기타 이유들
+- HTTP/2 의 사용
+- HTTPS 기반의 third-party library 사용
+
+등의 이유가 있지만, 가장 중요한 이유는 Environment parity principle 이다.
+
+## Localhost 에서 HTTPS 를 사용하는 방법
+### HTTPS
+- Transport Layer Security (TLS) 프로토콜을 사용하여, 서버와 클라이언트간에 암호화된 데이터를 교환하는 방법.
+
+### Public-key Cryptography (공개키 암호화)
+- private 과 public 키 쌍을 사용한다.
+- 서버는 클라이언트에게 public 키를 제공한다.
+- public 키는, Certificate Authority 에 의해 제공된 전자 증명이다.
+
+---
+
+- 브라우저가 HTTPS 활성화된 서버에 도달한다.
+- 서버의 전자 증명(서버의 public key 를 가짐)을 받는다.
+- 브라우저는 증명서를 검사한다.
+  - 도메인 이름과 서버의 도메인 이름이 일치한지 검사한다.
+  - 증명서의 만료날짜
+  - Certificate Authority
+
+Certificate Authority
+- prod : real CA
+- dev : self-signed certificate
+
+## 예시: Node 와 HTTPS
+
+먼저, 각각의 개발 프레임워크는 자신만의 절차와 도구를 가지기 때문에 이점을 체크해야 한다.
+- 그러나 private 과 public 키 쌍이 필요한 것은 동일할 것이다 .
+
+### certificate 생성하기
+#### 1. OpenSSL
+public-key 인프라 개념에 대한 이해가 필요하다.
+
+#### 2. mkcert
+HTTPS 환경에 대한 전문화된 숙련이 필요하지 않다.
+
+### mkcert
+1. mkcert 라는 로컬 CA 를 컴퓨터에 설치한다.
+  ```shell
+  mksert -install
+  ```
+
+2. node.js 프로젝트에 증명서를 저장할 디렉터리를 생성한후 이동하여. 다음 명령어를 실행한다
+  ```shell
+  mkcert localhost
+  ```
+
+3. 명령어를 실행하고 나면 private 과 public 키를 포함하는 파일이 각각 생성된다.
+  - `localhost-key.pem` private key
+  - `localhost.pen` public key
+
+증명서는, 브라우저에게 공개키가 localhost 이름의 서버에서 받은것으로 인식한다.
+
+다른 이름을 사용한다면 `hosts` 파일에 커스텀 도메인을 등록해주어야 한다.
+
+### Node.js 서버에 HTTPS 설정하기
+```javascript title="server.js"
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('localhost-key.pem'),
+  cert: fs.readFileSync('localhost.pem')
+};
+
+https.createServer(options, function (req, res) {
+  res.writeHead(200);
+  res.end("I'm HTTPS-enabed!")
+}).listen(8080);
+```
+
+```shell
+node server.js
+```
+
+http 로 url 을 접근한다면 서버를 찾을 수 없고, https 프로토콜을 사용하여야 한다.
+
+Ref
+--
+- https://auth0.com/blog/using-https-in-your-development-environment/
+- https://www.oreilly.com/library/view/beyond-the-twelve-factor/9781492042631/ch09.html

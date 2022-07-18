@@ -1,0 +1,22 @@
+---
+title: Custom Providers
+
+---
+
+https://docs.nestjs.com/
+
+## Custom Providers
+지금까지  constructor based dependency injection DI 패턴만을 탐구했습니다. <br />
+응용 프로그램이 더 복잡해짐에 따라 DI 시스템의 전체 기능을 활용해야 할 수도 있으므로 더 자세히 살펴보겠습니다.
+
+## DI fundamentals 기초
+```typescript title="cats.service.ts"
+import { Injectable } from '@nestjs/common';
+import { Cat } from './interfaces/cat.interface';
+
+@Injectable()
+export class CatsService {
+  private readonly cats: Cat[] = [];
+
+}
+```

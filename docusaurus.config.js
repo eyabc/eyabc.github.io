@@ -9,8 +9,9 @@
 const navbar = require('./navbar');
 
 module.exports = {
-  title: '창조적 독점',
-  tagline: '창조적 독점',
+  title: 'Mindfulness',
+  tagline: `전문가 팀은 무섭고 두렵더라도 중요한 일이면, 그 일을 안하는 리스크를 인식하고 꾸준히 시도한다.
+    중요한 것은 어렵고 두렵지만 중요한 것을 얼마나 미루느냐 이다.`,
   url: 'https://eyabc.github.io',
   baseUrl: '/',
   onBrokenLinks:'warn',
@@ -114,6 +115,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          showLastUpdateTime: true,
         },
         blog: {
           showReadingTime: true,

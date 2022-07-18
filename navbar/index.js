@@ -15,31 +15,35 @@ const ETC = require('./etc.js');
 const CSS = require('./css.js');
 const DEV_ETC = require('./DevEtc.js');
 const DOING = require('./doing.js');
-const LINUX = require('./linux.js');
+const INFRA = require('./infra.js');
+const CONSULTANT = require('./consultant.js');
+const DATABASE = require('./database.js');
 
 module.exports = {
-  title: '창조적 독점',
+  title: '두려워도 중요하다면 시도해봐야 하지 않겠는가',
   logo: {
-    alt: '창조적 독점',
+    alt: '두려워도 중요하다면 시도해봐야 하지 않겠는가',
     src: 'img/logo.svg',
   },
   items: [
     ...makeTargetSelf([
       JAVASCRIPT,
       JAVA,
-      // STUDY,
       CSS,
       DEV_ETC,
-      LINUX,
+      INFRA,
+      DATABASE,
+      CONSULTANT,
+      {to: 'blog', label: 'Blog', position: 'left'},
       // ETC,
       // DOING,
-      {to: 'blog', label: 'Blog', position: 'left'},
-      // Please keep GitHub link to the right for consistency.
       {
         href: 'https://github.com/eyabc/eyabc.github.io',
         label: 'GitHub',
         position: 'right',
       },
+      // Please keep GitHub link to the right for consistency.
+      STUDY,
     ]),
 
   ],

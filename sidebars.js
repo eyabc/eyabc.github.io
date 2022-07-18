@@ -20,11 +20,14 @@ module.exports = {
 
   doing: require('./sidebars/doing.js'),
   devEtc: require('./sidebars/devEtc.js'),
-  sql: require('./sidebars/sql.js'),
+  database: require('./sidebars/database.js'),
   os: require('./sidebars/os.js'),
   designPattern: require('./sidebars/designPattern.js'),
   tdd: require('./sidebars/tdd.js'),
   java: require('./sidebars/java.js'),
   nestJs: require('./sidebars/nestJs.js'),
   devSettings: require('./sidebars/dev-settings.js'),
+  consultant: require('./sidebars/consultant.js'),
+  study: require('./sidebars/study.js'),
+  infra: require('./sidebars/infra.js'),
 };

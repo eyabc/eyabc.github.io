@@ -18,12 +18,6 @@ module.exports = {
     },
     {
       type: 'doc',
-      docId: 'network',
-      label: 'SQL',
-      to: 'docs/sql/index',
-    },
-    {
-      type: 'doc',
       docId: 'os',
       label: 'OS',
       to: 'docs/os/index',

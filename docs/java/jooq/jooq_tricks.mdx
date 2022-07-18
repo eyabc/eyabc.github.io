@@ -1,0 +1,636 @@
+---
+title: Jooq Tricks
+
+---
+
+3.11.9 버전으로 작성되었습니다.
+
+1. BaseRepository 추상 클래스를 공통으로 확장합니다.
+
+JPA 의 `findById` 처럼 사용할 수 없을까 고민하였습니다.
+
+테스트코드에서,
+BaseRepository 를 확장한 Repository Map 을 주입받아 가져온 다음, truncate 메서드를
+실행시켜주기 위해 BaseRepository 를 생성하게 되었습니다.
+
+테이블최적화를 위한 작업으로 테이블 이름이 변경되었을 경우, 코드의 많은 부분을 변경해 주었어야 했습니다.
+제너릭 클래스를 `class BaseRepository<T extends Table>` 사용하여 추상 멤버 변수에 `public final T TABLE;`
+을 선언하고, 확장하는 클래스에서 `public class TableDaoJooqImpl extends BaseRepository<JTable, JTableRecord>`
+제너릭 타입만 변경해주어, 테이블 Migration 시, 코드 변경을 최소화 하는 방안으로 사용하고 있습니다.
+
+```java
+@Slf4j
+@AllArgsConstructor
+@RequiredArgsConstructor
+public abstract class BaseRepository<T extends Table, R extends Record> {
+
+  public final T TABLE;
+  protected final DSLContext writeContext;
+  protected final DSLContext readContext;
+
+  // ...
+}
+```
+
+` protected final DSLContext writeContext;`  `protected final DSLContext readContext` 은
+데이터 소스를 Master 와 Slave 로 나뉘어져 사용할 경우, 구분하여 사용할 수 있습니다.
+하나의 데이터소스만을 사용할 땐,
+bean 의 Qualify 로 writeContext, readContext 모두 구현한 후 동일한 데이터소스 설정을 사용할 수 있습니다.
+혹은 DSLContext 를 하나만 빈으로 등록하면 됩니다.
+
+트랜잭션을 bean 을 구현해, readContext 이름으로 빈을 주입받아도, 설정한 트랜잭션 매니저로 Master 데이터 소스를 사용할 수도 있고,
+반대로도 가능합니다.
+
+```java
+@Repository
+public class TableDaoJooqImpl extends BaseRepository<JTable, JTableRecord>
+    implements TableDao {
+
+    public TableDaoJooqImpl( DSLContext writeContext, DSLContext readContext) {
+        super(JTable.TABLE, writeContext, readContext);
+    }
+}
+```
+
+2. BaseRepository 의 메서드는 확장하는 클래스는 중복적으로 작성되는 java code 를 줄였습니다.
+매개변수와 반환 타입으로, Pojo 객체나, Jooq 객체를 사용하도록 합니다.
+추상화 되어 있기 때문에 사용에 항상 주의해야 할 것 같습니다.
+설명이 되어 있지 않은 예상되지 않는 동작이 발생할 수도 있기 때문에,
+더 구체적인 주석이 필요할 것 같습니다.
+
+```java
+public abstract class BaseRepository<T extends Table, R extends Record> {
+
+  public final T TABLE;
+  protected final DSLContext writeContext;
+  protected final DSLContext readContext;
+
+  public void fetchSql(String sql) {
+    writeContext.fetch(sql);
+  }
+
+  public void deleteAll() {
+    writeContext.delete(TABLE).execute();
+  }
+
+  // 쓰지말것! 반드시 테스트에서만 사용
+  public void truncate() {
+    // writeContext.truncate(TABLE).execute();
+  }
+
+  @Deprecated
+  public Result<Record> convertListToResult(List<? extends Record> list) {
+    Result<Record> fetch = readContext.selectFrom(TABLE)
+      .limit(0)
+      .fetch();
+    fetch.addAll(list);
+    return fetch;
+  }
+
+  public <E> Result<Record> saveAll(List<E> list) {
+    List<Record> collect = list.stream()
+      .map(this::save)
+      .collect(Collectors.toList());
+    return convertListToResult(collect);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void insertOnDuplicateKeyUpdate(R record) {
+    writeContext.insertInto(TABLE)
+      .set(record)
+      .onDuplicateKeyUpdate()
+      .set(record)
+      .execute();
+  }
+
+  //  pojo 의 null 인 값은 업데이트 되지 않게함. pojo 로 Insert, Update Delete 할 때 꼭 사용해야함.
+  public R newRecordIncludeNonNull(Object pojo) {
+    R newRecord = (R) readContext.newRecord(TABLE, pojo);
+    List<Field> fields = newRecord.fieldsRow().fieldStream()
+      .map(r -> TABLE.field(r.getName()))
+      .collect(Collectors.toList());
+
+    AtomicInteger i = new AtomicInteger(-1);
+    newRecord.valuesRow().fieldStream()
+      .forEach(a -> {
+        i.addAndGet(1);
+        if (Objects.equals(a.getName(), "null")) {
+          newRecord.changed(fields.get(i.get()), false);
+        }
+      });
+
+    return newRecord;
+  }
+
+  public R newRecord(Object pojo) {
+    return (R) readContext.newRecord(TABLE, pojo);
+  }
+
+  public <POJO> void insertOnDuplicateKeyUpdate(POJO pojo) {
+    R record = (R) writeContext.newRecord(TABLE, pojo);
+    insertOnDuplicateKeyUpdate(record);
+  }
+
+  public <POJO> void insertOnDuplicateKeyUpdate(POJO pojo) {
+    R record = (R) writeContext.newRecord(TABLE, pojo);
+    insertOnDuplicateKeyUpdate(record);
+  }
+
+  public InsertSetMoreStep<?> setInsertPrimaryKey(InsertSetStep<?> insertSetStep) {
+    return (InsertSetMoreStep<?>) insertSetStep;
+  }
+
+  @Deprecated // 코드가 너무 복잡해짐
+  public <E> Condition primaryCondition(E item) {
+    throw new AssertionError("override primaryCondition!");
+  }
+
+  @Deprecated
+  public int update(R item) {
+    return writeContext.update(TABLE)
+      .set(item)
+      .where(primaryCondition(item))
+      .execute();
+  }
+
+  public void update(List<R> item) {
+    for (R r : item) {
+      update(r);
+    }
+  }
+
+  /**
+   * @param item
+   * @param condition
+   * @return the number of updated records
+   */
+  public int update(R item, Condition condition) {
+    return writeContext.update(TABLE)
+      .set(item)
+      .where(condition)
+      .execute();
+  }
+
+  @Deprecated
+  public <E> Optional<Record> getByPrimaryCondition(
+    E item,
+    List<TableField<?, ?>> selectors
+  ) {
+    return readContext.select(selectors)
+      .from(TABLE)
+      .where(primaryCondition(item))
+      .fetchOptional();
+  }
+
+  @Deprecated
+  public Optional<R> getByPrimaryCondition(R item) {
+    return readContext.selectFrom(TABLE)
+      .where(primaryCondition(item))
+      .fetchOptional();
+  }
+
+  public List<Field<Object>> convertNamesToJooqFields(List<String> selectors) {
+    return selectors.stream().map(DSL::field)
+      .collect(Collectors.toList());
+  }
+
+  private SelectConditionStep<Record> addConditionToSelectStep(R record,
+    SelectConditionStep<Record> where) {
+    List<Object> values = new ArrayList<>(record.map(r -> r)
+      .intoMap()
+      .values());
+    Row fieldsRow = record.fieldsRow();
+    for (Object o : values) {
+      if (isNull(o)) {
+        continue;
+      }
+
+      int index = values.indexOf(o);
+      where = where.and(((Field<Object>) fieldsRow.field(index)).eq(o));
+    }
+    return where;
+  }
+
+  public SelectConditionStep<Record> findBySelectorAndPojo(
+    List<String> selectors,
+    Object pojo
+  ) {
+    List<Field<Object>> fields = convertNamesToJooqFields(selectors);
+    SelectConditionStep<Record> where = readContext.select(fields).from(TABLE)
+      .where();
+
+    return addConditionToSelectStep(newRecordIncludeNonNull(pojo), where);
+  }
+
+  public SelectConditionStep<Record> findByPojo(Object pojo) {
+    return addConditionToSelectStep(newRecordIncludeNonNull(pojo), readContext.selectFrom(TABLE).where());
+  }
+
+  Map<? extends Table<?>, List<TableField<?, ?>>> selectorsTableMapper(
+    List<TableField<?, ?>> selectors) {
+    return selectors.stream()
+      .collect(groupingBy(TableField::getTable));
+  }
+
+  static Map<Table, ? extends List<? extends Field<?>>> selectorsFieldTableMapper(
+    List<? extends Field<?>> selectors) {
+    return selectors.stream()
+      .collect(groupingBy(r -> ((TableField) r).getTable()));
+  }
+
+}
+```
+
+### 예제
+
+#### fetch(String sql)
+sql 파일을 실행시킬 때 사용할 수 있습니다.
+```java
+public void fetchSql(String sql) {
+  writeContext.fetch(sql);
+}
+```
+
+```java
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class TestDBService {
+    private final ObjectMapper objectMapper;
+    private final Map<String, BaseRepository> baseRepositories;
+
+    @Transactional
+    public void init() throws IOException, SQLException {
+        clear(new ArrayList<>(baseRepositories.values()));
+        // readStub 는 sql 파일을 String 으로 읽어오는 메서드 입니다.
+        for (String sql : readStub(STUB_PATH + "insert-common-db.sql").split(";")) {
+            baseRepositories.get("tableDao").fetchSql(sql);
+        }
+    }
+}
+```
+
+#### delete or truncate
+두 메서드는 반드시 테스트코드에서만 사용할 수 있게 하도록 주의해야 합니다.
+```java
+public void deleteAll() {
+  writeContext.delete(TABLE).execute();
+}
+
+public void truncate() {
+  writeContext.truncate(TABLE).execute();
+}
+```
+BaseRepository 를 확장한 테이블들의 레코드를 모두 삭제합니다.
+
+```java
+public void clear(List<BaseRepository> repositories) {
+    LinkedList<BaseRepository<?, ?>> q = new LinkedList(repositories);
+    int count = 0;
+
+    while (true) {
+        if (q.size() == 0 || count == 100) {
+            break;
+        }
+
+        BaseRepository el = null;
+        try {
+            el = q.remove();
+            el.deleteAll();
+        } catch (DataAccessException e) {
+            q.offer(el);
+        } catch (NoSuchElementException e) {
+            log.info("delete BaseRepository data finished! success");
+            break;
+        } catch (Exception e) {
+            log.info("delete BaseRepository data error!");
+            break;
+        } finally {
+            count++;
+        }
+    }
+}
+```
+
+#### convert List to Jooq Result Record
+어떠한 사정으로 List 를 Result 매개변수 메서드의 인자로 넘겨야 할 때 사용할 수 있습니다.
+쓰지 않는 것이 좋을 것 같습니다. Mysql 을 사용하다가, 다른 스토리지를 사용해야 할 때 Jooq 객체를 사용할 수 없다면
+코드 전반에 흩어진, jooq 객체를 input output 으로 주고받는 다면, 코드를 수습해야 할 일이 생긴다면 어떡해야 할까요
+Pojo 객체로 주고 받는것이 이로울 것 같습니다.
+```java
+@Deprecated
+public Result<Record> convertListToResult(List<? extends Record> list) {
+  Result<Record> fetch = readContext.selectFrom(TABLE)
+    .limit(0)
+    .fetch();
+  fetch.addAll(list);
+  return fetch;
+}
+```
+이 메서드의 장점이 하나 있습니다.
+table1 과 table2 가 있을 때, 두 테이블의 컬럼 스키마가 매우 유사합니다.
+table1 의 레코드를 table2 로 저장하는 것을 구현해야 할 때,
+table1 의 jooq 레코드를 가져온 다음 `into(TABLE2)` 메서드를 사용하면 table2 객체로 변환이 용이하기 때문에
+table2 에 저장하는 것이 간편합니다.
+하지만 중간에 table1 레코드를 가져온 다음, jooq 메서드의 한계로 list 타입을 반드시 거쳐야만 한다면,
+list 타입의 table1 요소를 table2 로 변환하는 것이 번거로울 수 있습니다.
+이 때 convertListToResult 를 사용한다면 jooq 의 result 타입으로 사용할 수 있는 메서드 장점을 누릴 수 있기 때문에 편리할 수 있습니다.
+
+번거롭더라도 Pojo 를 사용하면 더 좋을 것 같기 때문에 @Deprecated 하여, 코드를 정리할 예정입니다.
+
+
+#### save 한 결과를 리턴
+`List<E>` 의 E 는 호출될 때 JTableRecord 타입 이며 Record 타입으로 반환 합니다.
+```java
+public <E> Result<Record> saveAll(List<E> list) {
+  List<Record> collect = list.stream()
+    .map(this::save)
+    .collect(Collectors.toList());
+  return convertListToResult(collect);
+}
+```
+```java
+public void saveAll(List<JTableRecord> list) {
+    tableDao.saveAll(list);
+}
+```
+
+```java
+public <E> Record save(E item) {
+  UpdatableRecord<?> record = (UpdatableRecord<?>) writeContext.newRecord(TABLE, item);
+  record.store();
+  return record;
+}
+```
+
+```java
+public JTableRecord insertNew() {
+    JTableRecord record  = new JTableRecord();
+    record.setA(a);
+    record.setB(b);
+    return save(record).into(TABLE);
+}
+```
+
+#### insertOnDuplicateKeyUpdate
+```java
+@SuppressWarnings("unchecked")
+public void insertOnDuplicateKeyUpdate(R record) {
+  writeContext.insertInto(TABLE)
+    .set(record)
+    .onDuplicateKeyUpdate()
+    .set(record)
+    .execute();
+}
+
+public void insertOnDuplicateKeyUpdate(Object pojo) {
+  writeContext.insertInto(writeContext.newRecord(TABLE, pojo))
+    .set(record)
+    .onDuplicateKeyUpdate()
+    .set(record)
+    .execute();
+}
+```
+
+```java
+@Override
+public void insertOnDuplicateKeyUpdate(TablePojo tablePojo) {
+    super.insertOnDuplicateKeyUpdate(writeContext.newRecord(TABLE, tablePojo));
+}
+```
+
+#### Pojo 객체를 Jooq 객체를 대신하여 CUD 수행하기 위한 메서드
+Pojo 객체에 null 이 아닌 값들만 insert 하거나, update 하거나 delete 를 하기 위한 조건으로 지정하고 싶을 수 있습니다.
+pojo 객체를 도메인 객체로 래핑하고, 래핑한 객체를 `new JTableRecord()` 하여 조건으로 사용한 값들의 setter 를 호출할 수도 있지만,
+Pojo 객체를 그대로 사용하고 싶을수도 있습니다. 하지만 Pojo 객체를 newRecord 를 사용하여 변환할 경우, null 이지만
+Table 스키마에 null 일 경우 기본값이 지정되어 있을 때, Pojo 객체에 null 으로 되어 있지만 default 값이 자동으로 세팅됩니다.
+이럴 때 default 값이 조건으로 세팅되지 않기 위해 메서드를 만들었습니다.
+
+```java
+public R newRecordIncludeNonNull(Object pojo) {
+  R newRecord = (R) readContext.newRecord(TABLE, pojo);
+  List<Field> fields = newRecord.fieldsRow().fieldStream()
+    .map(r -> TABLE.field(r.getName()))
+    .collect(Collectors.toList());
+
+  AtomicInteger i = new AtomicInteger(-1);
+  newRecord.valuesRow().fieldStream()
+    .forEach(a -> {
+      i.addAndGet(1);
+      if (Objects.equals(a.getName(), "null")) {
+        newRecord.changed(fields.get(i.get()), false);
+      }
+    });
+
+  return newRecord;
+}
+```
+
+```java
+public SelectConditionStep<Record> findBySelectorAndPojo(
+  List<String> selectors,
+  Object pojo
+) {
+  List<Field<Object>> fields = convertNamesToJooqFields(selectors);
+
+  SelectConditionStep<Record> where = readContext.select(fields).from(TABLE)
+    .where();
+
+  return addConditionToSelectStep(newRecordIncludeNonNull(pojo), where);
+}
+```
+```java
+@Override
+public int[] batchUpdate(List<TablePojo> tablePojo) {
+  return writeContext.batchUpdate(tablePojo.stream()
+    .map(this::newRecordIncludeNonNull)
+    .collect(Collectors.toList())
+  ).execute();
+}
+```
+
+#### Pojo 를 jooq 레코드로 변환
+```java
+public R newRecord(Object pojo) {
+  return (R) readContext.newRecord(TABLE, pojo);
+}
+```
+
+#### select 할 컬럼을 Jooq 필드가 아닌 String 으로 지정할 때,
+`List<String>` 에서 `convertNamesToJooqFields` 메서드를 사용하여 변환하면
+fields 가 Jooq 의 TableField 가 아니기 때문에 제약이 있을 수 있습니다.
+```java
+public List<Field<Object>> convertNamesToJooqFields(List<String> selectors) {
+  return selectors.stream().map(DSL::field)
+    .collect(Collectors.toList());
+}
+
+public SelectConditionStep<Record> findBySelectorAndPojo(
+  List<String> selectors,
+  Object pojo
+) {
+  List<Field<Object>> fields = convertNamesToJooqFields(selectors);
+  SelectConditionStep<Record> where = readContext.select(fields).from(TABLE)
+    .where();
+  return addConditionToSelectStep(newRecordIncludeNonNull(pojo), where);
+}
+```
+
+#### JooqRecord 로 Condition 만들기
+`SelectConditionStep<Record> where` 를 받지 않고 Codition 을 반환해도 됩니다.
+```java
+  private SelectConditionStep<Record> addConditionToSelectStep(R record,
+    SelectConditionStep<Record> where) {
+    List<Object> values = new ArrayList<>(record.map(r -> r)
+      .intoMap()
+      .values());
+    Row fieldsRow = record.fieldsRow();
+    for (Object o : values) {
+      if (isNull(o)) {
+        continue;
+      }
+
+      int index = values.indexOf(o);
+      where = where.and(((Field<Object>) fieldsRow.field(index)).eq(o));
+    }
+    return where;
+  }
+```
+
+```java
+public SelectConditionStep<Record> findByPojo(Object pojo) {
+  return addConditionToSelectStep(newRecordIncludeNonNull(pojo), readContext.selectFrom(TABLE).where());
+}
+```
+
+#### TableField 에서 사용된 Table 찾기
+```
+Map<? extends Table<?>, List<TableField<?, ?>>> selectorsTableMapper(
+  List<TableField<?, ?>> selectors) {
+  return selectors.stream()
+    .collect(groupingBy(TableField::getTable));
+}
+
+static Map<Table, ? extends List<? extends Field<?>>> selectorsFieldTableMapper(
+  List<? extends Field<?>> selectors) {
+  return selectors.stream()
+    .collect(groupingBy(r -> ((TableField) r).getTable()));
+}
+```
+
+## selector, join on, condition 나누기
+```java
+
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+public class BaseSelectBuilder {
+
+  private final Select query;
+  private Condition condition = DSL.and();
+  private List<Field> selectors;
+  private Map<Table, ? extends List<? extends Field>> selectorsTableMapper;
+  private Map<String, TableImpl> aliasMap = new WeakHashMap<>();
+  private BiConsumer<Query, Map<Table, ? extends List<? extends Field>>> joiner;
+
+  public SelectConditionStep<?> compose() {
+    this.selectors = query.getSelect();
+    this.selectorsTableMapper = selectorsFieldTableMapper();
+
+    if (!isNull(joiner)) {
+      joiner.accept(query, selectorsTableMapper);
+    }
+
+    return ((SelectJoinStep) query).where(condition);
+  }
+
+  public Map<Table, ? extends List<? extends Field>> selectorsFieldTableMapper() {
+    return selectors.stream()
+      .collect(groupingBy(r -> ((TableField)r).getTable()));
+  }
+
+}
+```
+
+```java
+BaseSelectBuilder.builder()
+          .query(readContext.select(Arrays.asList(
+            TABLE.ID,
+            TABLE2.VALUE
+          )).from(TABLE))
+          .condition(Condition Object)
+          .joiner(TableDaoJooqImpl::joinBuilder)
+            .build()
+              .compose()
+                  .fetch()
+```
+
+```java
+public static void joinBuilder(Query query, Map<Table, ? extends List<? extends Field>> selectorsTableMapper) {
+  if (!isNull(selectorsTableMapper.get(TABLE2))) {
+    query = ((SelectJoinStep) query)
+      .join(TABLE2)
+      .on(TABLE.ID.eq(TABLE2.TABLE_ID));
+  }
+}
+```
+
+
+## 여러 테이블의 컬럼을 가지고 있는 Record 를 Pojo 객체로 바인딩하기
+````java
+@Slf4j
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+public class Table implements TablePojo {
+
+  @Column(table = TABLE_NAME, name = "id")
+  private Integer id;
+
+  private Table2 table2;
+
+  //...
+
+  public static ServicePage fromJooqRecord(Record record) {
+    JooqRecordMapper jooqRecordMapper = JooqRecordMapper.of(record);
+
+    if (!jooqRecordMapper.hasTable(Table.TABLE_NAME)) {
+      throw new EmptyResultDataAccessException(1);
+    }
+
+    Table table = record.into(TABLE).into(Table.class);
+
+    if (jooqRecordMapper.hasTable(Table2.TABLE_NAME)) {
+      table.table2 = Table2.fromJooqRecord(record);
+    }
+
+    return table;
+  }
+}
+
+
+```
+```java
+// Ambigous SQL Warning 를 해결하기 위함. jooq 3.11 version 에서는 해당 경고를 설정을 통해 없앨 수 없음. Info 로그 레벨에서는 무조건 발생
+@RequiredArgsConstructor(staticName = "of")
+public class JooqRecordMapper {
+
+  private final Map<String, String> jooqRecordMapper;
+
+  public static JooqRecordMapper of(Record record) {
+    Map<String, String> collect = Arrays.stream(record.fields())
+      .map(a -> a.getQualifiedName().getName()[0])
+      .collect(Collectors.toSet())
+        .stream().collect(Collectors.toMap(e -> e, e -> e));
+
+    return JooqRecordMapper.of(collect);
+  }
+
+  public boolean hasTable(String tableName) {
+    return !isNull(jooqRecordMapper.get(tableName.toLowerCase()));
+  }
+
+}
+
+```
