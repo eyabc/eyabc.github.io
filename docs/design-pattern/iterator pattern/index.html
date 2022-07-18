@@ -7,17 +7,17 @@
 <link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Mindfulness Blog RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Mindfulness Blog Atom Feed">
 <link rel="search" type="application/opensearchdescription+xml" title="Mindfulness" href="/opensearch.xml"><title data-react-helmet="true">iterator pattern | Mindfulness</title><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docsearch:language" content="en"><meta data-react-helmet="true" name="docsearch:version" content="current"><meta data-react-helmet="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-react-helmet="true" property="og:title" content="iterator pattern | Mindfulness"><meta data-react-helmet="true" name="description" content="이터레이터 패턴"><meta data-react-helmet="true" property="og:description" content="이터레이터 패턴"><meta data-react-helmet="true" property="og:url" content="https://eyabc.github.io/docs/design-pattern/iterator pattern"><link data-react-helmet="true" rel="shortcut icon" href="/img/favicon.ico"><link data-react-helmet="true" rel="preconnect" href="https://YGAFWBIY5W-dsn.algolia.net" crossorigin="anonymous"><link data-react-helmet="true" rel="canonical" href="https://eyabc.github.io/docs/design-pattern/iterator pattern"><link rel="stylesheet" href="/styles.3ada4974.css">
-<link rel="preload" href="/styles.4a944ddb.js" as="script">
-<link rel="preload" href="/runtime~main.fa67b310.js" as="script">
-<link rel="preload" href="/main.9c5533a8.js" as="script">
-<link rel="preload" href="/1.adb6060d.js" as="script">
-<link rel="preload" href="/3.fac4dda5.js" as="script">
-<link rel="preload" href="/1be78505.1c5a3e1b.js" as="script">
-<link rel="preload" href="/411.10952571.js" as="script">
-<link rel="preload" href="/935f2afb.210cc64c.js" as="script">
-<link rel="preload" href="/408.83666ece.js" as="script">
-<link rel="preload" href="/17896441.e9798d0c.js" as="script">
-<link rel="preload" href="/f30c292e.92120113.js" as="script">
+<link rel="preload" href="/styles.b715cea4.js" as="script">
+<link rel="preload" href="/runtime~main.01bf3f2f.js" as="script">
+<link rel="preload" href="/main.f85ec068.js" as="script">
+<link rel="preload" href="/1.878c926c.js" as="script">
+<link rel="preload" href="/3.052ff86c.js" as="script">
+<link rel="preload" href="/1be78505.641b6934.js" as="script">
+<link rel="preload" href="/412.ad32a78c.js" as="script">
+<link rel="preload" href="/935f2afb.0a816309.js" as="script">
+<link rel="preload" href="/409.2e79ec87.js" as="script">
+<link rel="preload" href="/17896441.12f0be0b.js" as="script">
+<link rel="preload" href="/f30c292e.cc565f24.js" as="script">
 </head>
 <body>
 <script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
@@ -39,16 +39,16 @@ MenuItem 가 ArrayList 컬렉션이기 때문에 반복자를 리턴하는 itera
 DinerMenuIterator 라는 Java 의 Iterator 를 직접 implement 하는 클래스를 만들어.
 그 안에서 next, hasNext, remove 등을 커스텀하여 구현하였다.</p><p>Waitress 는 무슨 메뉴든 생성자의 인자로 받을 수 있는 인터페이스를 가지고 있다.
 그래서 팬케익이든 디너이든 팬케잌+디너 이든 생성자의 인자로 넘길 수 있다.</p><p>printMenu () 메서드는 펜케잌과 디너가 공통적으로 가지고 있는 createIterator 메서드를 호출하여 반복자 객체를 생성한다. </p><div class="mdxCodeBlock_1zKU"><div class="codeBlockContent_actS"><div tabindex="0" class="prism-code language-java codeBlock_tuNs thin-scrollbar"><div class="codeBlockLines_3uvA" style="color:rgb(36, 41, 46);background-color:#f6f8fa"><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">public class MenuTestDrive {</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">    public static void main(String args[]) {</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        ArrayList&lt;Menu&gt; menuList = new ArrayList();</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        menuList.add(new PancakgeHouseMenu());</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        menuList.add(new DinerMenu());</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">    </span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        Waitress waitress = new Waitress(menuList);</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">        waitress.printMenu();</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">    }</span></div><div class="token-line" style="color:rgb(36, 41, 46)"><span class="token plain">}</span></div></div></div><button type="button" aria-label="Copy code to clipboard" class="copyButton_2GIj">Copy</button></div></div><p>어렵다. 내가 이해한 결론은 </p><ol><li>메뉴와 반복 메서드를 가지고 있는 객체를 만든다. </li><li>메뉴와 반복 메서드라는 동일한 인터페이스를 가지고 있으면, 공통적으로 통일된 행동을 하는 클래스(waitress)의 메서드들(재활용) 를 만들 수 있다.</li></ol><p>JS 에서는 Iteration 프로토콜을 만족하면 spread, for..of 등을 사용할 수 있다. !</p><h2><a aria-hidden="true" tabindex="-1" class="anchor enhancedAnchor_prK2" id="reference"></a>Reference<a class="hash-link" href="#reference" title="Direct link to heading">#</a></h2><ul><li><a href="https://jusungpark.tistory.com/25" target="_blank" rel="noopener noreferrer">https://jusungpark.tistory.com/25</a></li></ul></div></article><div class="margin-vert--xl"><div class="row"><div class="col"></div><div class="col text--right"><em><small>Last updated on <time datetime="2021-07-21T15:54:13.000Z" class="docLastUpdatedAt_1gIo">7/22/2021</time></small></em></div></div></div><div class="margin-vert--lg"><nav class="pagination-nav" aria-label="Blog list page navigation"><div class="pagination-nav__item"></div><div class="pagination-nav__item pagination-nav__item--next"></div></nav></div></div><div></div></div><div class="col col--3"><div class="tableOfContents_2xL- thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#예시" class="table-of-contents__link">예시</a></li><li><a href="#reference" class="table-of-contents__link">Reference</a></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Learn</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/">Style Guide</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/doc2">Second Doc</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow</a></li><li class="footer__item"><a href="https://twitter.com/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li><li class="footer__item"><a href="https://discordapp.com/invite/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Legal</h4><ul class="footer__items"><li class="footer__item"><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy</a></li><li class="footer__item"><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com" target="_blank" rel="noopener noreferrer" class="footerLogoLink_31Aa"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"></a></div><div class="footer__copyright">Copyright © 2022 Facebook, Inc. Built with Docusaurus.</div></div></div></footer></div>
-<script src="/styles.4a944ddb.js"></script>
-<script src="/runtime~main.fa67b310.js"></script>
-<script src="/main.9c5533a8.js"></script>
-<script src="/1.adb6060d.js"></script>
-<script src="/3.fac4dda5.js"></script>
-<script src="/1be78505.1c5a3e1b.js"></script>
-<script src="/411.10952571.js"></script>
-<script src="/935f2afb.210cc64c.js"></script>
-<script src="/408.83666ece.js"></script>
-<script src="/17896441.e9798d0c.js"></script>
-<script src="/f30c292e.92120113.js"></script>
+<script src="/styles.b715cea4.js"></script>
+<script src="/runtime~main.01bf3f2f.js"></script>
+<script src="/main.f85ec068.js"></script>
+<script src="/1.878c926c.js"></script>
+<script src="/3.052ff86c.js"></script>
+<script src="/1be78505.641b6934.js"></script>
+<script src="/412.ad32a78c.js"></script>
+<script src="/935f2afb.0a816309.js"></script>
+<script src="/409.2e79ec87.js"></script>
+<script src="/17896441.12f0be0b.js"></script>
+<script src="/f30c292e.cc565f24.js"></script>
 </body>
 </html>
